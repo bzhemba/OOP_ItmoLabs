@@ -4,4 +4,16 @@
         <RootNamespace>Itmo.ObjectOrientedProgramming.Lab1</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Compile Remove="Entities\JumbingEngineOmega.cs" />
+      <Compile Remove="SpaceTravel\Entities\JumbingEngineOmega.cs" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <Folder Include="SpaceTravelTest\" />
+      <Folder Include="SpaceTravel\" />
+    </ItemGroup>
+
 </Project>
