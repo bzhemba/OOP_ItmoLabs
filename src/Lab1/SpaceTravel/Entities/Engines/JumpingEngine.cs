@@ -1,6 +1,6 @@
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models;
 
-namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities;
+namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Engines;
 
 public class JumpingEngine : Engine
 {

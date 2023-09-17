@@ -1,7 +1,7 @@
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.EngineExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models;
 
-namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities;
+namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Engines;
 
 public class Engine
 {
@@ -15,7 +15,7 @@ public class Engine
     }
 
     public double FuelAmount { get; private set; }
-    protected virtual double FuelConsumption
+    public virtual double FuelConsumption
     {
         get
         {
@@ -29,7 +29,7 @@ public class Engine
     }
 
     protected EngineFuel FuelType { get; set; }
-    protected int Thrust { get;  set; }
+    protected int Thrust { get; set; }
     public double ConsumeFuel(int time)
     {
         if (FuelAmount <= 0)
@@ -39,7 +39,7 @@ public class Engine
 
         double fuelConsumed = FuelConsumption * time;
         FuelAmount -= fuelConsumed;
-        return fuelConsumed;
+        return FuelAmount;
     }
 
     public virtual void StartingEngine()

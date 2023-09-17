@@ -1,4 +1,6 @@
+using System;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Engines;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.EngineExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models;
 
@@ -13,6 +15,7 @@ public class EngineServices : IEngineServices
             throw new EngineDoesntExistExeption($"Engine doesn't exist");
         }
 
+        // поправить, чтобы выводил не 0
         return engine.ConsumeFuel(time) * (int)FuelExchange.DefaultCost;
     }
 
@@ -23,6 +26,7 @@ public class EngineServices : IEngineServices
             throw new EngineDoesntExistExeption($"Engine doesn't exist");
         }
 
+        Console.WriteLine((int)FuelExchange.GravitonMatterCost);
         return engine.ConsumeFuel(time) * (int)FuelExchange.GravitonMatterCost;
     }
 
@@ -33,6 +37,7 @@ public class EngineServices : IEngineServices
             throw new EngineDoesntExistExeption($"Engine doesn't exist");
         }
 
+        Console.WriteLine((int)FuelExchange.ActivePlasmaCost);
         return engine.ConsumeFuel(time) * (int)FuelExchange.ActivePlasmaCost;
     }
 }

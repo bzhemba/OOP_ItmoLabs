@@ -1,4 +1,5 @@
 using System;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Engines;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities;
 
@@ -9,7 +10,7 @@ public class JumpingEngineOmega : JumpingEngine
     {
     }
 
-    protected override double FuelConsumption
+    public override double FuelConsumption
     {
         set { Math.Log(2, Thrust / SpecificImpulse); }
     }

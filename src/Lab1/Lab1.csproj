@@ -7,12 +7,13 @@
     <ItemGroup>
       <Compile Remove="Entities\JumbingEngineOmega.cs" />
       <Compile Remove="SpaceTravel\Entities\JumbingEngineOmega.cs" />
+      <Compile Remove="SpaceTravel\Entities\Deflectors\PhotonDeflector.cs" />
+      <Compile Remove="SpaceTravel\Entities\Deflectors\IPhotonDeflector.cs" />
     </ItemGroup>
 
 
 
     <ItemGroup>
-      <Folder Include="SpaceTravelTest\" />
       <Folder Include="SpaceTravel\" />
     </ItemGroup>
 

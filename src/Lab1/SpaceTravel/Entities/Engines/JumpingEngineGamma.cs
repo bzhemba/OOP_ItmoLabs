@@ -1,6 +1,6 @@
 using System;
 
-namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities;
+namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Engines;
 
 public class JumpingEngineGamma : JumpingEngine
 {
@@ -9,8 +9,9 @@ public class JumpingEngineGamma : JumpingEngine
     {
     }
 
-    protected override double FuelConsumption
+    public override double FuelConsumption
     {
+        // какая-то проблема в этом месте
         set { Math.Pow(Thrust / SpecificImpulse, 2); }
     }
 }
