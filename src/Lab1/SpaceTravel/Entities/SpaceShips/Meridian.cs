@@ -1,30 +1,76 @@
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Deflectors;
+using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Engines;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Hulls;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Obstacles;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 
-public class Meridian : SpaceShip
+public class Meridian : ISpaceShip
 {
-    private Engine _meridianEngine = new EngineE(1000);
-    private Deflector _meridianDeflector = new DeflectorClass2();
-    private Hull _meridianHull = new HullClass2();
-    private int _weight = 28;
-    private int _height = 78;
+    private List<DeflectorClass2> _deflectors = new() { new DeflectorClass2() };
+    private HullClass2 _hull = new();
+    private EngineE _engine = new EngineE(1000);
 
-    // еще должен быть антинитринный излучатель и масса-габаритные характеристики
-    public Hull MeridianHull
+    public void AddDeflector(int count)
     {
-        get => _meridianHull;
+        for (int i = 0; i < count; i++)
+        {
+            _deflectors.Add(new DeflectorClass2());
+        }
     }
 
-    public Deflector MeridianDeflector
+    public void CollisionWithMeteorite(Meteorites meteorite)
     {
-        get => _meridianDeflector;
+        if (meteorite != null)
+        {
+            int damage = meteorite.DamagePoints;
+            foreach (DeflectorClass2 deflector in _deflectors)
+            {
+                if (deflector.IsOn)
+                {
+                    int remainedDamage = deflector.TakeDamage(damage);
+                    if (remainedDamage != 0)
+                    {
+                        damage = remainedDamage;
+                    }
+                    else
+                    {
+                        damage = 0;
+                        break;
+                    }
+                }
+            }
+
+            if (damage != 0)
+            {
+                _hull.TakeDamage(damage);
+            }
+        }
     }
 
-    public Engine MeridianEngine
+    public void CollisionWithAntimatterFlares()
     {
-        get => _meridianEngine;
+        if (typeof(DeflectorClass2).IsAssignableFrom(typeof(ICanReflectAntimatter)))
+        {
+            foreach (DeflectorClass2 deflector in _deflectors)
+            {
+                if (deflector.IsOn)
+                {
+                    var reflectiveDeflector = deflector as ICanReflectAntimatter;
+                    reflectiveDeflector?.ReflectAntimatterFlare();
+                    break;
+                }
+            }
+        }
+
+        throw new SpaceCrewDestroyedException($"Space ship doesn't have a deflector with modification." +
+                                              $"The ship's crew has been destroyed");
+    }
+
+    public void CollisionWithSpaceWhale()
+    {
+        throw new SpaceShipDestroyedException($"Space ship has been destroyed");
     }
 }

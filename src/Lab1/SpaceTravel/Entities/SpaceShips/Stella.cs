@@ -1,36 +1,76 @@
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Deflectors;
+using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Engines;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Hulls;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Obstacles;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 
-public class Stella : SpaceShip
+public class Stella : ISpaceShip
 {
-    private Engine _stellaEngine = new EngineC(1000);
-    private JumpingEngine _jumpingStellaEngine = new JumpingEngineOmega(1000);
-    private Deflector _stellaDeflector = new DeflectorClass2();
-    private Hull _stellaHull = new HullClass2();
-    private int _weight = 13;
-    private int _height = 72;
+    private List<DeflectorClass1> _deflectors = new() { new DeflectorClass1() };
+    private HullClass1 _hull = new();
+    private readonly List<Engine> _engines = new() { new EngineC(1000), new JumpingEngineOmega(1000) };
 
-    // еще должны быть масса-габаритные характеристики
-    public Hull StellaHull
+    public void AddDeflector(int count)
     {
-        get => _stellaHull;
+        for (int i = 0; i < count; i++)
+        {
+            _deflectors.Add(new DeflectorClass1());
+        }
     }
 
-    public Deflector StellaDeflector
+    public void CollisionWithMeteorite(Meteorites meteorite)
     {
-        get => _stellaDeflector;
+        if (meteorite != null)
+        {
+            int damage = meteorite.DamagePoints;
+            foreach (DeflectorClass1 deflector in _deflectors)
+            {
+                if (deflector.IsOn)
+                {
+                    int remainedDamage = deflector.TakeDamage(damage);
+                    if (remainedDamage != 0)
+                    {
+                        damage = remainedDamage;
+                    }
+                    else
+                    {
+                        damage = 0;
+                        break;
+                    }
+                }
+            }
+
+            if (damage != 0)
+            {
+                _hull.TakeDamage(damage);
+            }
+        }
     }
 
-    public Engine StellaEngine
+    public void CollisionWithAntimatterFlares()
     {
-        get => _stellaEngine;
+        if (typeof(DeflectorClass1).IsAssignableFrom(typeof(ICanReflectAntimatter)))
+        {
+            foreach (DeflectorClass1 deflector in _deflectors)
+            {
+                if (deflector.IsOn)
+                {
+                    var reflectiveDeflector = deflector as ICanReflectAntimatter;
+                    reflectiveDeflector?.ReflectAntimatterFlare();
+                    break;
+                }
+            }
+        }
+
+        throw new SpaceCrewDestroyedException($"Space ship doesn't have a deflector with modification." +
+                                              $"The ship's crew has been destroyed");
     }
 
-    public JumpingEngine StellaJumpingEngine
+    public void CollisionWithSpaceWhale()
     {
-        get => _jumpingStellaEngine;
+        throw new SpaceShipDestroyedException($"Space ship has been destroyed");
     }
 }

@@ -3,7 +3,7 @@ using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExcept
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
 
-public class PhotonDeflector : IPhotonDeflector
+public class PhotonDeflector : ICanReflectAntimatter
 {
     private int _hitPoints = 6000;
 
