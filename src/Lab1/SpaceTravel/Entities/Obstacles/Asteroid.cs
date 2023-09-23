@@ -1,9 +1,9 @@
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Obstacles;
 
-public class Meteorites : Obstacle
+public class Asteroid : Obstacle
 {
-    protected Meteorites()
-        : base(500)
+    public Asteroid()
+        : base(250)
     {
     }
 }

@@ -11,7 +11,7 @@ public class PleasureShuttle : ISpaceShip
     private EngineC _engine = new();
     public EngineC Engine { get => _engine; }
 
-    public void CollisionWithMeteorite(Meteorites meteorite)
+    public void CollisionWithMeteorite(Meteorite meteorite)
     {
         if (meteorite != null)
         {
@@ -29,5 +29,14 @@ public class PleasureShuttle : ISpaceShip
     public void CollisionWithSpaceWhale()
     {
         throw new SpaceShipDestroyedException($"Space ship has been destroyed");
+    }
+
+    public void CollisionWithAsteroid(Asteroid asteroid)
+    {
+        if (asteroid != null)
+        {
+            int damage = asteroid.DamagePoints;
+            _hull.TakeDamage(damage);
+        }
     }
 }

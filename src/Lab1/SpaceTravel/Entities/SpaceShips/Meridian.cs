@@ -22,7 +22,7 @@ public class Meridian : ISpaceShip
         }
     }
 
-    public void CollisionWithMeteorite(Meteorites meteorite)
+    public void CollisionWithMeteorite(Meteorite meteorite)
     {
         if (meteorite != null)
         {
@@ -73,5 +73,34 @@ public class Meridian : ISpaceShip
     public void CollisionWithSpaceWhale()
     {
         throw new SpaceShipDestroyedException($"Space ship has been destroyed");
+    }
+
+    public void CollisionWithAsteroid(Asteroid asteroid)
+    {
+        if (asteroid != null)
+        {
+            int damage = asteroid.DamagePoints;
+            foreach (DeflectorClass2 deflector in _deflectors)
+            {
+                if (deflector.IsOn)
+                {
+                    int remainedDamage = deflector.TakeDamage(damage);
+                    if (remainedDamage != 0)
+                    {
+                        damage = remainedDamage;
+                    }
+                    else
+                    {
+                        damage = 0;
+                        break;
+                    }
+                }
+            }
+
+            if (damage != 0)
+            {
+                _hull.TakeDamage(damage);
+            }
+        }
     }
 }

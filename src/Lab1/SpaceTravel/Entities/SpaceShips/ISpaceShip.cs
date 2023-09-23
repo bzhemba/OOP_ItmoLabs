@@ -8,7 +8,7 @@ public interface ISpaceShip
     {
     }
 
-    public void CollisionWithMeteorite(Meteorites meteorite)
+    public void CollisionWithMeteorite(Meteorite meteorite)
     {
     }
 
@@ -19,4 +19,6 @@ public interface ISpaceShip
     public void CollisionWithSpaceWhale()
     {
     }
+
+    public void CollisionWithAsteroid(Asteroid asteroid);
 }
