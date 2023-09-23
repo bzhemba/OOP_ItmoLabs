@@ -1,11 +1,9 @@
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models;
-
-namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Engines;
+namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
 
 public class EngineC : Engine
 {
-    public EngineC(double fuelAmount)
-        : base(fuelAmount)
+    public EngineC()
+        : base()
     {
         FuelType = EngineFuel.ActivePlasma;
     }

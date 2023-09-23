@@ -1,17 +1,19 @@
 using System.Collections.Generic;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Engines;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Hulls;
+using System.Collections.ObjectModel;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Obstacles;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Hulls;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 
 public class Vaklas : ISpaceShip
 {
+    private readonly Collection<Engine> _engines = new() { new EngineE(), new JumpingEngineGamma() };
     private List<DeflectorClass1> _deflectors = new() { new DeflectorClass1() };
     private HullClass2 _hull = new();
-    private readonly List<Engine> _engines = new() { new EngineE(1000), new JumpingEngineGamma(1000) };
+    public Collection<Engine> Engines { get => _engines;  }
 
     public void AddDeflector(int count)
     {

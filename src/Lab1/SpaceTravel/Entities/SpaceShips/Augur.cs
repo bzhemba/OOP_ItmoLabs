@@ -1,17 +1,19 @@
 using System.Collections.Generic;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Engines;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Hulls;
+using System.Collections.ObjectModel;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Obstacles;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Hulls;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 
 public class Augur : ISpaceShip
 {
     private List<DeflectorClass3> _deflectors = new() { new DeflectorClass3() };
-    private readonly List<Engine> _engines = new() { new EngineE(1000), new JumpingEngineAlpha(1000) };
+    private Collection<Engine> _engines = new() { new EngineE(), new JumpingEngineAlpha() };
     private HullClass3 _hull = new();
+    public Collection<Engine> Engine { get => _engines; }
 
     public void AddDeflector(int count)
     {

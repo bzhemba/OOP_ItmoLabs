@@ -1,17 +1,18 @@
 using System;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Engines;
 
-namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities;
+namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
 
-public class JumpingEngineOmega : JumpingEngine
+public class JumpingEngineOmega : Engine
 {
-    public JumpingEngineOmega(int fuelAmount)
-        : base(fuelAmount)
+    public JumpingEngineOmega()
+        : base()
     {
+        FuelType = EngineFuel.GravitonMatter;
+        Thrust = 90221;
     }
 
-    public override double FuelConsumption
+    public override double FuelConsumption()
     {
-        set { Math.Log(2, Thrust / SpecificImpulse); }
+        return Math.Log(2, Thrust / SpecificImpulse);
     }
 }

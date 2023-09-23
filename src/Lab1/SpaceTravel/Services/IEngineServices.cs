@@ -1,5 +1,4 @@
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Engines;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Services;
 

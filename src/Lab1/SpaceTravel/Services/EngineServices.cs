@@ -1,8 +1,7 @@
 using System;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Engines;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.EngineExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Services;
 
@@ -16,7 +15,7 @@ public class EngineServices : IEngineServices
         }
 
         // поправить, чтобы выводил не 0
-        return engine.ConsumeFuel(time) * (int)FuelExchange.DefaultCost;
+        return engine.ConsumedFuel(time) * (int)FuelExchange.DefaultCost;
     }
 
     public double LaunchCostJump(Engine engine, int time)
@@ -27,7 +26,7 @@ public class EngineServices : IEngineServices
         }
 
         Console.WriteLine((int)FuelExchange.GravitonMatterCost);
-        return engine.ConsumeFuel(time) * (int)FuelExchange.GravitonMatterCost;
+        return engine.ConsumedFuel(time) * (int)FuelExchange.GravitonMatterCost;
     }
 
     public double LaunchCostC(Engine engine, int time)
@@ -38,6 +37,6 @@ public class EngineServices : IEngineServices
         }
 
         Console.WriteLine((int)FuelExchange.ActivePlasmaCost);
-        return engine.ConsumeFuel(time) * (int)FuelExchange.ActivePlasmaCost;
+        return engine.ConsumedFuel(time) * (int)FuelExchange.ActivePlasmaCost;
     }
 }

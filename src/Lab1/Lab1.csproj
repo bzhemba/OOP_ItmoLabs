@@ -13,6 +13,7 @@
       <Compile Remove="SpaceTravel\Exceptions\DeflectorExceptions\DeflectorIsAlreadyOffException.cs" />
       <Compile Remove="SpaceTravel\Exceptions\DeflectorExceptions\**" />
       <Compile Remove="SpaceTravel\Entities\Models\**" />
+      <Compile Remove="SpaceTravel\Models\Engines\JumpingEngine.cs" />
     </ItemGroup>
 
     <ItemGroup>

@@ -2,7 +2,7 @@ using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.HullExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Services;
 
-namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Hulls;
+namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Hulls;
 
 public class Hull : ITakeDamage
 {

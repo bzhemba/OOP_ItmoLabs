@@ -1,9 +1,11 @@
-namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Engines;
+namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
 
-public class JumpingEngineAlpha : JumpingEngine
+public class JumpingEngineAlpha : Engine
 {
-    public JumpingEngineAlpha(int fuelAmount)
-        : base(fuelAmount)
+    public JumpingEngineAlpha()
+        : base()
     {
+        FuelType = EngineFuel.GravitonMatter;
+        Thrust = 90221;
     }
 }

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Engines;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Hulls;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Obstacles;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Hulls;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 
@@ -11,7 +11,8 @@ public class Meridian : ISpaceShip
 {
     private List<DeflectorClass2> _deflectors = new() { new DeflectorClass2() };
     private HullClass2 _hull = new();
-    private EngineE _engine = new EngineE(1000);
+    private EngineE _engine = new EngineE();
+    public EngineE Engine { get => _engine; }
 
     public void AddDeflector(int count)
     {

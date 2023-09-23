@@ -1,57 +1,37 @@
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.EngineExceptions;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models;
 
-namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Engines;
+namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
 
 public class Engine
 {
     private protected const double SpecificImpulse = 3222.6;
-    private double _fuelConsumption;
-    public Engine(double fuelAmount)
+    private int _consumedFuelAmount;
+    private int _fuelAmount;
+    protected EngineFuel FuelType { get; set; } = EngineFuel.Default;
+    protected int Thrust { get; set; } = 80000;
+
+    public virtual double FuelConsumption()
     {
-        FuelAmount = fuelAmount;
-        FuelType = EngineFuel.Default;
-        Thrust = 80000;
+        return Thrust / SpecificImpulse;
     }
 
-    public double FuelAmount { get; private set; }
-    public virtual double FuelConsumption
+    public double ConsumedFuel(int time)
     {
-        get
-        {
-            return _fuelConsumption;
-        }
-
-        set
-        {
-            _fuelConsumption = Thrust / SpecificImpulse;
-        }
-    }
-
-    protected EngineFuel FuelType { get; set; }
-    protected int Thrust { get; set; }
-    public double ConsumeFuel(int time)
-    {
-        if (FuelAmount <= 0)
-        {
-            throw new EngineLackOfFuelException($"Fuel is out");
-        }
-
-        double fuelConsumed = FuelConsumption * time;
-        FuelAmount -= fuelConsumed;
-        return FuelAmount;
+        _consumedFuelAmount += (int)FuelConsumption() * time;
+        return _consumedFuelAmount;
     }
 
     public virtual void StartingEngine()
     {
-        double startingFuelAmount = 150;
-        if (FuelAmount - startingFuelAmount < 0)
+        int startingFuelAmount = 150;
+        if (_fuelAmount - startingFuelAmount < 0)
             throw new EngineLackOfFuelException($"Fuel is out");
-        FuelAmount -= startingFuelAmount;
+        _consumedFuelAmount += startingFuelAmount;
+        _fuelAmount -= startingFuelAmount;
     }
 
-    public virtual void AddFuel(double extraFuel)
+    public virtual void AddFuel(int extraFuel)
     {
-        FuelAmount += extraFuel;
+        _fuelAmount += extraFuel;
     }
 }

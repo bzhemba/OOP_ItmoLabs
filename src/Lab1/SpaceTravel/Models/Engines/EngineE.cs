@@ -1,19 +1,11 @@
 using System;
 
-namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Engines;
+namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
 
 public class EngineE : Engine
 {
-    public EngineE(double fuelAmount)
-        : base(fuelAmount)
+    public override double FuelConsumption()
     {
-    }
-
-    public override double FuelConsumption
-    {
-        set
-        {
-            Math.Pow(Thrust / SpecificImpulse, 2);
-        }
+        return Math.Pow(Thrust / SpecificImpulse, 2);
     }
 }

@@ -1,16 +1,15 @@
-using System.Collections.Generic;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Engines;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Hulls;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Obstacles;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Hulls;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 
 public class PleasureShuttle : ISpaceShip
 {
     private HullClass1 _hull = new();
-    private EngineC _engine = new(1000);
+    private EngineC _engine = new();
+    public EngineC Engine { get => _engine; }
 
     public void CollisionWithMeteorite(Meteorites meteorite)
     {
