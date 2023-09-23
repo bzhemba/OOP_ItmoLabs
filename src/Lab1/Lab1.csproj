@@ -9,12 +9,24 @@
       <Compile Remove="SpaceTravel\Entities\JumbingEngineOmega.cs" />
       <Compile Remove="SpaceTravel\Entities\Deflectors\PhotonDeflector.cs" />
       <Compile Remove="SpaceTravel\Entities\Deflectors\IPhotonDeflector.cs" />
+      <Compile Remove="SpaceTravel\Exceptions\HullExceptions\HullAlreadyDestroyed.cs" />
+      <Compile Remove="SpaceTravel\Exceptions\DeflectorExceptions\DeflectorIsAlreadyOffException.cs" />
+      <Compile Remove="SpaceTravel\Exceptions\DeflectorExceptions\**" />
+      <Compile Remove="SpaceTravel\Entities\Models\**" />
     </ItemGroup>
-
-
 
     <ItemGroup>
       <Folder Include="SpaceTravel\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="SpaceTravel\Exceptions\DeflectorExceptions\**" />
+      <EmbeddedResource Remove="SpaceTravel\Entities\Models\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="SpaceTravel\Exceptions\DeflectorExceptions\**" />
+      <None Remove="SpaceTravel\Entities\Models\**" />
     </ItemGroup>
 
 </Project>

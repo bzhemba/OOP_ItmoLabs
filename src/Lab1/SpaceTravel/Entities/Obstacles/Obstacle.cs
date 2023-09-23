@@ -2,15 +2,11 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Obstacles;
 
 public class Obstacle
 {
-    public virtual int ShipDamage()
+    private int _damagePoints;
+    protected Obstacle(int damagePoints)
     {
-        // передавать корабль
-        return 0;
+        _damagePoints = damagePoints;
     }
 
-    public virtual int DeflectorDamage()
-    {
-        // передавать дефлектор
-        return 0;
-    }
+    public int DamagePoints { get => _damagePoints; }
 }

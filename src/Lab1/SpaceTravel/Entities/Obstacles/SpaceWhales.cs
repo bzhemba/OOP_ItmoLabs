@@ -3,18 +3,7 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Obstacles;
 public class SpaceWhales : Obstacle
 {
     public SpaceWhales()
+        : base(1000000)
     {
-    }
-
-    public override int ShipDamage()
-    {
-        // передавать корабль
-        return 0;
-    }
-
-    public override int DeflectorDamage()
-    {
-        // передавать дефлектор
-        return 0;
     }
 }
