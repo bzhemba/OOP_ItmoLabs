@@ -13,6 +13,16 @@ public class Vaklas : ISpaceShip
     private readonly Collection<Engine> _engines = new() { new EngineE(), new JumpingEngineGamma() };
     private List<DeflectorClass1> _deflectors = new() { new DeflectorClass1() };
     private HullClass2 _hull = new();
+    private int _weight = 40;
+    public Vaklas()
+    {
+        foreach (Engine engine in _engines)
+        {
+            engine.AddFuel(300);
+            engine.StartingEngine();
+        }
+    }
+
     public Collection<Engine> Engines { get => _engines;  }
 
     public void AddDeflector(int count)
@@ -108,5 +118,16 @@ public class Vaklas : ISpaceShip
     public Collection<Engine> CheckCompatibility()
     {
         return Engines;
+    }
+
+    private int ComputeSpeed()
+    {
+        int sum = 0;
+        foreach (Engine engine in _engines)
+        {
+            sum += (int)engine.Power();
+        }
+
+        return sum * 10 / _weight;
     }
 }

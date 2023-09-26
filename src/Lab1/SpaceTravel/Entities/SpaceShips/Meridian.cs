@@ -10,10 +10,20 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 
 public class Meridian : ISpaceShip
 {
-    private List<DeflectorClass2> _deflectors = new() { new DeflectorClass2() };
-    private HullClass2 _hull = new();
-    private Collection<Engine> _engine = new() { new EngineE() };
-    public Collection<Engine> Engine { get => _engine; }
+    private readonly List<DeflectorClass2> _deflectors = new() { new DeflectorClass2() };
+    private readonly HullClass2 _hull = new();
+    private readonly Collection<Engine> _engine = new() { new EngineE() };
+    private int _weight = 34;
+    public Meridian()
+    {
+        foreach (Engine engine in _engine)
+        {
+            engine.AddFuel(300);
+            engine.StartingEngine();
+        }
+    }
+
+    private Collection<Engine> Engine { get => _engine; }
 
     public void AddDeflector(int count)
     {
@@ -108,5 +118,16 @@ public class Meridian : ISpaceShip
     public Collection<Engine> CheckCompatibility()
     {
         return Engine;
+    }
+
+    private int ComputeSpeed()
+    {
+        int sum = 0;
+        foreach (Engine engine in _engine)
+        {
+            sum += (int)engine.Power();
+        }
+
+        return sum * 10 / _weight;
     }
 }

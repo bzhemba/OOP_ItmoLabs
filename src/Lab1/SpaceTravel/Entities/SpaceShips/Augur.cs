@@ -13,7 +13,19 @@ public class Augur : ISpaceShip
     private List<DeflectorClass3> _deflectors = new() { new DeflectorClass3() };
     private Collection<Engine> _engines = new() { new EngineE(), new JumpingEngineAlpha() };
     private HullClass3 _hull = new();
+    private int _weight = 70;
+    private bool _antinitrineEmitterIsON;
+    public Augur()
+    {
+        foreach (Engine engine in _engines)
+        {
+            engine.AddFuel(300);
+            engine.StartingEngine();
+        }
+    }
+
     public Collection<Engine> Engine { get => _engines; }
+    public int Speed { get; private set; }
 
     public void AddDeflector(int count)
     {
@@ -73,6 +85,11 @@ public class Augur : ISpaceShip
 
     public virtual void CollisionWithSpaceWhale()
     {
+        if (_antinitrineEmitterIsON)
+        {
+            return;
+        }
+
         foreach (DeflectorClass3 deflector in _deflectors)
         {
             if (deflector.IsOn)
@@ -117,5 +134,26 @@ public class Augur : ISpaceShip
     public Collection<Engine> CheckCompatibility()
     {
         return Engine;
+    }
+
+    public void AntinitrineEmitterON()
+    {
+        _antinitrineEmitterIsON = true;
+    }
+
+    public void AntinitrineEmitterOFF()
+    {
+        _antinitrineEmitterIsON = false;
+    }
+
+    private int ComputeSpeed()
+    {
+        int sum = 0;
+        foreach (Engine engine in _engines)
+        {
+            sum += (int)engine.Power();
+        }
+
+        return sum * 10 / _weight;
     }
 }

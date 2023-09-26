@@ -8,9 +8,19 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 
 public class PleasureShuttle : ISpaceShip
 {
-    private HullClass1 _hull = new();
-    private Collection<Engine> _engine = new() { new EngineC() };
-    public Collection<Engine> Engine { get => _engine; }
+    private readonly HullClass1 _hull = new();
+    private readonly Collection<Engine> _engine = new() { new EngineC() };
+    private int _weight = 21;
+    public PleasureShuttle()
+    {
+        foreach (Engine engine in _engine)
+        {
+            engine.AddFuel(300);
+            engine.StartingEngine();
+        }
+    }
+
+    private Collection<Engine> Engine { get => _engine; }
 
     public void CollisionWithMeteorite(Meteorite meteorite)
     {
@@ -45,4 +55,15 @@ public class PleasureShuttle : ISpaceShip
     {
         return Engine;
     }
+
+    private int ComputeSpeed()
+        {
+            int sum = 0;
+            foreach (Engine engine in _engine)
+            {
+                sum += (int)engine.Power();
+            }
+
+            return sum * 10 / _weight;
+        }
 }

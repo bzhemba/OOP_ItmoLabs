@@ -16,7 +16,5 @@ internal class Program
             Console.WriteLine(engineServices.LaunchCostE(engine, 60));
             var spaceShip = new Vaklas();
             spaceShip.AddDeflector(2);
-            var meteorites = new Meteorite();
-            spaceShip.CollisionWithMeteorite(meteorites);
         }
     }
