@@ -113,4 +113,9 @@ public class Augur : ISpaceShip
             }
         }
     }
+
+    public Collection<Engine> CheckCompatibility()
+    {
+        return Engine;
+    }
 }

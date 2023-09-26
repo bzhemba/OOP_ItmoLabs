@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Obstacles;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
@@ -8,8 +9,8 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 public class PleasureShuttle : ISpaceShip
 {
     private HullClass1 _hull = new();
-    private EngineC _engine = new();
-    public EngineC Engine { get => _engine; }
+    private Collection<Engine> _engine = new() { new EngineC() };
+    public Collection<Engine> Engine { get => _engine; }
 
     public void CollisionWithMeteorite(Meteorite meteorite)
     {
@@ -38,5 +39,10 @@ public class PleasureShuttle : ISpaceShip
             int damage = asteroid.DamagePoints;
             _hull.TakeDamage(damage);
         }
+    }
+
+    public Collection<Engine> CheckCompatibility()
+    {
+        return Engine;
     }
 }

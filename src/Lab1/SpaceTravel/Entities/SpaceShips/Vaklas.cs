@@ -104,4 +104,9 @@ public class Vaklas : ISpaceShip
             }
         }
     }
+
+    public Collection<Engine> CheckCompatibility()
+    {
+        return Engines;
+    }
 }

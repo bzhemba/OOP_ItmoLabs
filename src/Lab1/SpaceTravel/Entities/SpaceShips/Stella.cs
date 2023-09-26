@@ -104,4 +104,9 @@ public class Stella : ISpaceShip
             }
         }
     }
+
+    public Collection<Engine> CheckCompatibility()
+    {
+        return Engines;
+    }
 }
