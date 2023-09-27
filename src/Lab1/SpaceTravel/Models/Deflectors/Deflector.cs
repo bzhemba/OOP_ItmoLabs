@@ -6,12 +6,13 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
 public class Deflector : ITakeDamage
 {
     private int _hitPoints;
-    private bool _isON;
+    private bool _isON = true;
+    private bool _hasPhotonModification;
+    private int _countReflectedFlares;
 
     protected Deflector(int hitPoints)
     {
         _hitPoints = hitPoints;
-        IsOn = true;
     }
 
     public bool IsOn
@@ -20,9 +21,36 @@ public class Deflector : ITakeDamage
         private set => _isON = value;
     }
 
+    public bool HasPhotonModification
+    {
+        get => _hasPhotonModification;
+        private set => _hasPhotonModification = value;
+    }
+
     public void DeflectorOff()
     {
         IsOn = false;
+    }
+
+    public void AddPhotonModification()
+    {
+        HasPhotonModification = true;
+    }
+
+    public bool ReflectAntimatterFlare()
+    {
+        if (HasPhotonModification)
+        {
+            if (_countReflectedFlares < 3)
+            {
+                _countReflectedFlares += 1;
+                return true;
+            }
+
+            return false;
+        }
+
+        return false;
     }
 
     public int TakeDamage(int damage)

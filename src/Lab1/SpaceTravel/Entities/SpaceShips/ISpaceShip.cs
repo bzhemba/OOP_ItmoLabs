@@ -1,27 +1,24 @@
 using System.Collections.ObjectModel;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Obstacles;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Obstacles;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 
 public interface ISpaceShip
 {
-    public void AddDeflector(int count)
-    {
-    }
+    public string Name { get; }
+    public Collection<Engine> Engines { get; }
+    public void AddDeflector(int count);
 
-    public void CollisionWithMeteorite(Meteorite meteorite)
-    {
-    }
+    public void AddPhotonDeflector();
 
-    public void CollisionWithAntimatterFlares()
-    {
-    }
+    public void CollisionWithMeteorite(Meteorite meteorite);
 
-    public void CollisionWithSpaceWhale()
-    {
-    }
+    public void CollisionWithAntimatterFlares();
+
+    public void CollisionWithSpaceWhale();
 
     public void CollisionWithAsteroid(Asteroid asteroid);
     public Collection<Engine> CheckCompatibility();
+    public int ComputeSpeed();
 }

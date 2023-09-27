@@ -7,11 +7,9 @@ public class JumpingEngineGamma : Engine
 {
     private int _fuelAmount;
     private int _consumedFuelAmount;
-    public JumpingEngineGamma()
-        : base()
-    {
-        Thrust = 90221;
-    }
+
+    public override int JumpRange { get; } = 30;
+    public override int Thrust { get; } = 90221;
 
     public bool IsOn { get; private set; }
 

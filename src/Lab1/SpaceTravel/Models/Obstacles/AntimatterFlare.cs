@@ -1,4 +1,4 @@
-namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Obstacles;
+namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Obstacles;
 public class AntimatterFlare : Obstacle
 {
     public AntimatterFlare()

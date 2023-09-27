@@ -4,7 +4,8 @@ public abstract class Engine
 {
     private protected const double SpecificImpulse = 3222.6;
     private int _consumedFuelAmount;
-    protected int Thrust { get; set; } = 80000;
+    public abstract int JumpRange { get; }
+    public abstract int Thrust { get; }
 
     public virtual double Power()
     {

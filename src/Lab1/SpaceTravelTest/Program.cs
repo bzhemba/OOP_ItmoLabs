@@ -1,7 +1,6 @@
 using System;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Obstacles;
+using System.Collections.ObjectModel;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Services;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravelTest;
@@ -10,11 +9,13 @@ internal class Program
     {
         public static void Main()
         {
-            IEngineServices engineServices = new EngineServices();
-            var engine = new EngineE();
-            engine.AddFuel(1900);
-            Console.WriteLine(engineServices.LaunchCostE(engine, 60));
-            var spaceShip = new Vaklas();
-            spaceShip.AddDeflector(2);
+            var augur = new Augur();
+            var stella = new Stella();
+            var spaceShipServices = new SpaceShipService();
+            var spaceShips = new Collection<ISpaceShip>();
+            spaceShips.Add(augur);
+            spaceShips.Add(stella);
+            string theBest = spaceShipServices.TheBestForInscreasedDensityOfSpace(spaceShips);
+            Console.WriteLine(theBest);
         }
     }

@@ -9,6 +9,9 @@ public class EngineE : Engine
     private int _consumedFuelAmount;
     public bool IsOn { get; private set; }
     public EngineFuel FuelType { get; private set; } = EngineFuel.ActivePlasma;
+    public override int JumpRange { get; }
+    public override int Thrust { get; } = 80000;
+
     public override double Power()
     {
         return Math.Pow(Thrust / SpecificImpulse, 2);

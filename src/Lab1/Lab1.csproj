@@ -14,6 +14,9 @@
       <Compile Remove="SpaceTravel\Exceptions\DeflectorExceptions\**" />
       <Compile Remove="SpaceTravel\Entities\Models\**" />
       <Compile Remove="SpaceTravel\Models\Engines\JumpingEngine.cs" />
+      <Compile Remove="SpaceTravel\Models\Deflectors\ICanReflectAntimatter.cs" />
+      <Compile Remove="SpaceTravel\Services\SpaceShipServices.cs" />
+      <Compile Remove="SpaceTravel\Services\ISpaceShipServices.cs" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,20 +1,23 @@
 using System.Collections.ObjectModel;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Obstacles;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.EnvironmentExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.NullObjectExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Obstacles;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Environments;
 
 public class NebulaeOfNitrineParticles : IEnvironment
 {
      private SpaceWhale? _spaceWhale;
-     public NebulaeOfNitrineParticles(SpaceWhale? spaceWhale)
+     private int _distance;
+     public NebulaeOfNitrineParticles(int distance, SpaceWhale? spaceWhale)
      {
           _spaceWhale = spaceWhale;
+          _distance = distance;
      }
 
+     public int Distance => _distance;
      public bool PassingEnvironment(ISpaceShip spaceShip)
      {
           if (spaceShip != null)

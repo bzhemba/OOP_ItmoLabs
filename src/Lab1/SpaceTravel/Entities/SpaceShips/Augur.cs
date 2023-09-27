@@ -1,37 +1,48 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Obstacles;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Hulls;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Obstacles;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 
 public class Augur : ISpaceShip
 {
     private List<DeflectorClass3> _deflectors = new() { new DeflectorClass3() };
-    private Collection<Engine> _engines = new() { new EngineE(), new JumpingEngineAlpha() };
     private HullClass3 _hull = new();
     private int _weight = 70;
     private bool _antinitrineEmitterIsON;
+
     public Augur()
     {
-        foreach (Engine engine in _engines)
+        foreach (Engine engine in Engines)
         {
             engine.AddFuel(300);
             engine.StartingEngine();
         }
     }
 
-    public Collection<Engine> Engine { get => _engines; }
-    public int Speed { get; private set; }
+    public Collection<Engine> Engines { get; } = new() { new EngineE(), new JumpingEngineAlpha() };
+    public string Name { get; } = "Augur";
 
     public void AddDeflector(int count)
     {
         for (int i = 0; i < count; i++)
         {
             _deflectors.Add(new DeflectorClass3());
+        }
+    }
+
+    public void AddPhotonDeflector()
+    {
+        foreach (DeflectorClass3 deflector in _deflectors)
+        {
+            if (deflector.IsOn)
+            {
+                deflector.AddPhotonModification();
+            }
         }
     }
 
@@ -66,20 +77,18 @@ public class Augur : ISpaceShip
 
     public virtual void CollisionWithAntimatterFlares()
     {
-        if (typeof(DeflectorClass3).IsAssignableFrom(typeof(ICanReflectAntimatter)))
-        {
             foreach (DeflectorClass3 deflector in _deflectors)
             {
-                if (deflector.IsOn)
+                if (deflector.IsOn && deflector.HasPhotonModification)
                 {
-                    var reflectiveDeflector = deflector as ICanReflectAntimatter;
-                    reflectiveDeflector?.ReflectAntimatterFlare();
-                    break;
+                    if (deflector.ReflectAntimatterFlare())
+                    {
+                        return;
+                    }
                 }
             }
-        }
 
-        throw new SpaceCrewDestroyedException($"Space ship doesn't have a deflector with modification." +
+            throw new SpaceCrewDestroyedException($"Space ship doesn't have a deflector with modification." +
                                               $"The ship's crew has been destroyed");
     }
 
@@ -94,8 +103,10 @@ public class Augur : ISpaceShip
         {
             if (deflector.IsOn)
             {
-                deflector.ConfrontTheSpaceWhale();
-                break;
+                if (deflector.ConfrontTheSpaceWhale())
+                {
+                    return;
+                }
             }
         }
 
@@ -133,7 +144,7 @@ public class Augur : ISpaceShip
 
     public Collection<Engine> CheckCompatibility()
     {
-        return Engine;
+        return Engines;
     }
 
     public void AntinitrineEmitterON()
@@ -146,10 +157,10 @@ public class Augur : ISpaceShip
         _antinitrineEmitterIsON = false;
     }
 
-    private int ComputeSpeed()
+    public int ComputeSpeed()
     {
         int sum = 0;
-        foreach (Engine engine in _engines)
+        foreach (Engine engine in Engines)
         {
             sum += (int)engine.Power();
         }

@@ -6,11 +6,9 @@ public class JumpingEngineAlpha : Engine
 {
     private int _fuelAmount;
     private int _consumedFuelAmount;
-    public JumpingEngineAlpha()
-        : base()
-    {
-        Thrust = 90221;
-    }
+
+    public override int JumpRange { get; } = 20;
+    public override int Thrust { get; } = 90221;
 
     public bool IsOn { get; private set; }
 

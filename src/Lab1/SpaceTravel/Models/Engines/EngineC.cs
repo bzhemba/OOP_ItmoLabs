@@ -8,6 +8,9 @@ public class EngineC : Engine
     private int _consumedFuelAmount;
     public bool IsOn { get; private set; }
     public EngineFuel FuelType { get; private set; } = EngineFuel.ActivePlasma;
+    public override int JumpRange { get; }
+    public override int Thrust { get; } = 80000;
+
     public override void StartingEngine()
     {
         int startingFuelAmount = 150;
