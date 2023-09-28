@@ -23,8 +23,10 @@ public class SpaceTravelTest1
     public void PassingTheIncreasedDensityOfSpace(Type t)
     {
         // Arrange
-        var subspaceChannel = new SubspaceChannel(70, new AntimatterFlare());
-        var subspaceChannels = new Collection<SubspaceChannel>();
+        var antimatterFlares =
+        new Collection<AntimatterFlare?>() { new AntimatterFlare() };
+        var subspaceChannel = new SubspaceChannel(70, antimatterFlares);
+        var subspaceChannels = new Collection<SubspaceChannel?>();
         subspaceChannels.Add(subspaceChannel);
         var increasedDensityOfSpace = new IncreasedDensityOfSpace(subspaceChannels);
 

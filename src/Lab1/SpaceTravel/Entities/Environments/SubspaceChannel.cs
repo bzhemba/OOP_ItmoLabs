@@ -1,9 +1,10 @@
+using System.Collections.ObjectModel;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Obstacles;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Environments;
 
-public record SubspaceChannel(int Len, AntimatterFlare Flare)
+public record SubspaceChannel(int Len, Collection<AntimatterFlare?>? Flares)
 {
     public int Length { get; init; } = Len;
-    public AntimatterFlare? AntimatterFlare { get; init; } = Flare;
+    public Collection<AntimatterFlare?>? AntimatterFlares { get; init; } = Flares;
 }

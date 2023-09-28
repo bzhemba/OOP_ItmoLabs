@@ -1,4 +1,3 @@
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.HullExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Services;
 
@@ -23,7 +22,7 @@ public class Hull : ITakeDamage
             else if (_hitPoints - damage == 0)
             {
                 _hitPoints = 0;
-                throw new HullDestroyedException($"Hull critically destroyed");
+                return 0;
             }
             else
             {

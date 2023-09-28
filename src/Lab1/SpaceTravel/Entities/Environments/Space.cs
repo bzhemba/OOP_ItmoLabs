@@ -9,14 +9,14 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Environments;
 
 public class Space : IEnvironment
 {
-    private Meteorite? _meteorite;
-    private Asteroid? _asteroid;
+    private Collection<Meteorite?>? _meteorites;
+    private Collection<Asteroid?>? _asteroids;
     private int _distance;
 
-    public Space(int distance, Meteorite? meteorite, Asteroid? asteroid)
+    public Space(int distance, Collection<Meteorite?>? meteorites, Collection<Asteroid?>? asteroids)
     {
-        _meteorite = meteorite;
-        _asteroid = asteroid;
+        _meteorites = meteorites;
+        _asteroids = asteroids;
         _distance = distance;
     }
 
@@ -42,14 +42,22 @@ public class Space : IEnvironment
                 throw new EnvironmentMismatchException($"This spaceship is not suitable for this environment");
             }
 
-            if (_meteorite is not null)
+            if (_meteorites != null)
             {
-                spaceShip.CollisionWithMeteorite(_meteorite);
+                foreach (Meteorite? meteorite in _meteorites)
+                {
+                    if (meteorite is not null)
+                        spaceShip.CollisionWithMeteorite(meteorite);
+                }
             }
 
-            if (_asteroid is not null)
+            if (_asteroids != null)
             {
-                spaceShip.CollisionWithAsteroid(_asteroid);
+                foreach (Asteroid? asteroid in _asteroids)
+                {
+                    if (asteroid is not null)
+                        spaceShip.CollisionWithAsteroid(asteroid);
+                }
             }
 
             return true;

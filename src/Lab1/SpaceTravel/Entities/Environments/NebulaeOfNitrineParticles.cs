@@ -9,11 +9,11 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Environments;
 
 public class NebulaeOfNitrineParticles : IEnvironment
 {
-     private SpaceWhale? _spaceWhale;
+     private Collection<SpaceWhale?>? _spaceWhales;
      private int _distance;
-     public NebulaeOfNitrineParticles(int distance, SpaceWhale? spaceWhale)
+     public NebulaeOfNitrineParticles(int distance, Collection<SpaceWhale?>? spaceWhale)
      {
-          _spaceWhale = spaceWhale;
+          _spaceWhales = spaceWhale;
           _distance = distance;
      }
 
@@ -38,9 +38,12 @@ public class NebulaeOfNitrineParticles : IEnvironment
                     throw new EnvironmentMismatchException($"This spaceship is not suitable for this environment");
                }
 
-               if (_spaceWhale is not null)
+               if (_spaceWhales != null)
                {
-                    spaceShip.CollisionWithSpaceWhale();
+                    for (int i = 0; i < _spaceWhales.Count; i++)
+                    {
+                         spaceShip.CollisionWithSpaceWhale();
+                    }
                }
 
                return true;

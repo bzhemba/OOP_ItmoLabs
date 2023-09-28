@@ -35,7 +35,7 @@ public class PleasureShuttle : ISpaceShip
         throw new NullObjectException($"Pleasure shuttle doesn't have deflectors. You can't add Photon Modification");
     }
 
-    public void CollisionWithMeteorite(Meteorite meteorite)
+    public void CollisionWithMeteorite(Meteorite? meteorite)
     {
         if (meteorite != null)
         {
@@ -60,7 +60,7 @@ public class PleasureShuttle : ISpaceShip
         throw new SpaceShipDestroyedException($"Space ship has been destroyed");
     }
 
-    public void CollisionWithAsteroid(Asteroid asteroid)
+    public void CollisionWithAsteroid(Asteroid? asteroid)
     {
         if (asteroid != null)
         {
