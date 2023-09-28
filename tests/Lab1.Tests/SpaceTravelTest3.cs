@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Environments;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Obstacles;
@@ -25,7 +26,8 @@ public class SpaceTravelTest3
     public void SpaceWhaleInNebulaeOfNitrineParticles(Type t)
     {
         // Arrange
-        var nebulaeOfNitrineParticles = new NebulaeOfNitrineParticles(100, new SpaceWhale());
+        var spaceWhales = new Collection<SpaceWhale?>() { new SpaceWhale() };
+        var nebulaeOfNitrineParticles = new NebulaeOfNitrineParticles(100, spaceWhales);
 
         // Act
         bool result = false;

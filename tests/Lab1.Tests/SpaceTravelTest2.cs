@@ -14,8 +14,10 @@ public class SpaceTravelTest2
     {
         // Arrange
         var vaklas = new Vaklas();
-        var subspaceChannel = new SubspaceChannel(40, new AntimatterFlare());
-        var subspaceChannels = new Collection<SubspaceChannel>();
+        var antimatterFlares =
+            new Collection<AntimatterFlare?>() { new AntimatterFlare() };
+        var subspaceChannel = new SubspaceChannel(30, antimatterFlares);
+        var subspaceChannels = new Collection<SubspaceChannel?>();
         subspaceChannels.Add(subspaceChannel);
         var increasedDensityOfSpace = new IncreasedDensityOfSpace(subspaceChannels);
 

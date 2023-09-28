@@ -12,13 +12,13 @@ public interface ISpaceShip
 
     public void AddPhotonDeflector();
 
-    public void CollisionWithMeteorite(Meteorite meteorite);
+    public void CollisionWithMeteorite(Meteorite? meteorite);
 
     public void CollisionWithAntimatterFlares();
 
     public void CollisionWithSpaceWhale();
 
-    public void CollisionWithAsteroid(Asteroid asteroid);
+    public void CollisionWithAsteroid(Asteroid? asteroid);
     public Collection<Engine> CheckCompatibility();
     public int ComputeSpeed();
 }

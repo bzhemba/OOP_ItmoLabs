@@ -9,17 +9,17 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Environments;
 
 public class IncreasedDensityOfSpace : IEnvironment
 {
-    private ICollection<SubspaceChannel>? _subspaceChannels;
+    private ICollection<SubspaceChannel?>? _subspaceChannels;
     private int _distance;
 
-    public IncreasedDensityOfSpace(ICollection<SubspaceChannel>? subspaceChannels)
+    public IncreasedDensityOfSpace(ICollection<SubspaceChannel?>? subspaceChannels)
     {
         _subspaceChannels = subspaceChannels;
         if (subspaceChannels != null)
         {
-            foreach (SubspaceChannel subspaceChannel in subspaceChannels)
+            foreach (SubspaceChannel? subspaceChannel in subspaceChannels)
             {
-                _distance += subspaceChannel.Length;
+                if (subspaceChannel != null) _distance += subspaceChannel.Length;
             }
         }
     }
@@ -32,13 +32,13 @@ public class IncreasedDensityOfSpace : IEnvironment
         {
             Collection<Engine> checkEngines = spaceShip.CheckCompatibility();
             int f = 0;
-            foreach (SubspaceChannel channel in _subspaceChannels)
+            foreach (SubspaceChannel? channel in _subspaceChannels)
             {
                 foreach (Engine engine in checkEngines)
                 {
-                    if ((engine.GetType().IsAssignableFrom(typeof(JumpingEngineAlpha)) ||
-                        engine.GetType().IsAssignableFrom(typeof(JumpingEngineGamma)) ||
-                        engine.GetType().IsAssignableFrom(typeof(JumpingEngineOmega))) && (engine.JumpRange >= channel.Length))
+                    if (channel != null && (engine.GetType().IsAssignableFrom(typeof(JumpingEngineAlpha)) ||
+                                            engine.GetType().IsAssignableFrom(typeof(JumpingEngineGamma)) ||
+                                            engine.GetType().IsAssignableFrom(typeof(JumpingEngineOmega))) && (engine.JumpRange >= channel.Length))
                     {
                         f = 1;
                         break;
@@ -50,7 +50,16 @@ public class IncreasedDensityOfSpace : IEnvironment
                     throw new EnvironmentMismatchException($"This spaceship is not suitable for this environment");
                 }
 
-                spaceShip.CollisionWithAntimatterFlares();
+                if (channel != null)
+                {
+                    if (channel.AntimatterFlares != null)
+                    {
+                        for (int i = 0; i < channel.AntimatterFlares.Count; i++)
+                        {
+                            spaceShip.CollisionWithAntimatterFlares();
+                        }
+                    }
+                }
 
                 return true;
             }

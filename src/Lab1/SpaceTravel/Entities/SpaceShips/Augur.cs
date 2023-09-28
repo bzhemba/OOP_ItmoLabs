@@ -46,7 +46,7 @@ public class Augur : ISpaceShip
         }
     }
 
-    public void CollisionWithMeteorite(Meteorite meteorite)
+    public void CollisionWithMeteorite(Meteorite? meteorite)
     {
         if (meteorite != null)
         {
@@ -113,7 +113,7 @@ public class Augur : ISpaceShip
         throw new SpaceShipDestroyedException($"Space ship has been destroyed");
     }
 
-    public void CollisionWithAsteroid(Asteroid asteroid)
+    public void CollisionWithAsteroid(Asteroid? asteroid)
     {
         if (asteroid != null)
         {
