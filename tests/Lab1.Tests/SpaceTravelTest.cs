@@ -1,15 +1,174 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Environments;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Paths;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.EnvironmentExceptions;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Obstacles;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Services;
 using Xunit;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.Tests;
-
-public class SpaceTravelTest7
+public class SpaceTravelTest
 {
+    private PleasureShuttle _pleasureShuttle;
+    private Augur _augur;
+    private Vaklas _vaklas;
+    private Meridian _meridian;
+
+    public SpaceTravelTest()
+    {
+        _pleasureShuttle = new PleasureShuttle();
+        _augur = new Augur();
+        _vaklas = new Vaklas();
+        _meridian = new Meridian();
+    }
+
+    [Theory]
+    [InlineData(typeof(PleasureShuttle))]
+    [InlineData(typeof(Augur))]
+    public void PassingTheIncreasedDensityOfSpace(Type t)
+    {
+        // Arrange
+        var antimatterFlares =
+        new Collection<AntimatterFlare?>() { new AntimatterFlare() };
+        var subspaceChannel = new SubspaceChannel(70, antimatterFlares);
+        var subspaceChannels = new Collection<SubspaceChannel?>();
+        subspaceChannels.Add(subspaceChannel);
+        var increasedDensityOfSpace = new IncreasedDensityOfSpace(subspaceChannels);
+        if (t == typeof(Augur))
+        {
+            Assert.Throws<EnvironmentMismatchException>(() => increasedDensityOfSpace.PassingEnvironment(_augur));
+        }
+
+        if (t == typeof(PleasureShuttle))
+        {
+            Assert.Throws<EnvironmentMismatchException>(() => increasedDensityOfSpace.PassingEnvironment(_pleasureShuttle));
+        }
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void PassingTheIncreasedDensityOfSpaceOnVaklas(bool havePhotonDeflector)
+    {
+        // Arrange
+        var vaklas = new Vaklas();
+        var antimatterFlares =
+            new Collection<AntimatterFlare?>() { new AntimatterFlare() };
+        var subspaceChannel = new SubspaceChannel(30, antimatterFlares);
+        var subspaceChannels = new Collection<SubspaceChannel?>();
+        subspaceChannels.Add(subspaceChannel);
+        var increasedDensityOfSpace = new IncreasedDensityOfSpace(subspaceChannels);
+
+        // Act
+        bool result = false;
+        if (havePhotonDeflector)
+        {
+            vaklas.AddPhotonDeflector();
+            result = increasedDensityOfSpace.PassingEnvironment(vaklas);
+            Assert.True(result);
+        }
+
+        if (havePhotonDeflector == false)
+        {
+            Assert.Throws<SpaceCrewDestroyedException>(() => increasedDensityOfSpace.PassingEnvironment(vaklas));
+        }
+    }
+
+    [Theory]
+    [InlineData(typeof(Vaklas))]
+    [InlineData(typeof(Augur))]
+    [InlineData(typeof(Meridian))]
+    public void SpaceWhaleInNebulaeOfNitrineParticles(Type t)
+    {
+        // Arrange
+        var spaceWhales = new Collection<SpaceWhale?>() { new SpaceWhale() };
+        var nebulaeOfNitrineParticles = new NebulaeOfNitrineParticles(100, spaceWhales);
+
+        // Act
+        bool result = false;
+        if (t == typeof(Vaklas))
+        {
+            Assert.Throws<SpaceShipDestroyedException>(() => nebulaeOfNitrineParticles.PassingEnvironment(_vaklas));
+        }
+
+        if (t == typeof(Augur))
+        {
+            result = nebulaeOfNitrineParticles.PassingEnvironment(_augur);
+            Assert.True(result);
+        }
+
+        if (t == typeof(Meridian))
+        {
+            _meridian.AntinitrineEmitterON();
+            result = nebulaeOfNitrineParticles.PassingEnvironment(_meridian);
+            Assert.True(result);
+        }
+    }
+
+    [Fact]
+    public void RouteInSpace()
+    {
+        // Arrange
+        var pleasureShuttle = new PleasureShuttle();
+        var vaklas = new Vaklas();
+        var spaceShipServices = new SpaceShipService();
+        var spaceShips = new Collection<ISpaceShip>();
+        spaceShips.Add(vaklas);
+        spaceShips.Add(pleasureShuttle);
+        string theBest = spaceShipServices.TheBestByPrice(spaceShips, 100);
+
+        // Act
+        bool result;
+        result = theBest == "Pleasure Shuttle";
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void RouteInIncreasedDensityOfSpace()
+    {
+        // Arrange
+        var augur = new Augur();
+        var stella = new Stella();
+        var spaceShipServices = new SpaceShipService();
+        var spaceShips = new Collection<ISpaceShip>();
+        spaceShips.Add(augur);
+        spaceShips.Add(stella);
+        string theBest = spaceShipServices.TheBestForInscreasedDensityOfSpace(spaceShips);
+
+        // Act
+        bool result;
+        result = theBest == "Stella";
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void RouteInNebulaeOfNitrineParticles()
+    {
+        // Arrange
+        var pleasureShuttle = new PleasureShuttle();
+        var vaklas = new Vaklas();
+        var spaceShipServices = new SpaceShipService();
+        var spaceShips = new Collection<ISpaceShip>();
+        spaceShips.Add(pleasureShuttle);
+        spaceShips.Add(vaklas);
+        string theBest = spaceShipServices.TheBestForNebulaeOfNitrineParticles(spaceShips);
+
+        // Act
+        bool result;
+        result = theBest == "Vaklas";
+
+        // Assert
+        Assert.True(result);
+    }
+
     [Fact]
     public void SpaceRoute()
     {
@@ -59,23 +218,12 @@ public class SpaceTravelTest7
         var pathSection3 = new PathSection(space3, 150);
         route1.Add(pathSection3);
         var pleasureShuttle = new PleasureShuttle();
-        bool result = false;
-        int f = 0;
         foreach (PathSection pathSection in route1)
         {
-            if (pathSection.Environment.PassingEnvironment(pleasureShuttle) == false)
-            {
-                f = 1;
-                break;
-            }
+            Assert.Throws<SpaceShipDestroyedException>(
+                () => pathSection.Environment.PassingEnvironment(pleasureShuttle));
+            break;
         }
-
-        if (f == 0)
-        {
-            result = true;
-        }
-
-        Assert.True(result);
     }
 
     [Fact]
