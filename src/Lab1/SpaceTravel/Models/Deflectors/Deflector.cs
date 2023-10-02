@@ -1,4 +1,5 @@
 using System;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.IncorrectFormatExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Services;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
@@ -6,26 +7,18 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
 public class Deflector : ITakeDamage
 {
     private int _hitPoints;
-    private bool _isON = true;
-    private bool _hasPhotonModification;
     private int _countReflectedFlares;
 
     protected Deflector(int hitPoints)
     {
+        if (hitPoints < 0)
+            throw new IncorrectFormatException($"Hit points can't be a negative number");
         _hitPoints = hitPoints;
     }
 
-    public bool IsOn
-    {
-        get => _isON;
-        private set => _isON = value;
-    }
+    public bool IsOn { get; private set; }
 
-    public bool HasPhotonModification
-    {
-        get => _hasPhotonModification;
-        private set => _hasPhotonModification = value;
-    }
+    public bool HasPhotonModification { get; private set; }
 
     public void DeflectorOff()
     {
@@ -55,23 +48,24 @@ public class Deflector : ITakeDamage
 
     public int TakeDamage(int damage)
     {
-            int remainingHitPoints = _hitPoints - damage;
-            if (remainingHitPoints < 0)
+            int remainingDamagePoints = _hitPoints - damage;
+            if (remainingDamagePoints < 0)
             {
                 _hitPoints = 0;
                 this.DeflectorOff();
-                return Math.Abs(remainingHitPoints);
+                return Math.Abs(remainingDamagePoints);
             }
-            else if (remainingHitPoints == 0)
+            else if (remainingDamagePoints == 0)
             {
                 _hitPoints = 0;
                 this.DeflectorOff();
-                return 0;
+                return remainingDamagePoints;
             }
             else
             {
                 _hitPoints -= damage;
-                return 0;
+                remainingDamagePoints = 0;
+                return remainingDamagePoints;
             }
     }
 }

@@ -13,18 +13,10 @@ using Xunit;
 namespace Itmo.ObjectOrientedProgramming.Lab1.Tests;
 public class SpaceTravelTest
 {
-    private PleasureShuttle _pleasureShuttle;
-    private Augur _augur;
-    private Vaklas _vaklas;
-    private Meridian _meridian;
-
-    public SpaceTravelTest()
-    {
-        _pleasureShuttle = new PleasureShuttle();
-        _augur = new Augur();
-        _vaklas = new Vaklas();
-        _meridian = new Meridian();
-    }
+    private PleasureShuttle _pleasureShuttle = new();
+    private Augur _augur = new();
+    private Vaklas _vaklas = new();
+    private Meridian _meridian = new();
 
     [Theory]
     [InlineData(typeof(PleasureShuttle))]

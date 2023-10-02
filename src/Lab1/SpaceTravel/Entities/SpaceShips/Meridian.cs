@@ -12,9 +12,9 @@ public class Meridian : ISpaceShip
 {
     private const int Weight = 34;
     private const int StartingFuel = 300;
-    private readonly List<DeflectorClass2> _deflectors = new() { new DeflectorClass2() };
+    private readonly List<DeflectorClassTwo> _deflectors = new() { new DeflectorClassTwo() };
     private readonly HullClass2 _hull = new();
-    private readonly Collection<Engine> _engine = new() { new EngineE() };
+    private readonly Collection<Engine> _engine = new() { new EngineClassE() };
     private bool _antinitrineEmitterIsON;
     public Meridian()
     {
@@ -28,21 +28,14 @@ public class Meridian : ISpaceShip
     public IReadOnlyCollection<Engine> Engines { get => _engine; }
     public string Name { get; } = "Meridian";
 
-    public void AddDeflector(int count)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            _deflectors.Add(new DeflectorClass2());
-        }
-    }
-
     public void AddPhotonDeflector()
     {
-        foreach (DeflectorClass2 deflector in _deflectors)
+        foreach (DeflectorClassTwo deflector in _deflectors)
         {
             if (deflector.IsOn)
             {
                 deflector.AddPhotonModification();
+                return;
             }
         }
     }
@@ -52,7 +45,7 @@ public class Meridian : ISpaceShip
         if (meteorite != null)
         {
             int damage = meteorite.DamagePoints;
-            foreach (DeflectorClass2 deflector in _deflectors)
+            foreach (DeflectorClassTwo deflector in _deflectors)
             {
                 if (deflector.IsOn)
                 {
@@ -78,7 +71,7 @@ public class Meridian : ISpaceShip
 
     public void CollisionWithAntimatterFlares()
     {
-            foreach (DeflectorClass2 deflector in _deflectors)
+            foreach (DeflectorClassTwo deflector in _deflectors)
             {
                 if (deflector.IsOn && deflector.HasPhotonModification)
                 {
@@ -108,7 +101,7 @@ public class Meridian : ISpaceShip
         if (asteroid != null)
         {
             int damage = asteroid.DamagePoints;
-            foreach (DeflectorClass2 deflector in _deflectors)
+            foreach (DeflectorClassTwo deflector in _deflectors)
             {
                 if (deflector.IsOn)
                 {
@@ -142,14 +135,15 @@ public class Meridian : ISpaceShip
         _antinitrineEmitterIsON = false;
     }
 
-    public int ComputeSpeed()
+    public double ComputeSpeed()
     {
         int sum = 0;
-        foreach (Engine engine in _engine)
+        int coeficent = 10;
+        foreach (Engine engine in Engines)
         {
             sum += (int)engine.Power();
         }
 
-        return sum * 10 / Weight;
+        return sum * coeficent / Weight;
     }
 }

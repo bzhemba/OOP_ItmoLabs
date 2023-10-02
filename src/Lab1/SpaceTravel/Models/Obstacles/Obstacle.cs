@@ -1,12 +1,18 @@
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.IncorrectFormatExceptions;
+
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Obstacles;
 
 public class Obstacle
 {
-    private int _damagePoints;
     protected Obstacle(int damagePoints)
     {
-        _damagePoints = damagePoints;
+        if (damagePoints < 0)
+        {
+            throw new IncorrectFormatException($"Damage points can't be a negative number");
+        }
+
+        DamagePoints = damagePoints;
     }
 
-    public int DamagePoints { get => _damagePoints; }
+    public int DamagePoints { get; init;  }
 }
