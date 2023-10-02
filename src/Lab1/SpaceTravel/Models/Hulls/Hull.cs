@@ -22,7 +22,7 @@ public class Hull : ITakeDamage
             else if (_hitPoints - damage == 0)
             {
                 _hitPoints = 0;
-                return 0;
+                return _hitPoints;
             }
             else
             {

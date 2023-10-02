@@ -12,7 +12,7 @@ public class Augur : ISpaceShip
     private const int Weight = 70;
     private const int StartingFuel = 300;
     private List<DeflectorClassThree> _deflectors = new() { new DeflectorClassThree() };
-    private HullClass3 _hull = new();
+    private HullClassThree _hull = new();
     private bool _antinitrineEmitterIsON;
 
     public Augur()
@@ -34,7 +34,7 @@ public class Augur : ISpaceShip
             if (deflector.IsOn)
             {
                 deflector.AddPhotonModification();
-                return;
+                break;
             }
         }
     }

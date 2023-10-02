@@ -13,7 +13,7 @@ public class Meridian : ISpaceShip
     private const int Weight = 34;
     private const int StartingFuel = 300;
     private readonly List<DeflectorClassTwo> _deflectors = new() { new DeflectorClassTwo() };
-    private readonly HullClass2 _hull = new();
+    private readonly HullClassTwo _hull = new();
     private readonly Collection<Engine> _engine = new() { new EngineClassE() };
     private bool _antinitrineEmitterIsON;
     public Meridian()

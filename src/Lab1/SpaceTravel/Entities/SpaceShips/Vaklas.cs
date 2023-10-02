@@ -14,7 +14,7 @@ public class Vaklas : ISpaceShip
     private const int StartingFuel = 300;
     private readonly Collection<Engine> _engines = new() { new EngineClassE(), new JumpingEngineGamma() };
     private List<DeflectorClassOne> _deflectors = new() { new DeflectorClassOne() };
-    private HullClass2 _hull = new();
+    private HullClassTwo _hull = new();
     private bool _antinitrineEmitterIsON;
     public Vaklas()
     {

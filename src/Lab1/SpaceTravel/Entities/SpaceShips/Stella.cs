@@ -14,7 +14,7 @@ public class Stella : ISpaceShip
     private const int StartingFuel = 300;
     private readonly Collection<Engine> _engines = new() { new EngineClassC(), new JumpingEngineOmega() };
     private readonly List<DeflectorClassOne> _deflectors = new() { new DeflectorClassOne() };
-    private readonly HullClass1 _hull = new();
+    private readonly HullClassOne _hull = new();
     private bool _antinitrineEmitterIsON;
     public Stella()
     {

@@ -12,7 +12,7 @@ public class PleasureShuttle : ISpaceShip
 {
     private const int Weight = 21;
     private const int StartingFuel = 300;
-    private readonly HullClass1 _hull = new();
+    private readonly HullClassOne _hull = new();
     private readonly Collection<Engine> _engine = new() { new EngineClassC() };
     private bool _antinitrineEmitterIsON;
     public PleasureShuttle()

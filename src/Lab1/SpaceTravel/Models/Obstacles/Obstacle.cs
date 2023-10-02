@@ -14,5 +14,5 @@ public class Obstacle
         DamagePoints = damagePoints;
     }
 
-    public int DamagePoints { get; init;  }
+    public int DamagePoints { get; init; }
 }

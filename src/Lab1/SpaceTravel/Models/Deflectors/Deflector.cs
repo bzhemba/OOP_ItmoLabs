@@ -16,7 +16,7 @@ public class Deflector : ITakeDamage
         _hitPoints = hitPoints;
     }
 
-    public bool IsOn { get; private set; }
+    public bool IsOn { get; private set; } = true;
 
     public bool HasPhotonModification { get; private set; }
 
