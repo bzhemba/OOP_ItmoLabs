@@ -6,6 +6,9 @@ using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Paths;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.EnvironmentExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Hulls;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Obstacles;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Services;
 using Xunit;
@@ -13,17 +16,19 @@ using Xunit;
 namespace Itmo.ObjectOrientedProgramming.Lab1.Tests;
 public class SpaceTravelTest
 {
-    private PleasureShuttle _pleasureShuttle = new();
-    private Augur _augur = new();
-    private Vaklas _vaklas = new();
-    private Meridian _meridian = new();
-
     [Theory]
     [InlineData(typeof(PleasureShuttle))]
     [InlineData(typeof(Augur))]
     public void PassingTheIncreasedDensityOfSpace(Type t)
     {
         // Arrange
+        List<Engine> augurEngines = new() { new EngineClassE(), new JumpingEngineAlpha() };
+        List<DeflectorClassThree> augurDeflectors = new() { new DeflectorClassThree() };
+        HullClassThree augurHull = new();
+        var augur = new Augur(augurDeflectors, augurHull, augurEngines);
+        HullClassOne shuttleHull = new();
+        Collection<Engine> shuttleEngine = new() { new EngineClassC() };
+        var pleasureShuttle = new PleasureShuttle(shuttleHull, shuttleEngine);
         var antimatterFlares =
         new Collection<AntimatterFlare>() { new AntimatterFlare() };
         var subspaceChannel = new SubspaceChannel(70, antimatterFlares);
@@ -32,12 +37,12 @@ public class SpaceTravelTest
         var increasedDensityOfSpace = new IncreasedDensityOfSpace(subspaceChannels);
         if (t == typeof(Augur))
         {
-            Assert.Throws<EnvironmentMismatchException>(() => increasedDensityOfSpace.PassingEnvironment(_augur));
+            Assert.Throws<EnvironmentMismatchException>(() => increasedDensityOfSpace.PassingEnvironment(augur));
         }
 
         if (t == typeof(PleasureShuttle))
         {
-            Assert.Throws<EnvironmentMismatchException>(() => increasedDensityOfSpace.PassingEnvironment(_pleasureShuttle));
+            Assert.Throws<EnvironmentMismatchException>(() => increasedDensityOfSpace.PassingEnvironment(pleasureShuttle));
         }
     }
 
@@ -47,7 +52,11 @@ public class SpaceTravelTest
     public void PassingTheIncreasedDensityOfSpaceOnVaklas(bool havePhotonDeflector)
     {
         // Arrange
-        var vaklas = new Vaklas();
+        Collection<Engine> vaklasEngines = new() { new EngineClassE(), new JumpingEngineGamma() };
+        List<DeflectorClassOne> vaklasDeflectors = new() { new DeflectorClassOne() };
+        HullClassTwo vaklasHull = new();
+        var vaklas = new Vaklas(vaklasDeflectors, vaklasHull, vaklasEngines);
+
         var antimatterFlares =
             new Collection<AntimatterFlare>() { new AntimatterFlare() };
         var subspaceChannel = new SubspaceChannel(30, antimatterFlares);
@@ -77,6 +86,18 @@ public class SpaceTravelTest
     public void SpaceWhaleInNebulaeOfNitrineParticles(Type t)
     {
         // Arrange
+        Collection<Engine> vaklasEngines = new() { new EngineClassE(), new JumpingEngineGamma() };
+        List<DeflectorClassOne> vaklasDeflectors = new() { new DeflectorClassOne() };
+        HullClassTwo vaklasHull = new();
+        var vaklas = new Vaklas(vaklasDeflectors, vaklasHull, vaklasEngines);
+        List<Engine> augurEngines = new() { new EngineClassE(), new JumpingEngineAlpha() };
+        List<DeflectorClassThree> augurDeflectors = new() { new DeflectorClassThree() };
+        HullClassThree augurHull = new();
+        var augur = new Augur(augurDeflectors, augurHull, augurEngines);
+        List<DeflectorClassTwo> meridianDeflectors = new() { new DeflectorClassTwo() };
+        HullClassTwo hull = new();
+        Collection<Engine> meridianEngine = new() { new EngineClassE() };
+        var meridian = new Meridian(meridianDeflectors, hull, meridianEngine);
         var spaceWhales = new Collection<SpaceWhale>() { new SpaceWhale() };
         var nebulaeOfNitrineParticles = new NebulaeOfNitrineParticles(100, spaceWhales);
 
@@ -84,19 +105,19 @@ public class SpaceTravelTest
         bool result = false;
         if (t == typeof(Vaklas))
         {
-            Assert.Throws<SpaceShipDestroyedException>(() => nebulaeOfNitrineParticles.PassingEnvironment(_vaklas));
+            Assert.Throws<SpaceShipDestroyedException>(() => nebulaeOfNitrineParticles.PassingEnvironment(vaklas));
         }
 
         if (t == typeof(Augur))
         {
-            result = nebulaeOfNitrineParticles.PassingEnvironment(_augur);
+            result = nebulaeOfNitrineParticles.PassingEnvironment(augur);
             Assert.True(result);
         }
 
         if (t == typeof(Meridian))
         {
-            _meridian.AntinitrineEmitterON();
-            result = nebulaeOfNitrineParticles.PassingEnvironment(_meridian);
+            meridian.AntinitrineEmitterON();
+            result = nebulaeOfNitrineParticles.PassingEnvironment(meridian);
             Assert.True(result);
         }
     }
@@ -105,8 +126,13 @@ public class SpaceTravelTest
     public void RouteInSpace()
     {
         // Arrange
-        var pleasureShuttle = new PleasureShuttle();
-        var vaklas = new Vaklas();
+        HullClassOne shuttleHull = new();
+        Collection<Engine> shuttleEngine = new() { new EngineClassC() };
+        var pleasureShuttle = new PleasureShuttle(shuttleHull, shuttleEngine);
+        Collection<Engine> vaklasEngines = new() { new EngineClassE(), new JumpingEngineGamma() };
+        List<DeflectorClassOne> vaklasDeflectors = new() { new DeflectorClassOne() };
+        HullClassTwo vaklasHull = new();
+        var vaklas = new Vaklas(vaklasDeflectors, vaklasHull, vaklasEngines);
         var spaceShipServices = new SpaceShipService();
         var spaceShips = new Collection<ISpaceShip>();
         spaceShips.Add(vaklas);
@@ -125,8 +151,15 @@ public class SpaceTravelTest
     public void RouteInIncreasedDensityOfSpace()
     {
         // Arrange
-        var augur = new Augur();
-        var stella = new Stella();
+        List<Engine> augurEngines = new() { new EngineClassE(), new JumpingEngineAlpha() };
+        List<DeflectorClassThree> augurDeflectors = new() { new DeflectorClassThree() };
+        HullClassThree augurHull = new();
+        var augur = new Augur(augurDeflectors, augurHull, augurEngines);
+        Collection<Engine> stellaEngines = new() { new EngineClassC(), new JumpingEngineOmega() };
+        List<DeflectorClassOne> stellaDeflectors = new() { new DeflectorClassOne() };
+        HullClassOne stellaHull = new();
+        var stella = new Stella(stellaDeflectors, stellaHull, stellaEngines);
+
         var spaceShipServices = new SpaceShipService();
         var spaceShips = new Collection<ISpaceShip>();
         spaceShips.Add(augur);
@@ -145,8 +178,13 @@ public class SpaceTravelTest
     public void RouteInNebulaeOfNitrineParticles()
     {
         // Arrange
-        var pleasureShuttle = new PleasureShuttle();
-        var vaklas = new Vaklas();
+        HullClassOne shuttleHull = new();
+        Collection<Engine> shuttleEngine = new() { new EngineClassC() };
+        var pleasureShuttle = new PleasureShuttle(shuttleHull, shuttleEngine);
+        Collection<Engine> vaklasEngines = new() { new EngineClassE(), new JumpingEngineGamma() };
+        List<DeflectorClassOne> vaklasDeflectors = new() { new DeflectorClassOne() };
+        HullClassTwo vaklasHull = new();
+        var vaklas = new Vaklas(vaklasDeflectors, vaklasHull, vaklasEngines);
         var spaceShipServices = new SpaceShipService();
         var spaceShips = new Collection<ISpaceShip>();
         spaceShips.Add(pleasureShuttle);
@@ -175,7 +213,9 @@ public class SpaceTravelTest
         var route1 = new List<PathSection>();
         var pathSection1 = new PathSection(space1, 100);
         route1.Add(pathSection1);
-        var pleasureShuttle = new PleasureShuttle();
+        HullClassOne hull = new();
+        Collection<Engine> engine = new() { new EngineClassC() };
+        var pleasureShuttle = new PleasureShuttle(hull, engine);
         bool result = false;
         int f = 0;
         foreach (PathSection pathSection in route1)
@@ -209,7 +249,9 @@ public class SpaceTravelTest
         var route1 = new List<PathSection>();
         var pathSection3 = new PathSection(space3, 150);
         route1.Add(pathSection3);
-        var pleasureShuttle = new PleasureShuttle();
+        HullClassOne hull = new();
+        Collection<Engine> engine = new() { new EngineClassC() };
+        var pleasureShuttle = new PleasureShuttle(hull, engine);
         foreach (PathSection pathSection in route1)
         {
             Assert.Throws<SpaceShipDestroyedException>(
@@ -240,13 +282,16 @@ public class SpaceTravelTest
     route2.Add(pathSection5);
     route2.Add(pathSection1);
     route2.Add(pathSection3);
-    var vaklas = new Vaklas();
-    vaklas.AntinitrineEmitterON();
+    List<DeflectorClassTwo> deflectors = new() { new DeflectorClassTwo() };
+    HullClassTwo hull = new();
+    Collection<Engine> engine = new() { new EngineClassE() };
+    var meridian = new Meridian(deflectors, hull, engine);
+    meridian.AntinitrineEmitterON();
     int f = 0;
     bool result = false;
     foreach (PathSection pathSection in route2)
     {
-        if (pathSection.Environment.PassingEnvironment(vaklas) == false)
+        if (pathSection.Environment.PassingEnvironment(meridian) == false)
         {
             f = 1;
             break;
@@ -279,7 +324,10 @@ public class SpaceTravelTest
         var pathSection2 = new PathSection(space2, 200);
         route3.Add(pathSection2);
         route3.Add(pathSection1);
-        var meridian = new Meridian();
+        List<DeflectorClassTwo> deflectors = new() { new DeflectorClassTwo() };
+        HullClassTwo hull = new();
+        Collection<Engine> engine = new() { new EngineClassE() };
+        var meridian = new Meridian(deflectors, hull, engine);
         int f = 0;
         bool result = false;
         foreach (PathSection pathSection in route3)
@@ -317,7 +365,10 @@ public class SpaceTravelTest
         var pathSection4 = new PathSection(increasedDensityOfSpace, 300);
         route4.Add(pathSection2);
         route4.Add(pathSection4);
-        var augur = new Augur();
+        List<Engine> engines = new() { new EngineClassE(), new JumpingEngineAlpha() };
+        List<DeflectorClassThree> deflectors = new() { new DeflectorClassThree() };
+        HullClassThree hull = new();
+        var augur = new Augur(deflectors, hull, engines);
         augur.AddPhotonDeflector();
         bool result = false;
         int f = 0;

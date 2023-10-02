@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.IncorrectFormatExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
@@ -12,20 +13,21 @@ public class Meridian : ISpaceShip
 {
     private const int Weight = 34;
     private const int StartingFuel = 300;
-    private readonly List<DeflectorClassTwo> _deflectors = new() { new DeflectorClassTwo() };
-    private readonly HullClassTwo _hull = new();
-    private readonly Collection<Engine> _engine = new() { new EngineClassE() };
-    private bool _antinitrineEmitterIsON;
-    public Meridian()
+    private IReadOnlyCollection<Deflector> _deflectors;
+    private Hull _hull;
+    private bool _antinitrineEmitterIsON = true;
+    public Meridian(IReadOnlyCollection<Deflector> deflectors, Hull hull, IReadOnlyCollection<Engine> engines)
     {
-        foreach (Engine engine in _engine)
-        {
-            engine.AddFuel(StartingFuel);
-            engine.StartingEngine();
-        }
+        _deflectors = deflectors;
+        _hull = hull;
+        Engines = engines;
+        CheckDeflectors();
+        CheckEngines();
+        CheckHull();
+        StartTheEngines();
     }
 
-    public IReadOnlyCollection<Engine> Engines { get => _engine; }
+    public IReadOnlyCollection<Engine> Engines { get; }
     public string Name { get; } = "Meridian";
 
     public void AddPhotonDeflector()
@@ -145,5 +147,44 @@ public class Meridian : ISpaceShip
         }
 
         return sum * coeficent / Weight;
+    }
+
+    private void CheckHull()
+    {
+        bool hullIsValid = _hull is HullClassTwo;
+        if (!hullIsValid)
+        {
+            throw new IncorrectFormatException($"Not the right type of hull. " +
+                                               $"{Name} can have only Hull Class Two");
+        }
+    }
+
+    private void CheckEngines()
+    {
+        bool allEnginesAreValid = Engines.All(engine => engine is EngineClassE);
+        if (!allEnginesAreValid)
+        {
+            throw new IncorrectFormatException($"Not the right type of all engines. " +
+                                               $"{Name} can have only Engine Class E");
+        }
+    }
+
+    private void CheckDeflectors()
+    {
+        bool allDeflectorsAreValid = _deflectors.All(deflector => deflector is DeflectorClassTwo);
+        if (!allDeflectorsAreValid)
+        {
+            throw new IncorrectFormatException($"Not the right type of all deflectors. " +
+                                               $"{Name} can have only Deflector Class Two");
+        }
+    }
+
+    private void StartTheEngines()
+    {
+        foreach (Engine engine in Engines)
+        {
+            engine.AddFuel(StartingFuel);
+            engine.StartingEngine();
+        }
     }
 }

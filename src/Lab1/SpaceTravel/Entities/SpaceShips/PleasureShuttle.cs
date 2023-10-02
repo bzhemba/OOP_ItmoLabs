@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.IncorrectFormatExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.NullObjectExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
@@ -12,19 +13,17 @@ public class PleasureShuttle : ISpaceShip
 {
     private const int Weight = 21;
     private const int StartingFuel = 300;
-    private readonly HullClassOne _hull = new();
-    private readonly Collection<Engine> _engine = new() { new EngineClassC() };
-    private bool _antinitrineEmitterIsON;
-    public PleasureShuttle()
+    private Hull _hull;
+    public PleasureShuttle(Hull hull, IReadOnlyCollection<Engine> engines)
     {
-        foreach (Engine engine in _engine)
-        {
-            engine.AddFuel(StartingFuel);
-            engine.StartingEngine();
-        }
+        _hull = hull;
+        Engines = engines;
+        CheckEngines();
+        CheckHull();
+        StartTheEngines();
     }
 
-    public IReadOnlyCollection<Engine> Engines { get => _engine; }
+    public IReadOnlyCollection<Engine> Engines { get; }
     public string Name { get; } = "Pleasure Shuttle";
 
     public void AddPhotonDeflector()
@@ -49,11 +48,6 @@ public class PleasureShuttle : ISpaceShip
 
     public void CollisionWithSpaceWhale()
     {
-        if (_antinitrineEmitterIsON)
-        {
-            return;
-        }
-
         throw new SpaceShipDestroyedException($"Space ship has been destroyed");
     }
 
@@ -64,16 +58,6 @@ public class PleasureShuttle : ISpaceShip
             int damage = asteroid.DamagePoints;
             _hull.TakeDamage(damage);
         }
-    }
-
-    public void AntinitrineEmitterON()
-    {
-        _antinitrineEmitterIsON = true;
-    }
-
-    public void AntinitrineEmitterOFF()
-    {
-        _antinitrineEmitterIsON = false;
     }
 
     public double ComputeSpeed()
@@ -87,4 +71,33 @@ public class PleasureShuttle : ISpaceShip
 
             return sum * coeficent / Weight;
         }
+
+    private void CheckHull()
+    {
+        bool hullIsValid = _hull is HullClassOne;
+        if (!hullIsValid)
+        {
+            throw new IncorrectFormatException($"Not the right type of hull. " +
+                                               $"{Name} can have only Hull Class One");
+        }
+    }
+
+    private void CheckEngines()
+    {
+        bool allEnginesAreValid = Engines.All(engine => engine is EngineClassC);
+        if (!allEnginesAreValid)
+        {
+            throw new IncorrectFormatException($"Not the right type of all engines. " +
+                                               $"{Name} can have only Engine Class C");
+        }
+    }
+
+    private void StartTheEngines()
+    {
+        foreach (Engine engine in Engines)
+        {
+            engine.AddFuel(StartingFuel);
+            engine.StartingEngine();
+        }
+    }
 }

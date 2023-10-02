@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.IncorrectFormatExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
@@ -12,20 +13,20 @@ public class Stella : ISpaceShip
 {
     private const int Weight = 23;
     private const int StartingFuel = 300;
-    private readonly Collection<Engine> _engines = new() { new EngineClassC(), new JumpingEngineOmega() };
-    private readonly List<DeflectorClassOne> _deflectors = new() { new DeflectorClassOne() };
-    private readonly HullClassOne _hull = new();
-    private bool _antinitrineEmitterIsON;
-    public Stella()
+    private IReadOnlyCollection<Deflector> _deflectors;
+    private Hull _hull;
+    public Stella(IReadOnlyCollection<Deflector> deflectors, Hull hull, IReadOnlyCollection<Engine> engines)
     {
-        foreach (Engine engine in _engines)
-        {
-            engine.AddFuel(StartingFuel);
-            engine.StartingEngine();
-        }
+        _deflectors = deflectors;
+        _hull = hull;
+        Engines = engines;
+        CheckDeflectors();
+        CheckEngines();
+        CheckHull();
+        StartTheEngines();
     }
 
-    public IReadOnlyCollection<Engine> Engines { get => _engines; }
+    public IReadOnlyCollection<Engine> Engines { get; }
     public string Name { get; } = "Stella";
 
     public void AddPhotonDeflector()
@@ -88,11 +89,6 @@ public class Stella : ISpaceShip
 
     public void CollisionWithSpaceWhale()
     {
-        if (_antinitrineEmitterIsON)
-        {
-            return;
-        }
-
         throw new SpaceShipDestroyedException($"Space ship has been destroyed");
     }
 
@@ -125,16 +121,6 @@ public class Stella : ISpaceShip
         }
     }
 
-    public void AntinitrineEmitterON()
-    {
-        _antinitrineEmitterIsON = true;
-    }
-
-    public void AntinitrineEmitterOFF()
-    {
-        _antinitrineEmitterIsON = false;
-    }
-
     public double ComputeSpeed()
     {
         int sum = 0;
@@ -145,5 +131,44 @@ public class Stella : ISpaceShip
         }
 
         return sum * coeficent / Weight;
+    }
+
+    private void CheckHull()
+    {
+        bool hullIsValid = _hull is HullClassOne;
+        if (!hullIsValid)
+        {
+            throw new IncorrectFormatException($"Not the right type of hull. " +
+                                               $"{Name} can have only Hull Class One");
+        }
+    }
+
+    private void CheckEngines()
+    {
+        bool allEnginesAreValid = Engines.All(engine => engine is EngineClassC or JumpingEngineOmega);
+        if (!allEnginesAreValid)
+        {
+            throw new IncorrectFormatException($"Not the right type of all engines. " +
+                                               $"{Name} can have only Engine Class C or Jumping Engine Omega");
+        }
+    }
+
+    private void CheckDeflectors()
+    {
+        bool allDeflectorsAreValid = _deflectors.All(deflector => deflector is DeflectorClassOne);
+        if (!allDeflectorsAreValid)
+        {
+            throw new IncorrectFormatException($"Not the right type of all deflectors. " +
+                                               $"{Name} can have only Deflector Class Oneq");
+        }
+    }
+
+    private void StartTheEngines()
+    {
+        foreach (Engine engine in Engines)
+        {
+            engine.AddFuel(StartingFuel);
+            engine.StartingEngine();
+        }
     }
 }

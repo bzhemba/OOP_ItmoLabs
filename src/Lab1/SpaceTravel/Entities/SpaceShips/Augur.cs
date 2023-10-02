@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.IncorrectFormatExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
@@ -11,20 +13,21 @@ public class Augur : ISpaceShip
 {
     private const int Weight = 70;
     private const int StartingFuel = 300;
-    private List<DeflectorClassThree> _deflectors = new() { new DeflectorClassThree() };
-    private HullClassThree _hull = new();
-    private bool _antinitrineEmitterIsON;
+    private IReadOnlyCollection<Deflector> _deflectors;
+    private Hull _hull;
 
-    public Augur()
+    public Augur(IReadOnlyCollection<Deflector> deflectors, Hull hull, IReadOnlyCollection<Engine> engines)
     {
-        foreach (Engine engine in Engines)
-        {
-            engine.AddFuel(StartingFuel);
-            engine.StartingEngine();
-        }
+        _deflectors = deflectors;
+        _hull = hull;
+        Engines = engines;
+        CheckDeflectors();
+        CheckEngines();
+        CheckHull();
+        StartTheEngines();
     }
 
-    public IReadOnlyCollection<Engine> Engines { get; } = new List<Engine> { new EngineClassE(), new JumpingEngineAlpha() };
+    public IReadOnlyCollection<Engine> Engines { get; }
     public string Name { get; } = "Augur";
 
     public void AddPhotonDeflector()
@@ -34,7 +37,7 @@ public class Augur : ISpaceShip
             if (deflector.IsOn)
             {
                 deflector.AddPhotonModification();
-                break;
+                return;
             }
         }
     }
@@ -70,28 +73,23 @@ public class Augur : ISpaceShip
 
     public virtual void CollisionWithAntimatterFlares()
     {
-            foreach (DeflectorClassThree deflector in _deflectors)
+        foreach (DeflectorClassThree deflector in _deflectors)
+        {
+            if (deflector.IsOn && deflector.HasPhotonModification)
             {
-                if (deflector.IsOn && deflector.HasPhotonModification)
+                if (deflector.ReflectAntimatterFlare())
                 {
-                    if (deflector.ReflectAntimatterFlare())
-                    {
-                        return;
-                    }
+                    return;
                 }
             }
+        }
 
-            throw new SpaceCrewDestroyedException($"Space ship doesn't have a deflector with modification." +
+        throw new SpaceCrewDestroyedException($"Space ship doesn't have a deflector with modification." +
                                               $"The ship's crew has been destroyed");
     }
 
     public virtual void CollisionWithSpaceWhale()
     {
-        if (_antinitrineEmitterIsON)
-        {
-            return;
-        }
-
         foreach (DeflectorClassThree deflector in _deflectors)
         {
             if (deflector.IsOn)
@@ -135,16 +133,6 @@ public class Augur : ISpaceShip
         }
     }
 
-    public void AntinitrineEmitterON()
-    {
-        _antinitrineEmitterIsON = true;
-    }
-
-    public void AntinitrineEmitterOFF()
-    {
-        _antinitrineEmitterIsON = false;
-    }
-
     public double ComputeSpeed()
     {
         int sum = 0;
@@ -155,5 +143,44 @@ public class Augur : ISpaceShip
         }
 
         return sum * coeficent / Weight;
+    }
+
+    private void CheckHull()
+    {
+        bool hullIsValid = _hull is HullClassThree;
+        if (!hullIsValid)
+        {
+            throw new IncorrectFormatException($"Not the right type of hull. " +
+                                               $"{Name} can have only Hull Class Three");
+        }
+    }
+
+    private void CheckEngines()
+    {
+        bool allEnginesAreValid = Engines.All(engine => engine is EngineClassE or JumpingEngineAlpha);
+        if (!allEnginesAreValid)
+        {
+            throw new IncorrectFormatException($"Not the right type of all engines. " +
+                                               $"{Name} can have only Engine Class E or Jumping Engine Alpha");
+        }
+    }
+
+    private void CheckDeflectors()
+    {
+        bool allDeflectorsAreValid = _deflectors.All(deflector => deflector is DeflectorClassThree);
+        if (!allDeflectorsAreValid)
+        {
+            throw new IncorrectFormatException($"Not the right type of all deflectors. " +
+                                               $"{Name} can have only Deflector Class Three");
+        }
+    }
+
+    private void StartTheEngines()
+    {
+        foreach (Engine engine in Engines)
+        {
+            engine.AddFuel(StartingFuel);
+            engine.StartingEngine();
+        }
     }
 }
