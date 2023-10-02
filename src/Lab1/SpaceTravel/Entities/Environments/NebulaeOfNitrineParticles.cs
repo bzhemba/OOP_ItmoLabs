@@ -30,7 +30,7 @@ public class NebulaeOfNitrineParticles : IEnvironment
           if (spaceShip != null)
           {
                IReadOnlyCollection<Engine> checkEngines = spaceShip.Engines;
-               bool hasEngineE = checkEngines.Any(engine => engine is EngineE);
+               bool hasEngineE = checkEngines.Any(engine => engine is EngineClassE);
 
                if (!hasEngineE)
                {

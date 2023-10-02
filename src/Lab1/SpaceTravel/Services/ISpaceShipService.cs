@@ -6,8 +6,8 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Services;
 
 public interface ISpaceShipService
 {
-    double LaunchCost(EngineC? engine, int time);
-    double LaunchCost(EngineE? engine, int time);
+    double LaunchCost(EngineClassC? engine, int time);
+    double LaunchCost(EngineClassE? engine, int time);
     double LaunchCost(JumpingEngineAlpha? engine, int time);
     double LaunchCost(JumpingEngineGamma? engine, int time);
     double LaunchCost(JumpingEngineOmega? engine, int time);

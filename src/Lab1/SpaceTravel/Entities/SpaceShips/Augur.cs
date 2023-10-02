@@ -11,7 +11,7 @@ public class Augur : ISpaceShip
 {
     private const int Weight = 70;
     private const int StartingFuel = 300;
-    private List<DeflectorClass3> _deflectors = new() { new DeflectorClass3() };
+    private List<DeflectorClassThree> _deflectors = new() { new DeflectorClassThree() };
     private HullClass3 _hull = new();
     private bool _antinitrineEmitterIsON;
 
@@ -24,24 +24,17 @@ public class Augur : ISpaceShip
         }
     }
 
-    public IReadOnlyCollection<Engine> Engines { get; } = new List<Engine> { new EngineE(), new JumpingEngineAlpha() };
+    public IReadOnlyCollection<Engine> Engines { get; } = new List<Engine> { new EngineClassE(), new JumpingEngineAlpha() };
     public string Name { get; } = "Augur";
-
-    public void AddDeflector(int count)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            _deflectors.Add(new DeflectorClass3());
-        }
-    }
 
     public void AddPhotonDeflector()
     {
-        foreach (DeflectorClass3 deflector in _deflectors)
+        foreach (DeflectorClassThree deflector in _deflectors)
         {
             if (deflector.IsOn)
             {
                 deflector.AddPhotonModification();
+                return;
             }
         }
     }
@@ -51,7 +44,7 @@ public class Augur : ISpaceShip
         if (meteorite != null)
         {
             int damage = meteorite.DamagePoints;
-            foreach (DeflectorClass3 deflector in _deflectors)
+            foreach (DeflectorClassThree deflector in _deflectors)
             {
                 if (deflector.IsOn)
                 {
@@ -77,7 +70,7 @@ public class Augur : ISpaceShip
 
     public virtual void CollisionWithAntimatterFlares()
     {
-            foreach (DeflectorClass3 deflector in _deflectors)
+            foreach (DeflectorClassThree deflector in _deflectors)
             {
                 if (deflector.IsOn && deflector.HasPhotonModification)
                 {
@@ -99,11 +92,11 @@ public class Augur : ISpaceShip
             return;
         }
 
-        foreach (DeflectorClass3 deflector in _deflectors)
+        foreach (DeflectorClassThree deflector in _deflectors)
         {
             if (deflector.IsOn)
             {
-                if (deflector.ConfrontTheSpaceWhale())
+                if (deflector.CanConfrontTheSpaceWhale())
                 {
                     return;
                 }
@@ -118,7 +111,7 @@ public class Augur : ISpaceShip
         if (asteroid != null)
         {
             int damage = asteroid.DamagePoints;
-            foreach (DeflectorClass3 deflector in _deflectors)
+            foreach (DeflectorClassThree deflector in _deflectors)
             {
                 if (deflector.IsOn)
                 {
@@ -152,14 +145,15 @@ public class Augur : ISpaceShip
         _antinitrineEmitterIsON = false;
     }
 
-    public int ComputeSpeed()
+    public double ComputeSpeed()
     {
         int sum = 0;
+        int coeficent = 10;
         foreach (Engine engine in Engines)
         {
             sum += (int)engine.Power();
         }
 
-        return sum * 10 / Weight;
+        return sum * coeficent / Weight;
     }
 }

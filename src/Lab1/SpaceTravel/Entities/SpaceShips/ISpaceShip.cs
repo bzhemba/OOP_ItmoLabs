@@ -8,7 +8,6 @@ public interface ISpaceShip
 {
     public string Name { get; }
     public IReadOnlyCollection<Engine> Engines { get; }
-    public void AddDeflector(int count);
 
     public void AddPhotonDeflector();
 
@@ -19,5 +18,5 @@ public interface ISpaceShip
     public void CollisionWithSpaceWhale();
 
     public void CollisionWithAsteroid(Asteroid? asteroid);
-    public int ComputeSpeed();
+    public double ComputeSpeed();
 }

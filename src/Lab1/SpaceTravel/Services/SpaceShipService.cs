@@ -10,7 +10,7 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Services;
 
 public class SpaceShipService : ISpaceShipService
 {
-    public double LaunchCost(EngineE? engine, int time)
+    public double LaunchCost(EngineClassE? engine, int time)
     {
         if (engine == null)
         {
@@ -50,7 +50,7 @@ public class SpaceShipService : ISpaceShipService
         return engine.ConsumedFuel(time) * (int)FuelExchange.GravitonMatterCost;
     }
 
-    public double LaunchCost(EngineC? engine, int time)
+    public double LaunchCost(EngineClassC? engine, int time)
     {
         if (engine == null)
         {
@@ -67,14 +67,14 @@ public class SpaceShipService : ISpaceShipService
         {
             foreach (Engine engine in spaceShip.Engines)
             {
-                if (engine.GetType().IsAssignableFrom(typeof(EngineC)))
+                if (engine.GetType().IsAssignableFrom(typeof(EngineClassC)))
                 {
-                    totalCost += LaunchCost(engine as EngineC, time);
+                    totalCost += LaunchCost(engine as EngineClassC, time);
                 }
 
-                if (engine.GetType().IsAssignableFrom(typeof(EngineE)))
+                if (engine.GetType().IsAssignableFrom(typeof(EngineClassE)))
                 {
-                    totalCost += LaunchCost(engine as EngineE, time);
+                    totalCost += LaunchCost(engine as EngineClassE, time);
                 }
 
                 if (engine.GetType().IsAssignableFrom(typeof(JumpingEngineGamma)))
@@ -150,7 +150,7 @@ public class SpaceShipService : ISpaceShipService
                 double sumPower = 0;
                 foreach (Engine engine in spaceShip.Engines)
                 {
-                    if (engine.GetType().IsAssignableFrom(typeof(EngineE)))
+                    if (engine.GetType().IsAssignableFrom(typeof(EngineClassE)))
                         sumPower += engine.Power();
                 }
 
@@ -173,7 +173,7 @@ public class SpaceShipService : ISpaceShipService
             {
                 foreach (Engine engine in spaceShip.Engines)
                 {
-                    if (engine.GetType().IsAssignableFrom(typeof(EngineC)))
+                    if (engine.GetType().IsAssignableFrom(typeof(EngineClassC)))
                         spaceShipsEnginePower.Add(spaceShip.Name, engine.Power());
                 }
             }

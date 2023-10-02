@@ -13,7 +13,7 @@ public class PleasureShuttle : ISpaceShip
     private const int Weight = 21;
     private const int StartingFuel = 300;
     private readonly HullClass1 _hull = new();
-    private readonly Collection<Engine> _engine = new() { new EngineC() };
+    private readonly Collection<Engine> _engine = new() { new EngineClassC() };
     private bool _antinitrineEmitterIsON;
     public PleasureShuttle()
     {
@@ -26,11 +26,6 @@ public class PleasureShuttle : ISpaceShip
 
     public IReadOnlyCollection<Engine> Engines { get => _engine; }
     public string Name { get; } = "Pleasure Shuttle";
-
-    public void AddDeflector(int count)
-    {
-        throw new NullObjectException($"Pleasure shuttle doesn't have deflectors. You can't add new");
-    }
 
     public void AddPhotonDeflector()
     {
@@ -81,14 +76,15 @@ public class PleasureShuttle : ISpaceShip
         _antinitrineEmitterIsON = false;
     }
 
-    public int ComputeSpeed()
+    public double ComputeSpeed()
         {
             int sum = 0;
-            foreach (Engine engine in _engine)
+            int coeficent = 10;
+            foreach (Engine engine in Engines)
             {
                 sum += (int)engine.Power();
             }
 
-            return sum * 10 / Weight;
+            return sum * coeficent / Weight;
         }
 }
