@@ -10,21 +10,22 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 
 public class Vaklas : ISpaceShip
 {
+    private const int Weight = 40;
+    private const int StartingFuel = 300;
     private readonly Collection<Engine> _engines = new() { new EngineE(), new JumpingEngineGamma() };
     private List<DeflectorClass1> _deflectors = new() { new DeflectorClass1() };
     private HullClass2 _hull = new();
-    private int _weight = 40;
     private bool _antinitrineEmitterIsON;
     public Vaklas()
     {
         foreach (Engine engine in _engines)
         {
-            engine.AddFuel(300);
+            engine.AddFuel(StartingFuel);
             engine.StartingEngine();
         }
     }
 
-    public Collection<Engine> Engines { get => _engines;  }
+    public IReadOnlyCollection<Engine> Engines { get => _engines;  }
     public string Name { get; } = "Vaklas";
 
     public void AddDeflector(int count)
@@ -79,13 +80,13 @@ public class Vaklas : ISpaceShip
     {
             foreach (DeflectorClass1 deflector in _deflectors)
             {
-            if (deflector.IsOn && deflector.HasPhotonModification)
-            {
-                if (deflector.ReflectAntimatterFlare())
+                if (deflector.IsOn && deflector.HasPhotonModification)
                 {
-                    return;
+                    if (deflector.ReflectAntimatterFlare())
+                    {
+                        return;
+                    }
                 }
-            }
             }
 
             throw new SpaceCrewDestroyedException($"Space ship doesn't have a deflector with modification." +
@@ -131,11 +132,6 @@ public class Vaklas : ISpaceShip
         }
     }
 
-    public Collection<Engine> CheckCompatibility()
-    {
-        return Engines;
-    }
-
     public void AntinitrineEmitterON()
     {
         _antinitrineEmitterIsON = true;
@@ -154,6 +150,6 @@ public class Vaklas : ISpaceShip
             sum += (int)engine.Power();
         }
 
-        return sum * 10 / _weight;
+        return sum * 10 / Weight;
     }
 }

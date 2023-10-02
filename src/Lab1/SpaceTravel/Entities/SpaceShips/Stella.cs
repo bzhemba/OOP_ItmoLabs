@@ -10,21 +10,22 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 
 public class Stella : ISpaceShip
 {
+    private const int Weight = 23;
+    private const int StartingFuel = 300;
     private readonly Collection<Engine> _engines = new() { new EngineC(), new JumpingEngineOmega() };
     private readonly List<DeflectorClass1> _deflectors = new() { new DeflectorClass1() };
     private readonly HullClass1 _hull = new();
-    private int _weight = 23;
     private bool _antinitrineEmitterIsON;
     public Stella()
     {
         foreach (Engine engine in _engines)
         {
-            engine.AddFuel(300);
+            engine.AddFuel(StartingFuel);
             engine.StartingEngine();
         }
     }
 
-    public Collection<Engine> Engines { get => _engines; }
+    public IReadOnlyCollection<Engine> Engines { get => _engines; }
     public string Name { get; } = "Stella";
 
     public void AddDeflector(int count)
@@ -141,11 +142,6 @@ public class Stella : ISpaceShip
         _antinitrineEmitterIsON = false;
     }
 
-    public Collection<Engine> CheckCompatibility()
-    {
-        return Engines;
-    }
-
     public int ComputeSpeed()
     {
         int sum = 0;
@@ -154,6 +150,6 @@ public class Stella : ISpaceShip
             sum += (int)engine.Power();
         }
 
-        return sum * 10 / _weight;
+        return sum * 10 / Weight;
     }
 }

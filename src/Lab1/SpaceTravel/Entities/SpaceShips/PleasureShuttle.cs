@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.NullObjectExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
@@ -9,20 +10,21 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 
 public class PleasureShuttle : ISpaceShip
 {
+    private const int Weight = 21;
+    private const int StartingFuel = 300;
     private readonly HullClass1 _hull = new();
     private readonly Collection<Engine> _engine = new() { new EngineC() };
-    private int _weight = 21;
     private bool _antinitrineEmitterIsON;
     public PleasureShuttle()
     {
         foreach (Engine engine in _engine)
         {
-            engine.AddFuel(300);
+            engine.AddFuel(StartingFuel);
             engine.StartingEngine();
         }
     }
 
-    public Collection<Engine> Engines { get => _engine; }
+    public IReadOnlyCollection<Engine> Engines { get => _engine; }
     public string Name { get; } = "Pleasure Shuttle";
 
     public void AddDeflector(int count)
@@ -79,11 +81,6 @@ public class PleasureShuttle : ISpaceShip
         _antinitrineEmitterIsON = false;
     }
 
-    public Collection<Engine> CheckCompatibility()
-    {
-        return Engines;
-    }
-
     public int ComputeSpeed()
         {
             int sum = 0;
@@ -92,6 +89,6 @@ public class PleasureShuttle : ISpaceShip
                 sum += (int)engine.Power();
             }
 
-            return sum * 10 / _weight;
+            return sum * 10 / Weight;
         }
 }

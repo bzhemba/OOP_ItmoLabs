@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
@@ -10,21 +9,22 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 
 public class Augur : ISpaceShip
 {
+    private const int Weight = 70;
+    private const int StartingFuel = 300;
     private List<DeflectorClass3> _deflectors = new() { new DeflectorClass3() };
     private HullClass3 _hull = new();
-    private int _weight = 70;
     private bool _antinitrineEmitterIsON;
 
     public Augur()
     {
         foreach (Engine engine in Engines)
         {
-            engine.AddFuel(300);
+            engine.AddFuel(StartingFuel);
             engine.StartingEngine();
         }
     }
 
-    public Collection<Engine> Engines { get; } = new() { new EngineE(), new JumpingEngineAlpha() };
+    public IReadOnlyCollection<Engine> Engines { get; } = new List<Engine> { new EngineE(), new JumpingEngineAlpha() };
     public string Name { get; } = "Augur";
 
     public void AddDeflector(int count)
@@ -142,11 +142,6 @@ public class Augur : ISpaceShip
         }
     }
 
-    public Collection<Engine> CheckCompatibility()
-    {
-        return Engines;
-    }
-
     public void AntinitrineEmitterON()
     {
         _antinitrineEmitterIsON = true;
@@ -165,6 +160,6 @@ public class Augur : ISpaceShip
             sum += (int)engine.Power();
         }
 
-        return sum * 10 / _weight;
+        return sum * 10 / Weight;
     }
 }

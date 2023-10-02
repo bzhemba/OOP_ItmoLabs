@@ -33,9 +33,9 @@ public class SpaceTravelTest
     {
         // Arrange
         var antimatterFlares =
-        new Collection<AntimatterFlare?>() { new AntimatterFlare() };
+        new Collection<AntimatterFlare>() { new AntimatterFlare() };
         var subspaceChannel = new SubspaceChannel(70, antimatterFlares);
-        var subspaceChannels = new Collection<SubspaceChannel?>();
+        var subspaceChannels = new Collection<SubspaceChannel>();
         subspaceChannels.Add(subspaceChannel);
         var increasedDensityOfSpace = new IncreasedDensityOfSpace(subspaceChannels);
         if (t == typeof(Augur))
@@ -57,9 +57,9 @@ public class SpaceTravelTest
         // Arrange
         var vaklas = new Vaklas();
         var antimatterFlares =
-            new Collection<AntimatterFlare?>() { new AntimatterFlare() };
+            new Collection<AntimatterFlare>() { new AntimatterFlare() };
         var subspaceChannel = new SubspaceChannel(30, antimatterFlares);
-        var subspaceChannels = new Collection<SubspaceChannel?>();
+        var subspaceChannels = new Collection<SubspaceChannel>();
         subspaceChannels.Add(subspaceChannel);
         var increasedDensityOfSpace = new IncreasedDensityOfSpace(subspaceChannels);
 
@@ -85,7 +85,7 @@ public class SpaceTravelTest
     public void SpaceWhaleInNebulaeOfNitrineParticles(Type t)
     {
         // Arrange
-        var spaceWhales = new Collection<SpaceWhale?>() { new SpaceWhale() };
+        var spaceWhales = new Collection<SpaceWhale>() { new SpaceWhale() };
         var nebulaeOfNitrineParticles = new NebulaeOfNitrineParticles(100, spaceWhales);
 
         // Act
@@ -172,12 +172,12 @@ public class SpaceTravelTest
     [Fact]
     public void SpaceRoute()
     {
-        var asteroids = new Collection<Asteroid?>() { new Asteroid() };
+        var asteroids = new Collection<Asteroid>() { new Asteroid() };
         var space1 = new Space(200, null, asteroids);
-        var antimatterFlares = new Collection<AntimatterFlare?>() { new AntimatterFlare() };
+        var antimatterFlares = new Collection<AntimatterFlare>() { new AntimatterFlare() };
         var subspaceChannel1 = new SubspaceChannel(40, antimatterFlares);
         var subspaceChannel2 = new SubspaceChannel(40, null);
-        var subspaceChannels = new Collection<SubspaceChannel?>();
+        var subspaceChannels = new Collection<SubspaceChannel>();
         subspaceChannels.Add(subspaceChannel1);
         subspaceChannels.Add(subspaceChannel2);
         var route1 = new List<PathSection>();
@@ -206,9 +206,9 @@ public class SpaceTravelTest
     [Fact]
     public void SpaceRoute1()
     {
-        var meteorites2 = new Collection<Meteorite?>() { new Meteorite() };
+        var meteorites2 = new Collection<Meteorite>() { new Meteorite() };
         var space3 = new Space(50, meteorites2, null);
-        var antimatterFlares = new Collection<AntimatterFlare?>() { new AntimatterFlare() };
+        var antimatterFlares = new Collection<AntimatterFlare>() { new AntimatterFlare() };
         var subspaceChannel1 = new SubspaceChannel(40, antimatterFlares);
         var subspaceChannel2 = new SubspaceChannel(40, null);
         var subspaceChannels = new Collection<SubspaceChannel?>();
@@ -229,17 +229,17 @@ public class SpaceTravelTest
     [Fact]
     public void SpaceRoute2()
 {
-    var asteroids = new Collection<Asteroid?>() { new Asteroid() };
-    var meteorites2 = new Collection<Meteorite?>() { new Meteorite() };
+    var asteroids = new Collection<Asteroid>() { new Asteroid() };
+    var meteorites2 = new Collection<Meteorite>() { new Meteorite() };
     var space1 = new Space(200, null, asteroids);
     var space3 = new Space(50, meteorites2, null);
-    var antimatterFlares = new Collection<AntimatterFlare?>() { new AntimatterFlare() };
+    var antimatterFlares = new Collection<AntimatterFlare>() { new AntimatterFlare() };
     var subspaceChannel1 = new SubspaceChannel(20, antimatterFlares);
     var subspaceChannel2 = new SubspaceChannel(10, null);
     var subspaceChannels = new Collection<SubspaceChannel?>();
     subspaceChannels.Add(subspaceChannel1);
     subspaceChannels.Add(subspaceChannel2);
-    var whales = new Collection<SpaceWhale?>() { new SpaceWhale() };
+    var whales = new Collection<SpaceWhale>() { new SpaceWhale() };
     var nebulaeOfNitrineParticles = new NebulaeOfNitrineParticles(400, whales);
     var pathSection1 = new PathSection(space1, 100);
     var pathSection3 = new PathSection(space3, 150);
@@ -272,11 +272,11 @@ public class SpaceTravelTest
     [Fact]
     public void SpaceRoute3()
     {
-        var asteroids = new Collection<Asteroid?>() { new Asteroid() };
-        var meteorites = new Collection<Meteorite?>() { new Meteorite(), new Meteorite(), new Meteorite(), new Meteorite(), new Meteorite() };
+        var asteroids = new Collection<Asteroid>() { new Asteroid() };
+        var meteorites = new Collection<Meteorite>() { new Meteorite(), new Meteorite(), new Meteorite(), new Meteorite(), new Meteorite() };
         var space1 = new Space(200, null, asteroids);
         var space2 = new Space(50, meteorites, null);
-        var antimatterFlares = new Collection<AntimatterFlare?>() { new AntimatterFlare() };
+        var antimatterFlares = new Collection<AntimatterFlare>() { new AntimatterFlare() };
         var subspaceChannel1 = new SubspaceChannel(40, antimatterFlares);
         var subspaceChannel2 = new SubspaceChannel(40, null);
         var subspaceChannels = new Collection<SubspaceChannel?>();
@@ -311,12 +311,12 @@ public class SpaceTravelTest
 
     public void SpaceRoute4()
     {
-        var meteorites = new Collection<Meteorite?>() { new Meteorite(), new Meteorite(), new Meteorite(), new Meteorite(), new Meteorite() };
+        var meteorites = new Collection<Meteorite>() { new Meteorite(), new Meteorite(), new Meteorite(), new Meteorite(), new Meteorite() };
         var space2 = new Space(50, meteorites, null);
-        var antimatterFlares = new Collection<AntimatterFlare?>() { new AntimatterFlare() };
+        var antimatterFlares = new Collection<AntimatterFlare>() { new AntimatterFlare() };
         var subspaceChannel1 = new SubspaceChannel(20, antimatterFlares);
         var subspaceChannel2 = new SubspaceChannel(10, null);
-        var subspaceChannels = new Collection<SubspaceChannel?>();
+        var subspaceChannels = new Collection<SubspaceChannel>();
         subspaceChannels.Add(subspaceChannel1);
         subspaceChannels.Add(subspaceChannel2);
         var increasedDensityOfSpace = new IncreasedDensityOfSpace(subspaceChannels);
