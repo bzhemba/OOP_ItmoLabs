@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.EnvironmentExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.NullObjectExceptions;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Environments;
@@ -36,9 +37,7 @@ public class IncreasedDensityOfSpace : IEnvironment
             {
                 foreach (Engine engine in checkEngines)
                 {
-                    if (channel != null && (engine.GetType().IsAssignableFrom(typeof(JumpingEngineAlpha)) ||
-                                            engine.GetType().IsAssignableFrom(typeof(JumpingEngineGamma)) ||
-                                            engine.GetType().IsAssignableFrom(typeof(JumpingEngineOmega))) && (engine.JumpRange >= channel.Length))
+                    if (channel != null && (engine.TypeOfEngine == TypeOfEngine.Jumping && (engine.JumpRange >= channel.Length)))
                     {
                         f = 1;
                         break;
