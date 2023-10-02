@@ -11,6 +11,7 @@ public class EngineE : Engine
     public EngineFuel FuelType { get; private set; } = EngineFuel.ActivePlasma;
     public override int JumpRange { get; }
     public override int Thrust { get; } = 80000;
+    public override TypeOfEngine TypeOfEngine { get; } = TypeOfEngine.Impulse;
 
     public override double Power()
     {

@@ -9,10 +9,10 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Environments;
 
 public class IncreasedDensityOfSpace : IEnvironment
 {
-    private ICollection<SubspaceChannel?>? _subspaceChannels;
+    private ICollection<SubspaceChannel> _subspaceChannels;
     private int _distance;
 
-    public IncreasedDensityOfSpace(ICollection<SubspaceChannel?>? subspaceChannels)
+    public IncreasedDensityOfSpace(ICollection<SubspaceChannel> subspaceChannels)
     {
         _subspaceChannels = subspaceChannels;
         if (subspaceChannels != null)

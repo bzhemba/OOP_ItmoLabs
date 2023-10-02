@@ -9,6 +9,7 @@ public class JumpingEngineAlpha : Engine
 
     public override int JumpRange { get; } = 20;
     public override int Thrust { get; } = 90221;
+    public override TypeOfEngine TypeOfEngine { get; } = TypeOfEngine.Jumping;
 
     public bool IsOn { get; private set; }
 

@@ -6,6 +6,7 @@ public abstract class Engine
     private int _consumedFuelAmount;
     public abstract int JumpRange { get; }
     public abstract int Thrust { get; }
+    public abstract TypeOfEngine TypeOfEngine { get; }
 
     public virtual double Power()
     {
