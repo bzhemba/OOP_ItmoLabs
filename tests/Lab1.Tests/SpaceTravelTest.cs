@@ -63,6 +63,7 @@ public class SpaceTravelTest
         var subspaceChannels = new Collection<SubspaceChannel>();
         subspaceChannels.Add(subspaceChannel);
         var increasedDensityOfSpace = new IncreasedDensityOfSpace(subspaceChannels);
+        var spaceShipServices = new SpaceShipService();
 
         // Act
         bool result = false;
@@ -71,6 +72,7 @@ public class SpaceTravelTest
             vaklas.AddPhotonDeflector();
             result = increasedDensityOfSpace.PassingEnvironment(vaklas);
             Assert.True(result);
+            spaceShipServices.GetReport(vaklas, increasedDensityOfSpace.Distance);
         }
 
         if (havePhotonDeflector == false)
@@ -100,6 +102,7 @@ public class SpaceTravelTest
         var meridian = new Meridian(meridianDeflectors, hull, meridianEngine);
         var spaceWhales = new Collection<SpaceWhale>() { new SpaceWhale() };
         var nebulaeOfNitrineParticles = new NebulaeOfNitrineParticles(100, spaceWhales);
+        var spaceShipServices = new SpaceShipService();
 
         // Act
         bool result = false;
@@ -112,6 +115,7 @@ public class SpaceTravelTest
         {
             result = nebulaeOfNitrineParticles.PassingEnvironment(augur);
             Assert.True(result);
+            spaceShipServices.GetReport(augur, nebulaeOfNitrineParticles.Distance);
         }
 
         if (t == typeof(Meridian))
@@ -119,6 +123,7 @@ public class SpaceTravelTest
             meridian.AntinitrineEmitterON();
             result = nebulaeOfNitrineParticles.PassingEnvironment(meridian);
             Assert.True(result);
+            spaceShipServices.GetReport(meridian, nebulaeOfNitrineParticles.Distance);
         }
     }
 

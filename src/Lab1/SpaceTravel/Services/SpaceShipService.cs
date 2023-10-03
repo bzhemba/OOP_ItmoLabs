@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.EngineExceptions;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.IncorrectFormatExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
 
@@ -10,87 +12,41 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Services;
 
 public class SpaceShipService : ISpaceShipService
 {
-    public double LaunchCost(EngineClassE? engine, int time)
+    public double LaunchCost(Engine engine, int time)
     {
         if (engine == null)
         {
             throw new EngineDoesntExistExeption($"Engine doesn't exist");
         }
 
-        return engine.ConsumedFuel(time) * (int)FuelExchange.ActivePlasmaCost;
-    }
-
-    public double LaunchCost(JumpingEngineAlpha? engine, int time)
-    {
-        if (engine == null)
+        if (time < 0)
         {
-            throw new EngineDoesntExistExeption($"Engine doesn't exist");
+            throw new IncorrectFormatException($"Time can't be a negative number");
         }
 
-        return engine.ConsumedFuel(time) * (int)FuelExchange.GravitonMatterCost;
-    }
-
-    public double LaunchCost(JumpingEngineOmega? engine, int time)
-    {
-        if (engine == null)
+        if (engine.TypeOfEngine == TypeOfEngine.Jumping)
         {
-            throw new EngineDoesntExistExeption($"Engine doesn't exist");
+            return engine.ConsumedFuel(time) * (int)FuelExchange.GravitonMatterCost;
         }
-
-        return engine.ConsumedFuel(time) * (int)FuelExchange.GravitonMatterCost;
-    }
-
-    public double LaunchCost(JumpingEngineGamma? engine, int time)
-    {
-        if (engine == null)
+        else
         {
-            throw new EngineDoesntExistExeption($"Engine doesn't exist");
+            return engine.ConsumedFuel(time) * (int)FuelExchange.ActivePlasmaCost;
         }
-
-        return engine.ConsumedFuel(time) * (int)FuelExchange.GravitonMatterCost;
     }
 
-    public double LaunchCost(EngineClassC? engine, int time)
-    {
-        if (engine == null)
-        {
-            throw new EngineDoesntExistExeption($"Engine doesn't exist");
-        }
-
-        return engine.ConsumedFuel(time) * (int)FuelExchange.ActivePlasmaCost;
-    }
-
-    public double LaunchTotalCost(ISpaceShip? spaceShip, int time)
+    public double LaunchTotalCost(ISpaceShip spaceShip, int time)
     {
         double totalCost = 0;
+        if (time < 0)
+        {
+            throw new IncorrectFormatException($"Time can't be a negative number");
+        }
+
         if (spaceShip != null)
         {
             foreach (Engine engine in spaceShip.Engines)
             {
-                if (engine.GetType().IsAssignableFrom(typeof(EngineClassC)))
-                {
-                    totalCost += LaunchCost(engine as EngineClassC, time);
-                }
-
-                if (engine.GetType().IsAssignableFrom(typeof(EngineClassE)))
-                {
-                    totalCost += LaunchCost(engine as EngineClassE, time);
-                }
-
-                if (engine.GetType().IsAssignableFrom(typeof(JumpingEngineGamma)))
-                {
-                    totalCost += LaunchCost(engine as JumpingEngineGamma, time);
-                }
-
-                if (engine.GetType().IsAssignableFrom(typeof(JumpingEngineAlpha)))
-                {
-                    totalCost += LaunchCost(engine as JumpingEngineAlpha, time);
-                }
-
-                if (engine.GetType().IsAssignableFrom(typeof(JumpingEngineOmega)))
-                {
-                    totalCost += LaunchCost(engine as JumpingEngineOmega, time);
-                }
+                    totalCost += LaunchCost(engine, time);
             }
         }
 
@@ -99,6 +55,11 @@ public class SpaceShipService : ISpaceShipService
 
     public string TheBestByPrice(Collection<ISpaceShip> spaceShips, int time)
     {
+        if (time < 0)
+        {
+            throw new IncorrectFormatException($"Time can't be a negative number");
+        }
+
         var spaceShipsCost = new Dictionary<string, double>();
         if (spaceShips != null)
         {
@@ -183,5 +144,20 @@ public class SpaceShipService : ISpaceShipService
             from entry in spaceShipsEnginePower orderby entry.Value ascending select entry;
         KeyValuePair<string, double> first = sortedDict.First();
         return first.Key;
+    }
+
+    public void GetReport(ISpaceShip spaceShip, double distance)
+    {
+        if (distance < 0)
+        {
+            throw new IncorrectFormatException($"Distance can't be a negative number");
+        }
+
+        if (spaceShip != null)
+        {
+            int time = (int)(distance / spaceShip.ComputeSpeed());
+            double totalCost = LaunchTotalCost(spaceShip, time);
+            Console.WriteLine($"Travel time: {time} \n Flight cost: {totalCost}");
+        }
     }
 }
