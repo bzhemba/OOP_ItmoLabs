@@ -6,7 +6,6 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 
 public interface ISpaceShip
 {
-    public string Name { get; }
     public IReadOnlyCollection<Engine> Engines { get; }
 
     public void AddPhotonDeflector();

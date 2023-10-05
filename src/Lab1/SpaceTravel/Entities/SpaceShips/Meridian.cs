@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.IncorrectFormatExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Hulls;
@@ -13,8 +14,8 @@ public class Meridian : ISpaceShip
 {
     private const int Weight = 34;
     private const int StartingFuel = 300;
-    private IReadOnlyCollection<Deflector> _deflectors;
-    private Hull _hull;
+    private readonly IReadOnlyCollection<Deflector> _deflectors;
+    private readonly Hull _hull;
     private bool _antinitrineEmitterIsON = true;
     public Meridian(IReadOnlyCollection<Deflector> deflectors, Hull hull, IReadOnlyCollection<Engine> engines)
     {
@@ -29,64 +30,49 @@ public class Meridian : ISpaceShip
     }
 
     public IReadOnlyCollection<Engine> Engines { get; }
-    public string Name { get; } = "Meridian";
+    public string Name { get; } = NameOfSpaceShip.Meridian.ToString();
 
     public void AddPhotonDeflector()
     {
-        foreach (DeflectorClassTwo deflector in _deflectors)
-        {
-            if (deflector.IsOn)
-            {
-                deflector.AddPhotonModification();
-                return;
-            }
-        }
+        Deflector firstTurnedOnDeflector =
+            _deflectors.First(deflector => deflector is { IsOn: true, HasPhotonModification: false });
+        firstTurnedOnDeflector.AddPhotonModification();
     }
 
     public void CollisionWithMeteorite(Meteorite? meteorite)
     {
-        if (meteorite != null)
+        if (meteorite == null) return;
+        int damage = meteorite.DamagePoints;
+        foreach (DeflectorClassTwo deflector in _deflectors.Where(d => d.IsOn).Cast<DeflectorClassTwo>())
         {
-            int damage = meteorite.DamagePoints;
-            foreach (DeflectorClassTwo deflector in _deflectors)
+            int remainedDamage = deflector.TakeDamage(damage);
+            if (remainedDamage != 0)
             {
-                if (deflector.IsOn)
-                {
-                    int remainedDamage = deflector.TakeDamage(damage);
-                    if (remainedDamage != 0)
-                    {
-                        damage = remainedDamage;
-                    }
-                    else
-                    {
-                        damage = 0;
-                        break;
-                    }
-                }
+                damage = remainedDamage;
             }
+            else
+            {
+                damage = 0;
+                break;
+            }
+        }
 
-            if (damage != 0)
-            {
-                _hull.TakeDamage(damage);
-            }
+        if (damage != 0)
+        {
+            _hull.TakeDamage(damage);
         }
     }
 
     public void CollisionWithAntimatterFlares()
     {
-            foreach (DeflectorClassTwo deflector in _deflectors)
-            {
-                if (deflector.IsOn && deflector.HasPhotonModification)
-                {
-                    if (deflector.ReflectAntimatterFlare())
-                    {
-                        return;
-                    }
-                }
-            }
+        if (_deflectors.Where(d => d is { IsOn: true, HasPhotonModification:
+                true }).Cast<DeflectorClassTwo>().Any(deflector => deflector.ReflectAntimatterFlare()))
+        {
+            return;
+        }
 
-            throw new SpaceCrewDestroyedException($"Space ship doesn't have a deflector with modification." +
-                                                  $"The ship's crew has been destroyed");
+        throw new SpaceCrewDestroyedException($"Space ship doesn't have a deflector with modification." +
+                                              $"The ship's crew has been destroyed");
     }
 
     public void CollisionWithSpaceWhale()
@@ -101,30 +87,25 @@ public class Meridian : ISpaceShip
 
     public void CollisionWithAsteroid(Asteroid? asteroid)
     {
-        if (asteroid != null)
+        if (asteroid == null) return;
+        int damage = asteroid.DamagePoints;
+        foreach (DeflectorClassTwo deflector in _deflectors.Where(d => d.IsOn).Cast<DeflectorClassTwo>())
         {
-            int damage = asteroid.DamagePoints;
-            foreach (DeflectorClassTwo deflector in _deflectors)
+            int remainedDamage = deflector.TakeDamage(damage);
+            if (remainedDamage != 0)
             {
-                if (deflector.IsOn)
-                {
-                    int remainedDamage = deflector.TakeDamage(damage);
-                    if (remainedDamage != 0)
-                    {
-                        damage = remainedDamage;
-                    }
-                    else
-                    {
-                        damage = 0;
-                        break;
-                    }
-                }
+                damage = remainedDamage;
             }
+            else
+            {
+                damage = 0;
+                break;
+            }
+        }
 
-            if (damage != 0)
-            {
-                _hull.TakeDamage(damage);
-            }
+        if (damage != 0)
+        {
+            _hull.TakeDamage(damage);
         }
     }
 
@@ -140,14 +121,10 @@ public class Meridian : ISpaceShip
 
     public double ComputeSpeed()
     {
-        int sum = 0;
-        int coeficent = 10;
-        foreach (Engine engine in Engines)
-        {
-            sum += (int)engine.Power();
-        }
+        const int coefficient = 10;
+        int sum = Engines.Sum(engine => (int)engine.Power());
 
-        return sum * coeficent / Weight;
+        return sum * coefficient / Weight;
     }
 
     private void CheckHull(Hull hull)

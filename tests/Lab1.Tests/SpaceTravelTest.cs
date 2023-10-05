@@ -142,11 +142,11 @@ public class SpaceTravelTest
         var spaceShips = new Collection<ISpaceShip>();
         spaceShips.Add(vaklas);
         spaceShips.Add(pleasureShuttle);
-        string theBest = spaceShipServices.TheBestByPrice(spaceShips, 100);
+        ISpaceShip theBest = spaceShipServices.TheBestByPrice(spaceShips, 100);
 
         // Act
         bool result;
-        result = theBest == "Pleasure Shuttle";
+        result = theBest is PleasureShuttle;
 
         // Assert
         Assert.True(result);
@@ -169,11 +169,11 @@ public class SpaceTravelTest
         var spaceShips = new Collection<ISpaceShip>();
         spaceShips.Add(augur);
         spaceShips.Add(stella);
-        string theBest = spaceShipServices.TheBestForInscreasedDensityOfSpace(spaceShips);
+        ISpaceShip theBest = spaceShipServices.TheBestForInscreasedDensityOfSpace(spaceShips);
 
         // Act
         bool result;
-        result = theBest == "Stella";
+        result = theBest is Stella;
 
         // Assert
         Assert.True(result);
@@ -194,11 +194,11 @@ public class SpaceTravelTest
         var spaceShips = new Collection<ISpaceShip>();
         spaceShips.Add(pleasureShuttle);
         spaceShips.Add(vaklas);
-        string theBest = spaceShipServices.TheBestForNebulaeOfNitrineParticles(spaceShips);
+        ISpaceShip theBest = spaceShipServices.TheBestForNebulaeOfNitrineParticles(spaceShips);
 
         // Act
         bool result;
-        result = theBest == "Vaklas";
+        result = theBest is Vaklas;
 
         // Assert
         Assert.True(result);

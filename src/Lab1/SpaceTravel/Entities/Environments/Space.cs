@@ -11,8 +11,8 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Environments;
 
 public class Space : IEnvironment
 {
-    private Collection<Meteorite>? _meteorites;
-    private Collection<Asteroid>? _asteroids;
+    private readonly Collection<Meteorite>? _meteorites;
+    private readonly Collection<Asteroid>? _asteroids;
 
     public Space(double distance, Collection<Meteorite>? meteorites, Collection<Asteroid>? asteroids)
     {
@@ -25,37 +25,31 @@ public class Space : IEnvironment
     public double Distance { get; }
     public bool PassingEnvironment(ISpaceShip spaceShip)
     {
-        if (spaceShip != null)
+        if (spaceShip == null) throw new NullObjectException($"No Space Ship to pass this environment");
+        bool hasImpulseEngine = spaceShip.Engines.Any(engine => engine.TypeOfEngine == TypeOfEngine.Impulse);
+
+        if (!hasImpulseEngine)
         {
-            bool hasImpulseEngine = spaceShip.Engines.Any(engine => engine.TypeOfEngine == TypeOfEngine.Impulse);
-
-            if (!hasImpulseEngine)
-            {
-                throw new EnvironmentMismatchException($"This spaceship is not suitable for this environment");
-            }
-
-            if (_meteorites != null)
-            {
-                foreach (Meteorite meteorite in _meteorites)
-                {
-                    if (meteorite is not null)
-                        spaceShip.CollisionWithMeteorite(meteorite);
-                }
-            }
-
-            if (_asteroids != null)
-            {
-                foreach (Asteroid asteroid in _asteroids)
-                {
-                    if (asteroid is not null)
-                        spaceShip.CollisionWithAsteroid(asteroid);
-                }
-            }
-
-            return true;
+            throw new EnvironmentMismatchException($"This spaceship is not suitable for this environment");
         }
 
-        throw new NullObjectException($"No Space Ship to pass this environment");
+        if (_meteorites != null)
+        {
+            foreach (Meteorite meteorite in _meteorites)
+            {
+                if (meteorite is not null)
+                    spaceShip.CollisionWithMeteorite(meteorite);
+            }
+        }
+
+        if (_asteroids == null) return true;
+        foreach (Asteroid asteroid in _asteroids)
+        {
+            if (asteroid is not null)
+                spaceShip.CollisionWithAsteroid(asteroid);
+        }
+
+        return true;
     }
 
     private static void CheckDistance(double distance)

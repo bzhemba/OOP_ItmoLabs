@@ -53,31 +53,32 @@ public class SpaceShipService : ISpaceShipService
         return totalCost;
     }
 
-    public string TheBestByPrice(Collection<ISpaceShip> spaceShips, int time)
+    public ISpaceShip TheBestByPrice(Collection<ISpaceShip> spaceShips, int time)
     {
         if (time < 0)
         {
             throw new IncorrectFormatException($"Time can't be a negative number");
         }
 
-        var spaceShipsCost = new Dictionary<string, double>();
+        var spaceShipsCost = new Dictionary<double, ISpaceShip>();
         if (spaceShips != null)
         {
             foreach (ISpaceShip spaceShip in spaceShips)
             {
-                spaceShipsCost.Add(spaceShip.Name, LaunchTotalCost(spaceShip, time));
+                spaceShipsCost[LaunchTotalCost(spaceShip, time)] = spaceShip;
             }
         }
 
-        IOrderedEnumerable<KeyValuePair<string, double>> sortedDict =
-            from entry in spaceShipsCost orderby entry.Value ascending select entry;
-        KeyValuePair<string, double> first = sortedDict.First();
-        return first.Key;
+        IOrderedEnumerable<KeyValuePair<double, ISpaceShip>> sortedDict =
+            from entry in spaceShipsCost orderby entry.Key ascending select entry;
+        KeyValuePair<double, ISpaceShip> first = sortedDict.First();
+        Console.WriteLine($"The best Space Ship for Space is {first.Value}, total cost: {first.Key}");
+        return first.Value;
     }
 
-    public string TheBestForInscreasedDensityOfSpace(Collection<ISpaceShip> spaceShips)
+    public ISpaceShip TheBestForInscreasedDensityOfSpace(Collection<ISpaceShip> spaceShips)
     {
-        var spaceShipsJumpingRange = new Dictionary<string, int>();
+        var spaceShipsJumpingRange = new Dictionary<int, ISpaceShip>();
         if (spaceShips != null)
         {
             foreach (ISpaceShip spaceShip in spaceShips)
@@ -91,19 +92,20 @@ public class SpaceShipService : ISpaceShipService
                     }
                 }
 
-                spaceShipsJumpingRange.Add(spaceShip.Name, maxJumpRange);
+                spaceShipsJumpingRange.Add(maxJumpRange, spaceShip);
             }
         }
 
-        IOrderedEnumerable<KeyValuePair<string, int>> sortedDict =
-            from entry in spaceShipsJumpingRange orderby entry.Value ascending select entry;
-        KeyValuePair<string, int> last = sortedDict.Last();
-        return last.Key;
+        IOrderedEnumerable<KeyValuePair<int, ISpaceShip>> sortedDict =
+            from entry in spaceShipsJumpingRange orderby entry.Key ascending select entry;
+        KeyValuePair<int, ISpaceShip> last = sortedDict.Last();
+        Console.WriteLine($"The best Space Ship for Space is {last.Value}, jump range: {last.Key}");
+        return last.Value;
     }
 
-    public string TheBestForNebulaeOfNitrineParticles(Collection<ISpaceShip> spaceShips)
+    public ISpaceShip TheBestForNebulaeOfNitrineParticles(Collection<ISpaceShip> spaceShips)
     {
-        var spaceShipsEnginePower = new Dictionary<string, double>();
+        var spaceShipsEnginePower = new Dictionary<double, ISpaceShip>();
         if (spaceShips != null)
         {
             foreach (ISpaceShip spaceShip in spaceShips)
@@ -115,19 +117,20 @@ public class SpaceShipService : ISpaceShipService
                         sumPower += engine.Power();
                 }
 
-                spaceShipsEnginePower.Add(spaceShip.Name, sumPower);
+                spaceShipsEnginePower.Add(sumPower, spaceShip);
             }
         }
 
-        IOrderedEnumerable<KeyValuePair<string, double>> sortedDict =
-            from entry in spaceShipsEnginePower orderby entry.Value ascending select entry;
-        KeyValuePair<string, double> last = sortedDict.Last();
-        return last.Key;
+        IOrderedEnumerable<KeyValuePair<double, ISpaceShip>> sortedDict =
+            from entry in spaceShipsEnginePower orderby entry.Key ascending select entry;
+        KeyValuePair<double, ISpaceShip> last = sortedDict.Last();
+        Console.WriteLine($"The best Space Ship for Space is {last.Value}, power: {last.Key}");
+        return last.Value;
     }
 
-    public string TheBestForSpace(Collection<ISpaceShip> spaceShips)
+    public ISpaceShip TheBestForSpace(Collection<ISpaceShip> spaceShips)
     {
-        var spaceShipsEnginePower = new Dictionary<string, double>();
+        var spaceShipsEnginePower = new Dictionary<double, ISpaceShip>();
         if (spaceShips != null)
         {
             foreach (ISpaceShip spaceShip in spaceShips)
@@ -135,15 +138,16 @@ public class SpaceShipService : ISpaceShipService
                 foreach (Engine engine in spaceShip.Engines)
                 {
                     if (engine.GetType().IsAssignableFrom(typeof(EngineClassC)))
-                        spaceShipsEnginePower.Add(spaceShip.Name, engine.Power());
+                        spaceShipsEnginePower.Add(engine.Power(), spaceShip);
                 }
             }
         }
 
-        IOrderedEnumerable<KeyValuePair<string, double>> sortedDict =
-            from entry in spaceShipsEnginePower orderby entry.Value ascending select entry;
-        KeyValuePair<string, double> first = sortedDict.First();
-        return first.Key;
+        IOrderedEnumerable<KeyValuePair<double, ISpaceShip>> sortedDict =
+            from entry in spaceShipsEnginePower orderby entry.Key ascending select entry;
+        KeyValuePair<double, ISpaceShip> first = sortedDict.First();
+        Console.WriteLine($"The best Space Ship for Space is {first.Value}, power: {first.Key}");
+        return first.Value;
     }
 
     public void GetReport(ISpaceShip spaceShip, double distance)

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.IncorrectFormatExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Hulls;
@@ -13,8 +14,8 @@ public class Stella : ISpaceShip
 {
     private const int Weight = 23;
     private const int StartingFuel = 300;
-    private IReadOnlyCollection<Deflector> _deflectors;
-    private Hull _hull;
+    private readonly IReadOnlyCollection<Deflector> _deflectors;
+    private readonly Hull _hull;
     public Stella(IReadOnlyCollection<Deflector> deflectors, Hull hull, IReadOnlyCollection<Engine> engines)
     {
         CheckDeflectors(deflectors);
@@ -27,63 +28,43 @@ public class Stella : ISpaceShip
     }
 
     public IReadOnlyCollection<Engine> Engines { get; }
-    public string Name { get; } = "Stella";
+    public string Name { get; } = NameOfSpaceShip.Stella.ToString();
 
     public void AddPhotonDeflector()
     {
-        foreach (DeflectorClassOne deflector in _deflectors)
-        {
-            if (deflector.IsOn)
-            {
-                deflector.AddPhotonModification();
-                return;
-            }
-        }
+        Deflector firstTurnedOnDeflector =
+            _deflectors.First(deflector => deflector is { IsOn: true, HasPhotonModification: false });
+        firstTurnedOnDeflector.AddPhotonModification();
     }
 
     public void CollisionWithMeteorite(Meteorite? meteorite)
     {
-        if (meteorite != null)
+        if (meteorite == null) return;
+        int damage = meteorite.DamagePoints;
+        foreach (DeflectorClassOne deflector in _deflectors.Where(d => d.IsOn).Cast<DeflectorClassOne>())
         {
-            int damage = meteorite.DamagePoints;
-            foreach (DeflectorClassOne deflector in _deflectors)
+            damage = deflector.TakeDamage(damage);
+            if (damage == 0)
             {
-                if (deflector.IsOn)
-                {
-                    int remainedDamage = deflector.TakeDamage(damage);
-                    if (remainedDamage != 0)
-                    {
-                        damage = remainedDamage;
-                    }
-                    else
-                    {
-                        damage = 0;
-                        break;
-                    }
-                }
+                break;
             }
+        }
 
-            if (damage != 0)
-            {
-                _hull.TakeDamage(damage);
-            }
+        if (damage != 0)
+        {
+            _hull.TakeDamage(damage);
         }
     }
 
     public void CollisionWithAntimatterFlares()
     {
-            foreach (DeflectorClassOne deflector in _deflectors)
-            {
-                if (deflector.IsOn && deflector.HasPhotonModification)
-                {
-                    if (deflector.ReflectAntimatterFlare())
-                    {
-                        return;
-                    }
-                }
-            }
+        if (_deflectors.Cast<DeflectorClassOne>().Where(deflector =>
+                deflector.IsOn && deflector.HasPhotonModification).Any(deflector => deflector.ReflectAntimatterFlare()))
+        {
+            return;
+        }
 
-            throw new SpaceCrewDestroyedException($"Space ship doesn't have a deflector with modification." +
+        throw new SpaceCrewDestroyedException($"Space ship doesn't have a deflector with modification." +
                                               $"The ship's crew has been destroyed");
     }
 
@@ -94,43 +75,34 @@ public class Stella : ISpaceShip
 
     public void CollisionWithAsteroid(Asteroid? asteroid)
     {
-        if (asteroid != null)
+        if (asteroid == null) return;
+        int damage = asteroid.DamagePoints;
+        foreach (DeflectorClassOne deflector in _deflectors.Where(d => d.IsOn).Cast<DeflectorClassOne>())
         {
-            int damage = asteroid.DamagePoints;
-            foreach (DeflectorClassOne deflector in _deflectors)
-            {
-                if (deflector.IsOn)
+                int remainedDamage = deflector.TakeDamage(damage);
+                if (remainedDamage != 0)
                 {
-                    int remainedDamage = deflector.TakeDamage(damage);
-                    if (remainedDamage != 0)
-                    {
-                        damage = remainedDamage;
-                    }
-                    else
-                    {
-                        damage = 0;
-                        break;
-                    }
+                    damage = remainedDamage;
                 }
-            }
+                else
+                {
+                    damage = 0;
+                    break;
+                }
+        }
 
-            if (damage != 0)
-            {
-                _hull.TakeDamage(damage);
-            }
+        if (damage != 0)
+        {
+            _hull.TakeDamage(damage);
         }
     }
 
     public double ComputeSpeed()
     {
-        int sum = 0;
-        int coeficent = 10;
-        foreach (Engine engine in Engines)
-        {
-            sum += (int)engine.Power();
-        }
+        const int coefficient = 10;
+        int sum = Engines.Sum(engine => (int)engine.Power());
 
-        return sum * coeficent / Weight;
+        return sum * coefficient / Weight;
     }
 
     private void CheckHull(Hull hull)

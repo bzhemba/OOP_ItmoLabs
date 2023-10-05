@@ -10,17 +10,15 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Environments;
 
 public class IncreasedDensityOfSpace : IEnvironment
 {
-    private ICollection<SubspaceChannel>? _subspaceChannels;
+    private readonly ICollection<SubspaceChannel>? _subspaceChannels;
 
     public IncreasedDensityOfSpace(ICollection<SubspaceChannel>? subspaceChannels)
     {
         _subspaceChannels = subspaceChannels;
-        if (subspaceChannels != null)
+        if (subspaceChannels == null) return;
+        foreach (SubspaceChannel subspaceChannel in subspaceChannels)
         {
-            foreach (SubspaceChannel subspaceChannel in subspaceChannels)
-            {
-                if (subspaceChannel != null) Distance += subspaceChannel.Length;
-            }
+            if (subspaceChannel != null) Distance += subspaceChannel.Length;
         }
     }
 
@@ -28,31 +26,26 @@ public class IncreasedDensityOfSpace : IEnvironment
 
     public bool PassingEnvironment(ISpaceShip spaceShip)
     {
-        if (spaceShip != null && _subspaceChannels != null)
+        if (spaceShip == null || _subspaceChannels == null)
+            throw new NullObjectException($"No Space Ship to pass this environment");
+        IReadOnlyCollection<Engine> checkEngines = spaceShip.Engines;
+        bool allChannelsValid = _subspaceChannels.All(channel =>
         {
-            IReadOnlyCollection<Engine> checkEngines = spaceShip.Engines;
-            bool allChannelsValid = _subspaceChannels.All(channel =>
+            bool engineValid = checkEngines.Any(engine =>
+                engine.TypeOfEngine == TypeOfEngine.Jumping && engine.JumpRange >= channel?.Length);
+            if (!engineValid)
             {
-                bool engineValid = checkEngines.Any(engine =>
-                    engine.TypeOfEngine == TypeOfEngine.Jumping && engine.JumpRange >= channel?.Length);
-                if (!engineValid)
-                {
-                    throw new EnvironmentMismatchException($"This spaceship is not suitable for this environment");
-                }
+                throw new EnvironmentMismatchException($"This spaceship is not suitable for this environment");
+            }
 
-                if (channel.AntimatterFlares != null)
-                {
-                    for (int i = 0; i < channel.AntimatterFlares.Count; i++)
-                    {
-                        spaceShip.CollisionWithAntimatterFlares();
-                    }
-                }
+            if (channel.AntimatterFlares == null) return true;
+            for (int i = 0; i < channel.AntimatterFlares.Count; i++)
+            {
+                spaceShip.CollisionWithAntimatterFlares();
+            }
 
-                return true;
-            });
-            return allChannelsValid;
-        }
-
-        throw new NullObjectException($"No Space Ship to pass this environment");
+            return true;
+        });
+        return allChannelsValid;
     }
 }
