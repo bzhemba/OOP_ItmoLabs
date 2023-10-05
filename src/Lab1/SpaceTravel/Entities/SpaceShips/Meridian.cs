@@ -18,12 +18,13 @@ public class Meridian : ISpaceShip
     private bool _antinitrineEmitterIsON = true;
     public Meridian(IReadOnlyCollection<Deflector> deflectors, Hull hull, IReadOnlyCollection<Engine> engines)
     {
+        CheckDeflectors(deflectors);
+        CheckEngines(engines);
+        CheckHull(hull);
+        _deflectors = deflectors;
         _deflectors = deflectors;
         _hull = hull;
         Engines = engines;
-        CheckDeflectors();
-        CheckEngines();
-        CheckHull();
         StartTheEngines();
     }
 
@@ -149,9 +150,9 @@ public class Meridian : ISpaceShip
         return sum * coeficent / Weight;
     }
 
-    private void CheckHull()
+    private void CheckHull(Hull hull)
     {
-        bool hullIsValid = _hull is HullClassTwo;
+        bool hullIsValid = hull is HullClassTwo;
         if (!hullIsValid)
         {
             throw new IncorrectFormatException($"Not the right type of hull. " +
@@ -159,9 +160,9 @@ public class Meridian : ISpaceShip
         }
     }
 
-    private void CheckEngines()
+    private void CheckEngines(IReadOnlyCollection<Engine> engines)
     {
-        bool allEnginesAreValid = Engines.All(engine => engine is EngineClassE);
+        bool allEnginesAreValid = engines.All(engine => engine is EngineClassE);
         if (!allEnginesAreValid)
         {
             throw new IncorrectFormatException($"Not the right type of all engines. " +
@@ -169,9 +170,9 @@ public class Meridian : ISpaceShip
         }
     }
 
-    private void CheckDeflectors()
+    private void CheckDeflectors(IReadOnlyCollection<Deflector> deflectors)
     {
-        bool allDeflectorsAreValid = _deflectors.All(deflector => deflector is DeflectorClassTwo);
+        bool allDeflectorsAreValid = deflectors.All(deflector => deflector is DeflectorClassTwo);
         if (!allDeflectorsAreValid)
         {
             throw new IncorrectFormatException($"Not the right type of all deflectors. " +

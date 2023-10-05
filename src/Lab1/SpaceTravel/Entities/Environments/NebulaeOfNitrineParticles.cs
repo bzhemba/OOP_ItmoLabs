@@ -15,16 +15,12 @@ public class NebulaeOfNitrineParticles : IEnvironment
      private double _distance;
      public NebulaeOfNitrineParticles(double distance, IReadOnlyCollection<SpaceWhale>? spaceWhale)
      {
-          if (distance < 0)
-          {
-               throw new IncorrectFormatException($"Distance can't be a negative number");
-          }
-
+          CheckDistance(distance);
           _spaceWhales = spaceWhale;
           _distance = distance;
      }
 
-     public double Distance => _distance;
+     public double Distance { get; }
      public bool PassingEnvironment(ISpaceShip spaceShip)
      {
           if (spaceShip != null)
@@ -49,5 +45,13 @@ public class NebulaeOfNitrineParticles : IEnvironment
           }
 
           throw new NullObjectException($"No Space Ship to pass this environment");
+     }
+
+     private static void CheckDistance(double distance)
+     {
+          if (distance <= 0)
+          {
+               throw new IncorrectFormatException($"Distance must be a positive number");
+          }
      }
 }

@@ -17,12 +17,12 @@ public class Stella : ISpaceShip
     private Hull _hull;
     public Stella(IReadOnlyCollection<Deflector> deflectors, Hull hull, IReadOnlyCollection<Engine> engines)
     {
+        CheckDeflectors(deflectors);
+        CheckEngines(engines);
+        CheckHull(hull);
         _deflectors = deflectors;
         _hull = hull;
         Engines = engines;
-        CheckDeflectors();
-        CheckEngines();
-        CheckHull();
         StartTheEngines();
     }
 
@@ -133,9 +133,9 @@ public class Stella : ISpaceShip
         return sum * coeficent / Weight;
     }
 
-    private void CheckHull()
+    private void CheckHull(Hull hull)
     {
-        bool hullIsValid = _hull is HullClassOne;
+        bool hullIsValid = hull is HullClassOne;
         if (!hullIsValid)
         {
             throw new IncorrectFormatException($"Not the right type of hull. " +
@@ -143,9 +143,9 @@ public class Stella : ISpaceShip
         }
     }
 
-    private void CheckEngines()
+    private void CheckEngines(IReadOnlyCollection<Engine> engines)
     {
-        bool allEnginesAreValid = Engines.All(engine => engine is EngineClassC or JumpingEngineOmega);
+        bool allEnginesAreValid = engines.All(engine => engine is EngineClassC or JumpingEngineOmega);
         if (!allEnginesAreValid)
         {
             throw new IncorrectFormatException($"Not the right type of all engines. " +
@@ -153,9 +153,9 @@ public class Stella : ISpaceShip
         }
     }
 
-    private void CheckDeflectors()
+    private void CheckDeflectors(IReadOnlyCollection<Deflector> deflectors)
     {
-        bool allDeflectorsAreValid = _deflectors.All(deflector => deflector is DeflectorClassOne);
+        bool allDeflectorsAreValid = deflectors.All(deflector => deflector is DeflectorClassOne);
         if (!allDeflectorsAreValid)
         {
             throw new IncorrectFormatException($"Not the right type of all deflectors. " +

@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.EnvironmentExceptions;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.IncorrectFormatExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.NullObjectExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Obstacles;
@@ -12,16 +13,16 @@ public class Space : IEnvironment
 {
     private Collection<Meteorite>? _meteorites;
     private Collection<Asteroid>? _asteroids;
-    private int _distance;
 
-    public Space(int distance, Collection<Meteorite>? meteorites, Collection<Asteroid>? asteroids)
+    public Space(double distance, Collection<Meteorite>? meteorites, Collection<Asteroid>? asteroids)
     {
+        CheckDistance(distance);
         _meteorites = meteorites;
         _asteroids = asteroids;
-        _distance = distance;
+        Distance = distance;
     }
 
-    public int Distance => _distance;
+    public double Distance { get; }
     public bool PassingEnvironment(ISpaceShip spaceShip)
     {
         if (spaceShip != null)
@@ -55,5 +56,13 @@ public class Space : IEnvironment
         }
 
         throw new NullObjectException($"No Space Ship to pass this environment");
+    }
+
+    private static void CheckDistance(double distance)
+    {
+        if (distance <= 0)
+        {
+            throw new IncorrectFormatException($"Distance must be a positive number");
+        }
     }
 }

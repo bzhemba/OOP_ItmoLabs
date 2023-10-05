@@ -18,12 +18,12 @@ public class Augur : ISpaceShip
 
     public Augur(IReadOnlyCollection<Deflector> deflectors, Hull hull, IReadOnlyCollection<Engine> engines)
     {
+        CheckDeflectors(deflectors);
+        CheckEngines(engines);
+        CheckHull(hull);
         _deflectors = deflectors;
         _hull = hull;
         Engines = engines;
-        CheckDeflectors();
-        CheckEngines();
-        CheckHull();
         StartTheEngines();
     }
 
@@ -145,9 +145,9 @@ public class Augur : ISpaceShip
         return sum * coeficent / Weight;
     }
 
-    private void CheckHull()
+    private void CheckHull(Hull hull)
     {
-        bool hullIsValid = _hull is HullClassThree;
+        bool hullIsValid = hull is HullClassThree;
         if (!hullIsValid)
         {
             throw new IncorrectFormatException($"Not the right type of hull. " +
@@ -155,9 +155,9 @@ public class Augur : ISpaceShip
         }
     }
 
-    private void CheckEngines()
+    private void CheckEngines(IReadOnlyCollection<Engine> engines)
     {
-        bool allEnginesAreValid = Engines.All(engine => engine is EngineClassE or JumpingEngineAlpha);
+        bool allEnginesAreValid = engines.All(engine => engine is EngineClassE or JumpingEngineAlpha);
         if (!allEnginesAreValid)
         {
             throw new IncorrectFormatException($"Not the right type of all engines. " +
@@ -165,9 +165,9 @@ public class Augur : ISpaceShip
         }
     }
 
-    private void CheckDeflectors()
+    private void CheckDeflectors(IReadOnlyCollection<Deflector> deflectors)
     {
-        bool allDeflectorsAreValid = _deflectors.All(deflector => deflector is DeflectorClassThree);
+        bool allDeflectorsAreValid = deflectors.All(deflector => deflector is DeflectorClassThree);
         if (!allDeflectorsAreValid)
         {
             throw new IncorrectFormatException($"Not the right type of all deflectors. " +

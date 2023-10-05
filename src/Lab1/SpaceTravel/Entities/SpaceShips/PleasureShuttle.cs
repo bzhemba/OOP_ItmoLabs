@@ -16,10 +16,10 @@ public class PleasureShuttle : ISpaceShip
     private Hull _hull;
     public PleasureShuttle(Hull hull, IReadOnlyCollection<Engine> engines)
     {
+        CheckEngines(engines);
+        CheckHull(hull);
         _hull = hull;
         Engines = engines;
-        CheckEngines();
-        CheckHull();
         StartTheEngines();
     }
 
@@ -72,9 +72,9 @@ public class PleasureShuttle : ISpaceShip
             return sum * coeficent / Weight;
         }
 
-    private void CheckHull()
+    private void CheckHull(Hull hull)
     {
-        bool hullIsValid = _hull is HullClassOne;
+        bool hullIsValid = hull is HullClassOne;
         if (!hullIsValid)
         {
             throw new IncorrectFormatException($"Not the right type of hull. " +
@@ -82,9 +82,9 @@ public class PleasureShuttle : ISpaceShip
         }
     }
 
-    private void CheckEngines()
+    private void CheckEngines(IReadOnlyCollection<Engine> engines)
     {
-        bool allEnginesAreValid = Engines.All(engine => engine is EngineClassC);
+        bool allEnginesAreValid = engines.All(engine => engine is EngineClassC);
         if (!allEnginesAreValid)
         {
             throw new IncorrectFormatException($"Not the right type of all engines. " +

@@ -11,7 +11,6 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Environments;
 public class IncreasedDensityOfSpace : IEnvironment
 {
     private ICollection<SubspaceChannel>? _subspaceChannels;
-    private int _distance;
 
     public IncreasedDensityOfSpace(ICollection<SubspaceChannel>? subspaceChannels)
     {
@@ -20,12 +19,12 @@ public class IncreasedDensityOfSpace : IEnvironment
         {
             foreach (SubspaceChannel subspaceChannel in subspaceChannels)
             {
-                if (subspaceChannel != null) _distance += subspaceChannel.Length;
+                if (subspaceChannel != null) Distance += subspaceChannel.Length;
             }
         }
     }
 
-    public int Distance => _distance;
+    public double Distance { get; }
 
     public bool PassingEnvironment(ISpaceShip spaceShip)
     {
