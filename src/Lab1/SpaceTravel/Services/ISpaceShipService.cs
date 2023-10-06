@@ -7,9 +7,9 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Services;
 public interface ISpaceShipService
 {
     double LaunchCost(Engine engine, int time);
-    ISpaceShip TheBestByPrice(Collection<ISpaceShip> spaceShips, int time);
-    ISpaceShip TheBestForNebulaeOfNitrineParticles(Collection<ISpaceShip> spaceShips);
-    ISpaceShip TheBestForInscreasedDensityOfSpace(Collection<ISpaceShip> spaceShips);
-    ISpaceShip TheBestForSpace(Collection<ISpaceShip> spaceShips);
-    void GetReport(ISpaceShip spaceShip, double distance);
+    TheBestSpaceShip TheBestByPrice(Collection<ISpaceShip> spaceShips, int time);
+    TheBestSpaceShip TheBestForNebulaeOfNitrineParticles(Collection<ISpaceShip> spaceShips);
+    TheBestSpaceShip TheBestForInscreasedDensityOfSpace(Collection<ISpaceShip> spaceShips);
+    TheBestSpaceShip TheBestForSpace(Collection<ISpaceShip> spaceShips);
+    Report GetReport(ISpaceShip spaceShip, double distance);
 }
