@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.IncorrectFormatExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.NullObjectExceptions;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Hulls;
@@ -32,29 +31,46 @@ public class PleasureShuttle : ISpaceShip
         throw new NullObjectException($"Pleasure shuttle doesn't have deflectors. You can't add Photon Modification");
     }
 
-    public void CollisionWithMeteorite(Meteorite? meteorite)
+    public bool CollisionWithMeteorite(Meteorite? meteorite)
     {
-        if (meteorite == null) return;
+        if (meteorite == null) return true;
         int damage = meteorite.DamagePoints;
-        _hull.TakeDamage(damage);
+        if (damage != 0)
+        {
+            int hitPoints = _hull.GetRemainedDamage(damage);
+            if (hitPoints < 0)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
-    public void CollisionWithAntimatterFlares()
+    public bool CollisionWithAntimatterFlares()
     {
-        throw new SpaceCrewDestroyedException($"Space ship doesn't have a deflector with modification." +
-                                              $"The ship's crew has been destroyed");
+        return false;
     }
 
-    public void CollisionWithSpaceWhale()
+    public bool CollisionWithSpaceWhale()
     {
-        throw new SpaceShipDestroyedException($"Space ship has been destroyed");
+        return false;
     }
 
-    public void CollisionWithAsteroid(Asteroid? asteroid)
+    public bool CollisionWithAsteroid(Asteroid? asteroid)
     {
-        if (asteroid == null) return;
+        if (asteroid == null) return true;
         int damage = asteroid.DamagePoints;
-        _hull.TakeDamage(damage);
+        if (damage != 0)
+        {
+            int hitPoints = _hull.GetRemainedDamage(damage);
+            if (hitPoints < 0)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public double ComputeSpeed()

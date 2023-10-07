@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.EnvironmentExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.IncorrectFormatExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.NullObjectExceptions;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Obstacles;
 
@@ -20,7 +20,7 @@ public class NebulaeOfNitrineParticles : IEnvironment
      }
 
      public double Distance { get; }
-     public bool PassingEnvironment(ISpaceShip spaceShip)
+     public TravelResult PassingEnvironment(ISpaceShip spaceShip)
      {
           if (spaceShip == null) throw new NullObjectException($"No Space Ship to pass this environment");
           IReadOnlyCollection<Engine> checkEngines = spaceShip.Engines;
@@ -28,16 +28,19 @@ public class NebulaeOfNitrineParticles : IEnvironment
 
           if (!hasEngineE)
           {
-               throw new EnvironmentMismatchException($"This spaceship is not suitable for this environment");
+               return TravelResult.ShipDestruction;
           }
 
-          if (_spaceWhales == null) return true;
+          if (_spaceWhales == null) return TravelResult.Success;
           for (int i = 0; i < _spaceWhales.Count; i++)
           {
-               spaceShip.CollisionWithSpaceWhale();
+               if (!spaceShip.CollisionWithSpaceWhale())
+               {
+                    return TravelResult.ShipDestruction;
+               }
           }
 
-          return true;
+          return TravelResult.Success;
      }
 
      private static void CheckDistance(double distance)

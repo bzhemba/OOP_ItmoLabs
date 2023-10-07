@@ -10,12 +10,12 @@ public class DeflectorClassThree : Deflector, ICanResistSpaceWhale
 
     public bool CanConfrontTheSpaceWhale()
     {
-        if (IsOn)
+        if (!IsOn)
         {
-            DeflectorOff();
-            return true;
+            return false;
         }
 
-        return false;
+        DeflectorOff();
+        return true;
     }
 }

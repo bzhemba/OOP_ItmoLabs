@@ -4,8 +4,7 @@ using System.Collections.ObjectModel;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Environments;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Paths;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.EnvironmentExceptions;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
+using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Hulls;
@@ -37,12 +36,12 @@ public class SpaceTravelTest
         var increasedDensityOfSpace = new IncreasedDensityOfSpace(subspaceChannels);
         if (t == typeof(Augur))
         {
-            Assert.Throws<EnvironmentMismatchException>(() => increasedDensityOfSpace.PassingEnvironment(augur));
+            Assert.Equal(TravelResult.LossOfShip, increasedDensityOfSpace.PassingEnvironment(augur));
         }
 
         if (t == typeof(PleasureShuttle))
         {
-            Assert.Throws<EnvironmentMismatchException>(() => increasedDensityOfSpace.PassingEnvironment(pleasureShuttle));
+            Assert.Equal(TravelResult.ShipDestruction, increasedDensityOfSpace.PassingEnvironment(pleasureShuttle));
         }
     }
 
@@ -59,25 +58,25 @@ public class SpaceTravelTest
 
         var antimatterFlares =
             new Collection<AntimatterFlare>() { new AntimatterFlare() };
-        var subspaceChannel = new SubspaceChannel(30, antimatterFlares);
+        var subspaceChannel = new SubspaceChannel(20, antimatterFlares);
         var subspaceChannels = new Collection<SubspaceChannel>();
         subspaceChannels.Add(subspaceChannel);
         var increasedDensityOfSpace = new IncreasedDensityOfSpace(subspaceChannels);
         var spaceShipServices = new SpaceShipService();
 
         // Act
-        bool result = false;
+        TravelResult result;
         if (havePhotonDeflector)
         {
             vaklas.AddPhotonDeflector();
             result = increasedDensityOfSpace.PassingEnvironment(vaklas);
-            Assert.True(result);
+            Assert.Equal(TravelResult.Success, result);
             spaceShipServices.GetReport(vaklas, increasedDensityOfSpace.Distance);
         }
 
         if (havePhotonDeflector == false)
         {
-            Assert.Throws<SpaceCrewDestroyedException>(() => increasedDensityOfSpace.PassingEnvironment(vaklas));
+            Assert.Equal(TravelResult.CrewDeath, increasedDensityOfSpace.PassingEnvironment(vaklas));
         }
     }
 
@@ -105,16 +104,16 @@ public class SpaceTravelTest
         var spaceShipServices = new SpaceShipService();
 
         // Act
-        bool result = false;
+        TravelResult result;
         if (t == typeof(Vaklas))
         {
-            Assert.Throws<SpaceShipDestroyedException>(() => nebulaeOfNitrineParticles.PassingEnvironment(vaklas));
+            Assert.Equal(TravelResult.ShipDestruction, nebulaeOfNitrineParticles.PassingEnvironment(vaklas));
         }
 
         if (t == typeof(Augur))
         {
             result = nebulaeOfNitrineParticles.PassingEnvironment(augur);
-            Assert.True(result);
+            Assert.Equal(TravelResult.Success, result);
             spaceShipServices.GetReport(augur, nebulaeOfNitrineParticles.Distance);
         }
 
@@ -122,7 +121,7 @@ public class SpaceTravelTest
         {
             meridian.AntinitrineEmitterON();
             result = nebulaeOfNitrineParticles.PassingEnvironment(meridian);
-            Assert.True(result);
+            Assert.Equal(TravelResult.Success, result);
             spaceShipServices.GetReport(meridian, nebulaeOfNitrineParticles.Distance);
         }
     }
@@ -142,11 +141,11 @@ public class SpaceTravelTest
         var spaceShips = new Collection<ISpaceShip>();
         spaceShips.Add(vaklas);
         spaceShips.Add(pleasureShuttle);
-        ISpaceShip theBest = spaceShipServices.TheBestByPrice(spaceShips, 100);
+        TheBestSpaceShip theBest = spaceShipServices.GeTheBestByPrice(spaceShips, 100);
 
         // Act
         bool result;
-        result = theBest is PleasureShuttle;
+        result = theBest.SpaceShip is PleasureShuttle;
 
         // Assert
         Assert.True(result);
@@ -169,11 +168,11 @@ public class SpaceTravelTest
         var spaceShips = new Collection<ISpaceShip>();
         spaceShips.Add(augur);
         spaceShips.Add(stella);
-        ISpaceShip theBest = spaceShipServices.TheBestForInscreasedDensityOfSpace(spaceShips);
+        TheBestSpaceShip theBest = spaceShipServices.GetTheBestForInscreasedDensityOfSpace(spaceShips);
 
         // Act
         bool result;
-        result = theBest is Stella;
+        result = theBest.SpaceShip is Stella;
 
         // Assert
         Assert.True(result);
@@ -194,11 +193,11 @@ public class SpaceTravelTest
         var spaceShips = new Collection<ISpaceShip>();
         spaceShips.Add(pleasureShuttle);
         spaceShips.Add(vaklas);
-        ISpaceShip theBest = spaceShipServices.TheBestForNebulaeOfNitrineParticles(spaceShips);
+        TheBestSpaceShip theBest = spaceShipServices.GetTheBestForNebulaeOfNitrineParticles(spaceShips);
 
         // Act
         bool result;
-        result = theBest is Vaklas;
+        result = theBest.SpaceShip is Vaklas;
 
         // Assert
         Assert.True(result);
@@ -225,7 +224,7 @@ public class SpaceTravelTest
         int f = 0;
         foreach (PathSection pathSection in route1)
         {
-            if (pathSection.Environment.PassingEnvironment(pleasureShuttle) == false)
+            if (pathSection.Environment.PassingEnvironment(pleasureShuttle) == TravelResult.ShipDestruction)
             {
                 f = 1;
                 break;
@@ -259,9 +258,7 @@ public class SpaceTravelTest
         var pleasureShuttle = new PleasureShuttle(hull, engine);
         foreach (PathSection pathSection in route1)
         {
-            Assert.Throws<SpaceShipDestroyedException>(
-                () => pathSection.Environment.PassingEnvironment(pleasureShuttle));
-            break;
+            Assert.Equal(TravelResult.ShipDestruction, pathSection.Environment.PassingEnvironment(pleasureShuttle));
         }
     }
 
@@ -296,7 +293,7 @@ public class SpaceTravelTest
     bool result = false;
     foreach (PathSection pathSection in route2)
     {
-        if (pathSection.Environment.PassingEnvironment(meridian) == false)
+        if (pathSection.Environment.PassingEnvironment(meridian) == TravelResult.ShipDestruction)
         {
             f = 1;
             break;
@@ -337,7 +334,7 @@ public class SpaceTravelTest
         bool result = false;
         foreach (PathSection pathSection in route3)
         {
-            if (pathSection.Environment.PassingEnvironment(meridian) == false)
+            if (pathSection.Environment.PassingEnvironment(meridian) == TravelResult.ShipDestruction)
             {
                 f = 1;
                 break;
@@ -379,7 +376,8 @@ public class SpaceTravelTest
         int f = 0;
         foreach (PathSection pathSection in route4)
         {
-            if (pathSection.Environment.PassingEnvironment(augur) == false)
+            if (pathSection.Environment.PassingEnvironment(augur) == TravelResult.ShipDestruction ||
+                pathSection.Environment.PassingEnvironment(augur) == TravelResult.CrewDeath)
             {
                 f = 1;
                 break;

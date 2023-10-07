@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.EnvironmentExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.NullObjectExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
@@ -24,28 +23,38 @@ public class IncreasedDensityOfSpace : IEnvironment
 
     public double Distance { get; }
 
-    public bool PassingEnvironment(ISpaceShip spaceShip)
+    public TravelResult PassingEnvironment(ISpaceShip spaceShip)
     {
         if (spaceShip == null || _subspaceChannels == null)
             throw new NullObjectException($"No Space Ship to pass this environment");
         IReadOnlyCollection<Engine> checkEngines = spaceShip.Engines;
-        bool allChannelsValid = _subspaceChannels.All(channel =>
+        foreach (SubspaceChannel channel in _subspaceChannels)
         {
-            bool engineValid = checkEngines.Any(engine =>
-                engine.TypeOfEngine == TypeOfEngine.Jumping && engine.JumpRange >= channel?.Length);
-            if (!engineValid)
+            bool isEngineJumping = checkEngines.Any(engine =>
+                engine.TypeOfEngine == TypeOfEngine.Jumping);
+            if (!isEngineJumping)
             {
-                throw new EnvironmentMismatchException($"This spaceship is not suitable for this environment");
+                return TravelResult.ShipDestruction;
             }
 
-            if (channel.AntimatterFlares == null) return true;
-            for (int i = 0; i < channel.AntimatterFlares.Count; i++)
+            bool isEngineValid = checkEngines.Any(engine => engine.JumpRange >= channel?.Length);
+            if (isEngineValid)
             {
-                spaceShip.CollisionWithAntimatterFlares();
+                if (channel.AntimatterFlares == null) continue;
+                for (int i = 0; i < channel.AntimatterFlares.Count; i++)
+                {
+                    if (!spaceShip.CollisionWithAntimatterFlares())
+                    {
+                        return TravelResult.CrewDeath;
+                    }
+                }
             }
+            else
+            {
+                return TravelResult.LossOfShip;
+            }
+        }
 
-            return true;
-        });
-        return allChannelsValid;
+        return TravelResult.Success;
     }
 }

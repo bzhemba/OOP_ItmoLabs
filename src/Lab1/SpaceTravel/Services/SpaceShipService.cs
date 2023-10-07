@@ -12,6 +12,8 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Services;
 
 public class SpaceShipService : ISpaceShipService
 {
+    private const int GravittonMatterCost = 900;
+    private const int ActivePlasmaCost = 700;
     public double LaunchCost(Engine engine, int time)
     {
         if (engine == null)
@@ -26,11 +28,11 @@ public class SpaceShipService : ISpaceShipService
 
         if (engine.TypeOfEngine == TypeOfEngine.Jumping)
         {
-            return engine.ConsumedFuel(time) * (int)FuelExchange.GravitonMatterCost;
+            return engine.ConsumedFuel(time) * GravittonMatterCost;
         }
         else
         {
-            return engine.ConsumedFuel(time) * (int)FuelExchange.ActivePlasmaCost;
+            return engine.ConsumedFuel(time) * ActivePlasmaCost;
         }
     }
 
@@ -53,7 +55,7 @@ public class SpaceShipService : ISpaceShipService
         return totalCost;
     }
 
-    public TheBestSpaceShip TheBestByPrice(Collection<ISpaceShip> spaceShips, int time)
+    public TheBestSpaceShip GeTheBestByPrice(Collection<ISpaceShip> spaceShips, int time)
     {
         if (time < 0)
         {
@@ -71,13 +73,13 @@ public class SpaceShipService : ISpaceShipService
 
         var sortedDict =
             spaceShipsCost.OrderBy(x
-                => x.Value).ToDictionary(x => x.Key, x => x.Value);
+                => x.Key).ToDictionary(x => x.Key, x => x.Value);
         KeyValuePair<double, ISpaceShip> first = sortedDict.First();
         var bestForSpace = new TheBestSpaceShip(first.Value, first.Key);
         return bestForSpace;
     }
 
-    public TheBestSpaceShip TheBestForInscreasedDensityOfSpace(Collection<ISpaceShip> spaceShips)
+    public TheBestSpaceShip GetTheBestForInscreasedDensityOfSpace(Collection<ISpaceShip> spaceShips)
     {
         var spaceShipsJumpingRange = new Dictionary<double, ISpaceShip>();
         if (spaceShips != null)
@@ -99,13 +101,12 @@ public class SpaceShipService : ISpaceShipService
 
         var sortedDict =
             spaceShipsJumpingRange.OrderBy(x
-                => x.Value).ToDictionary(x => x.Key, x => x.Value);
-        KeyValuePair<double, ISpaceShip> last = sortedDict.Last();
-        var bestForSpace = new TheBestSpaceShip(last.Value, last.Key);
+                => x.Key).ToDictionary(x => x.Key, x => x.Value);
+        var bestForSpace = new TheBestSpaceShip(sortedDict.Last().Value, sortedDict.Last().Key);
         return bestForSpace;
     }
 
-    public TheBestSpaceShip TheBestForNebulaeOfNitrineParticles(Collection<ISpaceShip> spaceShips)
+    public TheBestSpaceShip GetTheBestForNebulaeOfNitrineParticles(Collection<ISpaceShip> spaceShips)
     {
         var spaceShipsEnginePower = new Dictionary<double, ISpaceShip>();
         if (spaceShips != null)
@@ -115,7 +116,7 @@ public class SpaceShipService : ISpaceShipService
                 double sumPower = 0;
                 foreach (Engine engine in spaceShip.Engines)
                 {
-                    if (engine.GetType().IsAssignableFrom(typeof(EngineClassE)))
+                    if (engine is EngineClassE)
                         sumPower += engine.Power();
                 }
 
@@ -125,13 +126,12 @@ public class SpaceShipService : ISpaceShipService
 
         var sortedDict =
             spaceShipsEnginePower.OrderBy(x
-                => x.Value).ToDictionary(x => x.Key, x => x.Value);
-        KeyValuePair<double, ISpaceShip> last = sortedDict.Last();
-        var bestForSpace = new TheBestSpaceShip(last.Value, last.Key);
+                => x.Key).ToDictionary(x => x.Key, x => x.Value);
+        var bestForSpace = new TheBestSpaceShip(sortedDict.Last().Value, sortedDict.Last().Key);
         return bestForSpace;
     }
 
-    public TheBestSpaceShip TheBestForSpace(Collection<ISpaceShip> spaceShips)
+    public TheBestSpaceShip GetTheBestForSpace(Collection<ISpaceShip> spaceShips)
     {
         var spaceShipsEnginePower = new Dictionary<double, ISpaceShip>();
         if (spaceShips != null)
@@ -148,10 +148,8 @@ public class SpaceShipService : ISpaceShipService
 
         var sortedDict =
             spaceShipsEnginePower.OrderBy(x
-                => x.Value).ToDictionary(x => x.Key, x => x.Value);
-
-        KeyValuePair<double, ISpaceShip> first = sortedDict.First();
-        var bestForSpace = new TheBestSpaceShip(first.Value, first.Key);
+                => x.Key).ToDictionary(x => x.Key, x => x.Value);
+        var bestForSpace = new TheBestSpaceShip(sortedDict.First().Value, sortedDict.First().Key);
         return bestForSpace;
     }
 

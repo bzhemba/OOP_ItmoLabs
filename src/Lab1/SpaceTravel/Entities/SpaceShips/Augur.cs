@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.IncorrectFormatExceptions;
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Deflectors;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Engines;
@@ -13,6 +12,7 @@ namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.SpaceShips;
 public class Augur : ISpaceShip
 {
     private const int Weight = 70;
+    private const int Coefficient = 10;
     private const int StartingFuel = 300;
     private readonly IReadOnlyCollection<Deflector> _deflectors;
     private readonly Hull _hull;
@@ -38,13 +38,13 @@ public class Augur : ISpaceShip
         firstTurnedOnDeflector.AddPhotonModification();
     }
 
-    public void CollisionWithMeteorite(Meteorite? meteorite)
+    public bool CollisionWithMeteorite(Meteorite? meteorite)
     {
-        if (meteorite == null) return;
+        if (meteorite == null) return true;
         int damage = meteorite.DamagePoints;
-        foreach (DeflectorClassThree deflector in _deflectors.Where(d => d.IsOn).Cast<DeflectorClassThree>())
+        foreach (DeflectorClassThree deflector in _deflectors.Where(deflector => deflector.IsOn))
         {
-            int remainedDamage = deflector.TakeDamage(damage);
+            int remainedDamage = deflector.GetRemainedDamage(damage);
             if (remainedDamage != 0)
             {
                 damage = remainedDamage;
@@ -58,40 +58,45 @@ public class Augur : ISpaceShip
 
         if (damage != 0)
         {
-            _hull.TakeDamage(damage);
+            int hitPoints = _hull.GetRemainedDamage(damage);
+            if (hitPoints < 0)
+            {
+                return false;
+            }
         }
+
+        return true;
     }
 
-    public virtual void CollisionWithAntimatterFlares()
+    public virtual bool CollisionWithAntimatterFlares()
     {
         if (_deflectors.Where(d => d is { IsOn: true, HasPhotonModification:
                 true }).Cast<DeflectorClassThree>().Any(deflector => deflector.ReflectAntimatterFlare()))
         {
-            return;
+            return true;
         }
 
-        throw new SpaceCrewDestroyedException($"Space ship doesn't have a deflector with modification." +
-                                              $"The ship's crew has been destroyed");
+        return false;
     }
 
-    public virtual void CollisionWithSpaceWhale()
+    public virtual bool CollisionWithSpaceWhale()
     {
         if (_deflectors.Where(d => d.IsOn).Cast<DeflectorClassThree>().Any(deflector =>
                 deflector.CanConfrontTheSpaceWhale()))
         {
-            return;
+            return true;
         }
 
-        throw new SpaceShipDestroyedException($"Space ship has been destroyed");
+        return false;
     }
 
-    public void CollisionWithAsteroid(Asteroid? asteroid)
+    public bool CollisionWithAsteroid(Asteroid? asteroid)
     {
-        if (asteroid == null) return;
+        if (asteroid == null) return true;
         int damage = asteroid.DamagePoints;
-        foreach (DeflectorClassThree deflector in _deflectors.Where(d => d.IsOn).Cast<DeflectorClassThree>())
+        foreach (DeflectorClassThree deflector in _deflectors.Where(deflector => deflector.IsOn))
         {
-            int remainedDamage = deflector.TakeDamage(damage);
+            int remainedDamage = deflector.GetRemainedDamage(damage);
             if (remainedDamage != 0)
             {
                 damage = remainedDamage;
@@ -105,16 +110,21 @@ public class Augur : ISpaceShip
 
         if (damage != 0)
         {
-            _hull.TakeDamage(damage);
+            int hitPoints = _hull.GetRemainedDamage(damage);
+            if (hitPoints < 0)
+            {
+                return false;
+            }
         }
+
+        return true;
     }
 
     public double ComputeSpeed()
     {
-        const int coefficient = 10;
         int sum = Engines.Sum(engine => (int)engine.Power());
 
-        return sum * coefficient / Weight;
+        return sum * Coefficient / Weight;
     }
 
     private void CheckHull(Hull hull)

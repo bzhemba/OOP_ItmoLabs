@@ -1,4 +1,3 @@
-using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Exceptions.SpaceShipExceptions;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Services;
 
 namespace Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Models.Hulls;
@@ -12,12 +11,12 @@ public class Hull : ITakeDamage
         _hitPoints = hitPoints;
     }
 
-    public int TakeDamage(int damage)
+    public int GetRemainedDamage(int damage)
     {
             if (_hitPoints - damage < 0)
             {
-                _hitPoints = 0;
-                throw new SpaceShipDestroyedException($"Can't stand this damage. Space ship destroyed");
+                _hitPoints -= damage;
+                return _hitPoints;
             }
             else if (_hitPoints - damage == 0)
             {

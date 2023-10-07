@@ -14,9 +14,10 @@ public class Deflector : ITakeDamage
         if (hitPoints < 0)
             throw new IncorrectFormatException($"Hit points can't be a negative number");
         _hitPoints = hitPoints;
+        IsOn = true;
     }
 
-    public bool IsOn { get; private set; } = true;
+    public bool IsOn { get; private set; }
 
     public bool HasPhotonModification { get; private set; }
 
@@ -32,21 +33,16 @@ public class Deflector : ITakeDamage
 
     public bool ReflectAntimatterFlare()
     {
-        if (HasPhotonModification)
+        if (!HasPhotonModification || _countReflectedFlares >= 3)
         {
-            if (_countReflectedFlares < 3)
-            {
-                _countReflectedFlares += 1;
-                return true;
-            }
-
             return false;
         }
 
-        return false;
+        _countReflectedFlares += 1;
+        return true;
     }
 
-    public int TakeDamage(int damage)
+    public int GetRemainedDamage(int damage)
     {
             int remainingDamagePoints = _hitPoints - damage;
             if (remainingDamagePoints < 0)
