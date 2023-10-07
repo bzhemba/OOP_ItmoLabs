@@ -18,7 +18,7 @@ public class SpaceTravelTest
     [Theory]
     [InlineData(typeof(PleasureShuttle))]
     [InlineData(typeof(Augur))]
-    public void PassingTheIncreasedDensityOfSpace(Type t)
+    public void PassingTheIncreasedDensityOfSpace(Type typeOfSpaceShip)
     {
         // Arrange
         List<Engine> augurEngines = new() { new EngineClassE(), new JumpingEngineAlpha() };
@@ -30,16 +30,17 @@ public class SpaceTravelTest
         var pleasureShuttle = new PleasureShuttle(shuttleHull, shuttleEngine);
         var antimatterFlares =
         new Collection<AntimatterFlare>() { new AntimatterFlare() };
+
         var subspaceChannel = new SubspaceChannel(70, antimatterFlares);
         var subspaceChannels = new Collection<SubspaceChannel>();
         subspaceChannels.Add(subspaceChannel);
         var increasedDensityOfSpace = new IncreasedDensityOfSpace(subspaceChannels);
-        if (t == typeof(Augur))
+        if (typeOfSpaceShip == typeof(Augur))
         {
             Assert.Equal(TravelResult.LossOfShip, increasedDensityOfSpace.PassingEnvironment(augur));
         }
 
-        if (t == typeof(PleasureShuttle))
+        if (typeOfSpaceShip == typeof(PleasureShuttle))
         {
             Assert.Equal(TravelResult.ShipDestruction, increasedDensityOfSpace.PassingEnvironment(pleasureShuttle));
         }
@@ -96,6 +97,7 @@ public class SpaceTravelTest
         HullClassThree augurHull = new();
         var augur = new Augur(augurDeflectors, augurHull, augurEngines);
         List<DeflectorClassTwo> meridianDeflectors = new() { new DeflectorClassTwo() };
+
         HullClassTwo hull = new();
         Collection<Engine> meridianEngine = new() { new EngineClassE() };
         var meridian = new Meridian(meridianDeflectors, hull, meridianEngine);
@@ -137,6 +139,7 @@ public class SpaceTravelTest
         List<DeflectorClassOne> vaklasDeflectors = new() { new DeflectorClassOne() };
         HullClassTwo vaklasHull = new();
         var vaklas = new Vaklas(vaklasDeflectors, vaklasHull, vaklasEngines);
+
         var spaceShipServices = new SpaceShipService();
         var spaceShips = new Collection<ISpaceShip>();
         spaceShips.Add(vaklas);
@@ -184,10 +187,12 @@ public class SpaceTravelTest
         // Arrange
         HullClassOne shuttleHull = new();
         Collection<Engine> shuttleEngine = new() { new EngineClassC() };
+
         var pleasureShuttle = new PleasureShuttle(shuttleHull, shuttleEngine);
         Collection<Engine> vaklasEngines = new() { new EngineClassE(), new JumpingEngineGamma() };
         List<DeflectorClassOne> vaklasDeflectors = new() { new DeflectorClassOne() };
         HullClassTwo vaklasHull = new();
+
         var vaklas = new Vaklas(vaklasDeflectors, vaklasHull, vaklasEngines);
         var spaceShipServices = new SpaceShipService();
         var spaceShips = new Collection<ISpaceShip>();
@@ -214,11 +219,13 @@ public class SpaceTravelTest
         var subspaceChannels = new Collection<SubspaceChannel>();
         subspaceChannels.Add(subspaceChannel1);
         subspaceChannels.Add(subspaceChannel2);
+
         var route1 = new List<PathSection>();
         var pathSection1 = new PathSection(space1, 100);
         route1.Add(pathSection1);
         HullClassOne hull = new();
         Collection<Engine> engine = new() { new EngineClassC() };
+
         var pleasureShuttle = new PleasureShuttle(hull, engine);
         bool result = false;
         int f = 0;
@@ -244,6 +251,7 @@ public class SpaceTravelTest
     {
         var meteorites2 = new Collection<Meteorite>() { new Meteorite() };
         var space3 = new Space(50, meteorites2, null);
+
         var antimatterFlares = new Collection<AntimatterFlare>() { new AntimatterFlare() };
         var subspaceChannel1 = new SubspaceChannel(40, antimatterFlares);
         var subspaceChannel2 = new SubspaceChannel(40, null);
@@ -267,6 +275,7 @@ public class SpaceTravelTest
 {
     var asteroids = new Collection<Asteroid>() { new Asteroid() };
     var meteorites2 = new Collection<Meteorite>() { new Meteorite() };
+
     var space1 = new Space(200, null, asteroids);
     var space3 = new Space(50, meteorites2, null);
     var antimatterFlares = new Collection<AntimatterFlare>() { new AntimatterFlare() };
@@ -276,6 +285,7 @@ public class SpaceTravelTest
     subspaceChannels.Add(subspaceChannel1);
     subspaceChannels.Add(subspaceChannel2);
     var whales = new Collection<SpaceWhale>() { new SpaceWhale() };
+
     var nebulaeOfNitrineParticles = new NebulaeOfNitrineParticles(400, whales);
     var pathSection1 = new PathSection(space1, 100);
     var pathSection3 = new PathSection(space3, 150);
