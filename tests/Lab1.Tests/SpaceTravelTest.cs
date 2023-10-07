@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Itmo.ObjectOrientedProgramming.Lab1.SpaceTravel.Entities.Environments;
@@ -15,12 +14,8 @@ using Xunit;
 namespace Itmo.ObjectOrientedProgramming.Lab1.Tests;
 public class SpaceTravelTest
 {
-    [Theory]
-    [InlineData(typeof(PleasureShuttle))]
-    [InlineData(typeof(Augur))]
-    public void PassingTheIncreasedDensityOfSpace(Type typeOfSpaceShip)
+    public static IEnumerable<object[]> GetSpaceShips()
     {
-        // Arrange
         List<Engine> augurEngines = new() { new EngineClassE(), new JumpingEngineAlpha() };
         List<DeflectorClassThree> augurDeflectors = new() { new DeflectorClassThree() };
         HullClassThree augurHull = new();
@@ -28,66 +23,23 @@ public class SpaceTravelTest
         HullClassOne shuttleHull = new();
         Collection<Engine> shuttleEngine = new() { new EngineClassC() };
         var pleasureShuttle = new PleasureShuttle(shuttleHull, shuttleEngine);
-        var antimatterFlares =
-        new Collection<AntimatterFlare>() { new AntimatterFlare() };
-
-        var subspaceChannel = new SubspaceChannel(70, antimatterFlares);
-        var subspaceChannels = new Collection<SubspaceChannel>();
-        subspaceChannels.Add(subspaceChannel);
-        var increasedDensityOfSpace = new IncreasedDensityOfSpace(subspaceChannels);
-        if (typeOfSpaceShip == typeof(Augur))
-        {
-            Assert.Equal(TravelResult.LossOfShip, increasedDensityOfSpace.PassingEnvironment(augur));
-        }
-
-        if (typeOfSpaceShip == typeof(PleasureShuttle))
-        {
-            Assert.Equal(TravelResult.ShipDestruction, increasedDensityOfSpace.PassingEnvironment(pleasureShuttle));
-        }
+        yield return new object[] { pleasureShuttle, augur };
     }
 
-    [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public void PassingTheIncreasedDensityOfSpaceOnVaklas(bool havePhotonDeflector)
+    public static IEnumerable<object[]> GetVaklases()
     {
-        // Arrange
         Collection<Engine> vaklasEngines = new() { new EngineClassE(), new JumpingEngineGamma() };
-        List<DeflectorClassOne> vaklasDeflectors = new() { new DeflectorClassOne() };
+        List<DeflectorClassOne> vaklas1Deflectors = new() { new DeflectorClassOne() };
+        List<DeflectorClassOne> vaklas2Deflectors = new() { new DeflectorClassOne() };
         HullClassTwo vaklasHull = new();
-        var vaklas = new Vaklas(vaklasDeflectors, vaklasHull, vaklasEngines);
-
-        var antimatterFlares =
-            new Collection<AntimatterFlare>() { new AntimatterFlare() };
-        var subspaceChannel = new SubspaceChannel(20, antimatterFlares);
-        var subspaceChannels = new Collection<SubspaceChannel>();
-        subspaceChannels.Add(subspaceChannel);
-        var increasedDensityOfSpace = new IncreasedDensityOfSpace(subspaceChannels);
-        var spaceShipServices = new SpaceShipService();
-
-        // Act
-        TravelResult result;
-        if (havePhotonDeflector)
-        {
-            vaklas.AddPhotonDeflector();
-            result = increasedDensityOfSpace.PassingEnvironment(vaklas);
-            Assert.Equal(TravelResult.Success, result);
-            spaceShipServices.GetReport(vaklas, increasedDensityOfSpace.Distance);
-        }
-
-        if (havePhotonDeflector == false)
-        {
-            Assert.Equal(TravelResult.CrewDeath, increasedDensityOfSpace.PassingEnvironment(vaklas));
-        }
+        var vaklasWithoutPhotonDeflector = new Vaklas(vaklas1Deflectors, vaklasHull, vaklasEngines);
+        var vaklasWithPhotonDeflector = new Vaklas(vaklas2Deflectors, vaklasHull, vaklasEngines);
+        vaklasWithPhotonDeflector.AddPhotonDeflector();
+        yield return new object[] { vaklasWithoutPhotonDeflector, vaklasWithPhotonDeflector };
     }
 
-    [Theory]
-    [InlineData(typeof(Vaklas))]
-    [InlineData(typeof(Augur))]
-    [InlineData(typeof(Meridian))]
-    public void SpaceWhaleInNebulaeOfNitrineParticles(Type t)
+    public static IEnumerable<object[]> GetSpaceShipsForNebulae()
     {
-        // Arrange
         Collection<Engine> vaklasEngines = new() { new EngineClassE(), new JumpingEngineGamma() };
         List<DeflectorClassOne> vaklasDeflectors = new() { new DeflectorClassOne() };
         HullClassTwo vaklasHull = new();
@@ -101,31 +53,60 @@ public class SpaceTravelTest
         HullClassTwo hull = new();
         Collection<Engine> meridianEngine = new() { new EngineClassE() };
         var meridian = new Meridian(meridianDeflectors, hull, meridianEngine);
+        meridian.AntinitrineEmitterON();
+        yield return new object[] { vaklas, augur, meridian };
+    }
+
+    [Theory]
+    [MemberData(nameof(GetSpaceShips))]
+    public void PassingTheIncreasedDensityOfSpace(PleasureShuttle pleasureShuttle, Augur augur)
+    {
+        // Arrange
+        var antimatterFlares =
+        new Collection<AntimatterFlare>() { new AntimatterFlare() };
+
+        var subspaceChannel = new SubspaceChannel(70, antimatterFlares);
+        var subspaceChannels = new Collection<SubspaceChannel>();
+        subspaceChannels.Add(subspaceChannel);
+        var increasedDensityOfSpace = new IncreasedDensityOfSpace(subspaceChannels);
+        Assert.Equal(TravelResult.LossOfShip, increasedDensityOfSpace.PassingEnvironment(augur));
+        Assert.Equal(TravelResult.ShipDestruction, increasedDensityOfSpace.PassingEnvironment(pleasureShuttle));
+    }
+
+    [Theory]
+    [MemberData(nameof(GetVaklases))]
+    public void PassingTheIncreasedDensityOfSpaceOnVaklas(Vaklas vaklas, Vaklas modifiedVaklas)
+    {
+        // Arrange
+        var antimatterFlares =
+            new Collection<AntimatterFlare>() { new AntimatterFlare() };
+        var subspaceChannel = new SubspaceChannel(20, antimatterFlares);
+        var subspaceChannels = new Collection<SubspaceChannel>();
+        subspaceChannels.Add(subspaceChannel);
+        var increasedDensityOfSpace = new IncreasedDensityOfSpace(subspaceChannels);
+        var spaceShipServices = new SpaceShipService();
+
+        // Act
+        Assert.Equal(TravelResult.Success, increasedDensityOfSpace.PassingEnvironment(modifiedVaklas));
+        spaceShipServices.GetReport(vaklas, increasedDensityOfSpace.Distance.Km);
+        Assert.Equal(TravelResult.CrewDeath, increasedDensityOfSpace.PassingEnvironment(vaklas));
+    }
+
+    [Theory]
+    [MemberData(nameof(GetSpaceShipsForNebulae))]
+    public void SpaceWhaleInNebulaeOfNitrineParticles(Vaklas vaklas, Augur augur, Meridian meridian)
+    {
+        // Arrange
         var spaceWhales = new Collection<SpaceWhale>() { new SpaceWhale() };
         var nebulaeOfNitrineParticles = new NebulaeOfNitrineParticles(100, spaceWhales);
         var spaceShipServices = new SpaceShipService();
 
         // Act
-        TravelResult result;
-        if (t == typeof(Vaklas))
-        {
-            Assert.Equal(TravelResult.ShipDestruction, nebulaeOfNitrineParticles.PassingEnvironment(vaklas));
-        }
-
-        if (t == typeof(Augur))
-        {
-            result = nebulaeOfNitrineParticles.PassingEnvironment(augur);
-            Assert.Equal(TravelResult.Success, result);
-            spaceShipServices.GetReport(augur, nebulaeOfNitrineParticles.Distance);
-        }
-
-        if (t == typeof(Meridian))
-        {
-            meridian.AntinitrineEmitterON();
-            result = nebulaeOfNitrineParticles.PassingEnvironment(meridian);
-            Assert.Equal(TravelResult.Success, result);
-            spaceShipServices.GetReport(meridian, nebulaeOfNitrineParticles.Distance);
-        }
+        Assert.Equal(TravelResult.ShipDestruction, nebulaeOfNitrineParticles.PassingEnvironment(vaklas));
+        Assert.Equal(TravelResult.Success, nebulaeOfNitrineParticles.PassingEnvironment(augur));
+        spaceShipServices.GetReport(augur, nebulaeOfNitrineParticles.Distance.Km);
+        Assert.Equal(TravelResult.Success, nebulaeOfNitrineParticles.PassingEnvironment(meridian));
+        spaceShipServices.GetReport(meridian, nebulaeOfNitrineParticles.Distance.Km);
     }
 
     [Fact]

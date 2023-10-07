@@ -15,11 +15,11 @@ public class NebulaeOfNitrineParticles : IEnvironment
      public NebulaeOfNitrineParticles(double distance, IReadOnlyCollection<SpaceWhale>? spaceWhale)
      {
           CheckDistance(distance);
-          Distance = distance;
+          Distance = new Distance(distance);
           _spaceWhales = spaceWhale;
      }
 
-     public double Distance { get; }
+     public Distance Distance { get; }
      public TravelResult PassingEnvironment(ISpaceShip spaceShip)
      {
           if (spaceShip == null) throw new NullObjectException($"No Space Ship to pass this environment");
