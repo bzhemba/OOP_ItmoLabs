@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <Folder Include="PersonalComputerConfigurator\Exceptions\" />
+      <Folder Include="PersonalComputerConfigurator\Models\SystemCaseCharacteristics\" />
       <Folder Include="PersonalComputerConfigurator\Services\" />
     </ItemGroup>
 

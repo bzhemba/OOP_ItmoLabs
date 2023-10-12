@@ -1,6 +1,7 @@
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CPUDetails;
 
-namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Processors;
+namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
 
 public interface ICpuBuilder
 {
@@ -11,5 +12,5 @@ public interface ICpuBuilder
     ICpuBuilder WithMemoryFrequency(MemoryFrequency memoryFrequency);
     ICpuBuilder WithPowerConsumption(PowerConsumption powerConsumption);
     ICpuBuilder WithVideoCore(bool hasVideoCore);
-    CPU Create();
+    Cpu Build();
 }

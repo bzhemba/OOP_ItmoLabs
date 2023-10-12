@@ -1,0 +1,3 @@
+namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.WiFiAdapterCharacteristics;
+
+public record StandartVersion(int Version);

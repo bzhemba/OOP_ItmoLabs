@@ -1,7 +1,8 @@
 using System;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CPUDetails;
 
-namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Processors;
+namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
 
 public class CpuBuilder : ICpuBuilder
 {
@@ -12,6 +13,7 @@ public class CpuBuilder : ICpuBuilder
     private MemoryFrequency? _memoryFrequency;
     private PowerConsumption? _powerConsumption;
     private bool _hasVideoCore;
+
     public ICpuBuilder WithSocket(Socket socket)
     {
         _socket = socket;
@@ -54,11 +56,12 @@ public class CpuBuilder : ICpuBuilder
         return this;
     }
 
-    public virtual CPU Create()
+    public Cpu Build()
     {
-        if (_coresAmount != null && _coresFrequency != null && _tdp != null && _memoryFrequency != null && _powerConsumption != null)
+        if (_socket != default && _coresAmount != null && _coresFrequency != null
+            && _tdp != null && _memoryFrequency != null && _powerConsumption != null)
         {
-            return new CPU(_socket, _coresAmount, _coresFrequency, _tdp, _hasVideoCore, _memoryFrequency, _powerConsumption);
+            return new Cpu(_socket, _coresAmount, _coresFrequency, _tdp, _hasVideoCore, _memoryFrequency, _powerConsumption);
         }
         else
         {
