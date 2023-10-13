@@ -3,25 +3,24 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjec
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.PU;
 
-public class PowerUnit : IPowerUnitBuilderDirector
+public class PowerUnitBuilder : IPowerUnitBuilder
 {
-    private PeakLoad _peakLoad;
-
-    public PowerUnit(PeakLoad peakLoad)
+    private PeakLoad? _peakLoad;
+    public IPowerUnitBuilder WithPeakload(PeakLoad peakLoad)
     {
         _peakLoad = peakLoad;
+        return this;
     }
 
-    public IPowerUnitBuilder Direct(IPowerUnitBuilder builder)
+    public PowerUnit Build()
     {
-        if (builder != null)
+        if (_peakLoad != null)
         {
-            builder.WithPeakload(_peakLoad);
-            return builder;
+            return new PowerUnit(_peakLoad);
         }
         else
         {
-            throw new NullObjectException("Builder is empty");
+            throw new NullObjectException("Unable to create component, some parts are missing");
         }
     }
 }

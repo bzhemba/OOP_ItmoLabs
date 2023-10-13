@@ -1,6 +1,6 @@
-using System;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CPUDetails;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
 
@@ -65,7 +65,7 @@ public class CpuBuilder : ICpuBuilder
         }
         else
         {
-            throw new ArgumentNullException();
+            throw new NullObjectException("Unable to create component, some parts are missing");
         }
     }
 }

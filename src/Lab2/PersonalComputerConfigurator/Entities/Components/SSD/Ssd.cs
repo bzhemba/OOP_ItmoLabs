@@ -1,9 +1,10 @@
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.SsdCharacteristics;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SSD;
 
-public class Ssd
+public class Ssd : ISsdBuilderDirector
 {
     private Connection _connection;
     private Capacity _capacity;
@@ -16,5 +17,21 @@ public class Ssd
         _capacity = capacity;
         _maxSpeed = maxSpeed;
         _powerConsumption = powerConsumption;
+    }
+
+    public ISsdBuilder Direct(ISsdBuilder builder)
+    {
+        if (builder != null)
+        {
+            builder.WithPowerConsumption(_powerConsumption);
+            builder.WithConnection(_connection);
+            builder.WithCapacity(_capacity);
+            builder.WithMaxSpeed(_maxSpeed);
+            return builder;
+        }
+        else
+        {
+            throw new NullObjectException("Builder is empty");
+        }
     }
 }

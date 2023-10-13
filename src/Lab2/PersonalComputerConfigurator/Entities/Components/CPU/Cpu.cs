@@ -1,9 +1,10 @@
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CPUDetails;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
 
-public class Cpu
+public class Cpu : ICpuBuilderDirector
 {
     private CoresAmount _coresAmount;
     private CoresFrequency _coresFrequency;
@@ -26,4 +27,21 @@ public class Cpu
     public TDP Tdp { get; }
 
     public bool HasVideoCore { get; }
+    public ICpuBuilder Direct(ICpuBuilder cpuBuilder)
+    {
+        if (cpuBuilder != null)
+        {
+            cpuBuilder.WithCoresAmount(_coresAmount);
+            cpuBuilder.WithSocket(Socket);
+            cpuBuilder.WithPowerConsumption(_powerConsumption);
+            cpuBuilder.WithMemoryFrequency(_memoryFrequency);
+            cpuBuilder.WithCoresFrequency(_coresFrequency);
+            cpuBuilder.WithTDP(Tdp);
+            return cpuBuilder;
+        }
+        else
+        {
+            throw new NullObjectException("Builder is empty");
+        }
+    }
 }

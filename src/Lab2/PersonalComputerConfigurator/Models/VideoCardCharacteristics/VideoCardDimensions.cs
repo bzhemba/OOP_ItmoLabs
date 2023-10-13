@@ -1,3 +1,3 @@
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.VideoCardCharacteristics;
 
-public record Dimensions(int Width, int Height);
+public record VideoCardDimensions(int Width, int Height);

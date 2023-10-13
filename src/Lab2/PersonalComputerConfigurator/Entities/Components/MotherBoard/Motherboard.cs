@@ -1,11 +1,12 @@
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CPUDetails;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.RamCharacterisics;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
 using FormFactor = Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics.FormFactor;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.MotherBoard;
 
-public class Motherboard
+public class Motherboard : IMotherboardBuilderDirector
 {
     private Socket _cpuSocket;
     private PciLinesAmount _pciLinesAmount;
@@ -26,5 +27,25 @@ public class Motherboard
         _ramSlotsAmount = ramSlotsAmount;
         _formFactor = formFactor;
         _biosTypeVersion = biosTypeVersion;
+    }
+
+    public IMotherboardBuilder Build(IMotherboardBuilder motherboardBuilder)
+    {
+        if (motherboardBuilder != null)
+        {
+            motherboardBuilder.WithSocket(_cpuSocket);
+            motherboardBuilder.WithChipset(_chipset);
+            motherboardBuilder.WithFormFactor(_formFactor);
+            motherboardBuilder.WithDdrVersion(_supportiveDdrVersion);
+            motherboardBuilder.WithSlotsAmount(_ramSlotsAmount);
+            motherboardBuilder.BiosTypeVersion(_biosTypeVersion);
+            motherboardBuilder.WithPciLinesAmount(_pciLinesAmount);
+            motherboardBuilder.WithSataPortsAmount(_sataPortsAmount);
+            return motherboardBuilder;
+        }
+        else
+        {
+            throw new NullObjectException("Builder is empty");
+        }
     }
 }

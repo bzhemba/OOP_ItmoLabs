@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
 using Type = Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.BiosCharacteristics.Type;
 using Version = Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.BiosCharacteristics.Version;
 
@@ -37,7 +37,7 @@ public class BiosBuilder : IBiosBuilder
         }
         else
         {
-            throw new ArgumentNullException();
+            throw new NullObjectException("Unable to create component, some parts are missing");
         }
     }
 }
