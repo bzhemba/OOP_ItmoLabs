@@ -4,25 +4,25 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjec
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.HDD;
 
-public class HddBuilder : IHddBuilder
+public class HddBuilder
 {
     private Capacity? _capacity;
     private SpindleSpeed? _spindleSpeed;
     private PowerConsumption? _powerConsumption;
 
-    public IHddBuilder WithCapacity(Capacity capacity)
+    public HddBuilder WithCapacity(Capacity capacity)
     {
         _capacity = capacity;
         return this;
     }
 
-    public IHddBuilder WithSpindleSpeed(SpindleSpeed spindleSpeed)
+    public HddBuilder WithSpindleSpeed(SpindleSpeed spindleSpeed)
     {
         _spindleSpeed = spindleSpeed;
         return this;
     }
 
-    public IHddBuilder WithPowerConsumption(PowerConsumption powerConsumption)
+    public HddBuilder WithPowerConsumption(PowerConsumption powerConsumption)
     {
         _powerConsumption = powerConsumption;
         return this;

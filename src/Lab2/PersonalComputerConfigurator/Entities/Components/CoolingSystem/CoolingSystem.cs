@@ -8,7 +8,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjec
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CoolingSystem;
 
-public class CoolingSystem : ICheckCompatibility, ICoolingSystemBuilderDirector
+public class CoolingSystem : ICheckCompatibility, ICoolingSystemClone
 {
     private Dimensions _dimensions;
     private IReadOnlyCollection<Socket> _supportiveSockets;
@@ -54,18 +54,12 @@ public class CoolingSystem : ICheckCompatibility, ICoolingSystemBuilderDirector
         }
     }
 
-    public ICoolingSystemBuilder Direct(ICoolingSystemBuilder coolingSystemBuilder)
+    public CoolingSystemBuilder Clone()
     {
-        if (coolingSystemBuilder != null)
-        {
-            coolingSystemBuilder.WithMaxTdp(_maxTdp);
-            coolingSystemBuilder.WithDimensions(_dimensions);
-            coolingSystemBuilder.WithSupportiveSockets(_supportiveSockets);
-            return coolingSystemBuilder;
-        }
-        else
-        {
-            throw new NullObjectException("Builder is empty");
-        }
+        var coolingSystemBuilder = new CoolingSystemBuilder();
+        coolingSystemBuilder.WithMaxTdp(_maxTdp);
+        coolingSystemBuilder.WithDimensions(_dimensions);
+        coolingSystemBuilder.WithSupportiveSockets(_supportiveSockets);
+        return coolingSystemBuilder;
     }
 }

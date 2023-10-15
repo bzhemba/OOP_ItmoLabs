@@ -4,31 +4,31 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjec
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.WiFiAdapter;
 
-public class WifiAdapterBuilder : IWifiAdapterBuilder
+public class WifiAdapterBuilder
 {
     private StandartVersion? _standartVersion;
     private bool _hasBluetoothModule;
     private PciVersion? _pciVersion;
     private PowerConsumption? _powerConsumption;
-    public IWifiAdapterBuilder WithStandartVersion(StandartVersion standartVersion)
+    public WifiAdapterBuilder WithStandartVersion(StandartVersion standartVersion)
     {
         _standartVersion = standartVersion;
         return this;
     }
 
-    public IWifiAdapterBuilder WithBluetoothModule(bool hasBluetoothModule)
+    public WifiAdapterBuilder WithBluetoothModule(bool hasBluetoothModule)
     {
         _hasBluetoothModule = hasBluetoothModule;
         return this;
     }
 
-    public IWifiAdapterBuilder WithPciVersion(PciVersion pciVersion)
+    public WifiAdapterBuilder WithPciVersion(PciVersion pciVersion)
     {
         _pciVersion = pciVersion;
         return this;
     }
 
-    public IWifiAdapterBuilder WithPowerConsumption(PowerConsumption powerConsumption)
+    public WifiAdapterBuilder WithPowerConsumption(PowerConsumption powerConsumption)
     {
         _powerConsumption = powerConsumption;
         return this;

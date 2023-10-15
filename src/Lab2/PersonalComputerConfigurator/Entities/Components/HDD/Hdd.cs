@@ -1,10 +1,9 @@
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.HddCharacteristics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.HDD;
 
-public class Hdd : IHddBuilderDirector
+public class Hdd : IHddClone
 {
     private Capacity _capacity;
     private SpindleSpeed _spindleSpeed;
@@ -17,18 +16,12 @@ public class Hdd : IHddBuilderDirector
         _powerConsumption = powerConsumption;
     }
 
-    public IHddBuilder Direct(IHddBuilder builder)
+    public HddBuilder Clone()
     {
-        if (builder != null)
-        {
-            builder.WithPowerConsumption(_powerConsumption);
-            builder.WithSpindleSpeed(_spindleSpeed);
-            builder.WithCapacity(_capacity);
-            return builder;
-        }
-        else
-        {
-            throw new NullObjectException("Builder is empty");
-        }
+        var builder = new HddBuilder();
+        builder.WithPowerConsumption(_powerConsumption);
+        builder.WithSpindleSpeed(_spindleSpeed);
+        builder.WithCapacity(_capacity);
+        return builder;
     }
 }

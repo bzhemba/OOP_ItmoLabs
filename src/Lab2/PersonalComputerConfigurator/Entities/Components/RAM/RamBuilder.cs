@@ -6,7 +6,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjec
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.RAM;
 
-public class RamBuilder : IRamBuilder
+public class RamBuilder
 {
     private MemorySize? _memorySize;
     private FormFactor _formFactor;
@@ -15,37 +15,37 @@ public class RamBuilder : IRamBuilder
     private PowerConsumption? _powerConsumption;
     private IList<FrequencyVoltagePair>? _supportiveFrequencyVoltagePairs;
 
-    public IRamBuilder WithMemorySize(MemorySize memorySize)
+    public RamBuilder WithMemorySize(MemorySize memorySize)
     {
         _memorySize = memorySize;
         return this;
     }
 
-    public IRamBuilder WithFormFactor(FormFactor formFactor)
+    public RamBuilder WithFormFactor(FormFactor formFactor)
     {
         _formFactor = formFactor;
         return this;
     }
 
-    public IRamBuilder WithXmp(Xmp profile)
+    public RamBuilder WithXmp(Xmp profile)
     {
         _profile = profile;
         return this;
     }
 
-    public IRamBuilder WithDdrVersion(DdrVersion ddrVersion)
+    public RamBuilder WithDdrVersion(DdrVersion ddrVersion)
     {
         _ddrVersion = ddrVersion;
         return this;
     }
 
-    public IRamBuilder WithPowerConsumption(PowerConsumption powerConsumption)
+    public RamBuilder WithPowerConsumption(PowerConsumption powerConsumption)
     {
         _powerConsumption = powerConsumption;
         return this;
     }
 
-    public IRamBuilder WithSupportiveFrequencyVoltagePairs(IList<FrequencyVoltagePair> supportiveFrequencyVoltagePairs)
+    public RamBuilder WithSupportiveFrequencyVoltagePairs(IList<FrequencyVoltagePair> supportiveFrequencyVoltagePairs)
     {
         _supportiveFrequencyVoltagePairs = supportiveFrequencyVoltagePairs;
         return this;

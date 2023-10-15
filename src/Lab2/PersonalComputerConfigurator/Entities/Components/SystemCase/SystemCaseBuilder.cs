@@ -6,24 +6,24 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjec
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SystemCase;
 
-public class SystemCaseBuilder : ISystemCaseBuilder
+public class SystemCaseBuilder
 {
     private VideoCardDimensions? _videoCardDimensions;
     private IReadOnlyCollection<FormFactor>? _supportiveMotherboardFormFactors;
     private Dimensions? _dimensions;
-    public ISystemCaseBuilder WithVideoCardDimensions(VideoCardDimensions videoCardDimensions)
+    public SystemCaseBuilder WithVideoCardDimensions(VideoCardDimensions videoCardDimensions)
     {
         _videoCardDimensions = videoCardDimensions;
         return this;
     }
 
-    public ISystemCaseBuilder WithSupportiveFormFactors(IReadOnlyCollection<FormFactor> supportiveMotherboardFormFactors)
+    public SystemCaseBuilder WithSupportiveFormFactors(IReadOnlyCollection<FormFactor> supportiveMotherboardFormFactors)
     {
         _supportiveMotherboardFormFactors = supportiveMotherboardFormFactors;
         return this;
     }
 
-    public ISystemCaseBuilder WithDimensions(Dimensions dimensions)
+    public SystemCaseBuilder WithDimensions(Dimensions dimensions)
     {
         _dimensions = dimensions;
         return this;

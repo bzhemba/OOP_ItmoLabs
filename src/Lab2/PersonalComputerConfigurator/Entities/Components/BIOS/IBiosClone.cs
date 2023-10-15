@@ -1,6 +1,6 @@
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.BIOS;
 
-public interface IBiosBuilderDirector
+public interface IBiosClone
 {
-    IBiosBuilder Direct(IBiosBuilder builder);
+    BiosBuilder Clone();
 }

@@ -1,10 +1,9 @@
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.WiFiAdapterCharacteristics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.WiFiAdapter;
 
-public class WifiAdapter : IWifiAdapterBuilderDirector
+public class WifiAdapter : IWifiAdapterClone
 {
     private StandartVersion _standartVersion;
     private bool _hasBluetoothModule;
@@ -19,19 +18,13 @@ public class WifiAdapter : IWifiAdapterBuilderDirector
         _powerConsumption = powerConsumption;
     }
 
-    public IWifiAdapterBuilder Direct(IWifiAdapterBuilder builder)
+    public WifiAdapterBuilder Clone()
     {
-        if (builder != null)
-        {
-            builder.WithBluetoothModule(_hasBluetoothModule);
-            builder.WithPciVersion(_pciVersion);
-            builder.WithPowerConsumption(_powerConsumption);
-            builder.WithStandartVersion(_standartVersion);
-            return builder;
-        }
-        else
-        {
-            throw new NullObjectException("Builder is empty");
-        }
+        var builder = new WifiAdapterBuilder();
+        builder.WithBluetoothModule(_hasBluetoothModule);
+        builder.WithPciVersion(_pciVersion);
+        builder.WithPowerConsumption(_powerConsumption);
+        builder.WithStandartVersion(_standartVersion);
+        return builder;
     }
 }

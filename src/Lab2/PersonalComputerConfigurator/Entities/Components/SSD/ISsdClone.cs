@@ -1,6 +1,6 @@
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SSD;
 
-public interface ISsdBuilderDirector
+public interface ISsdClone
 {
-    ISsdBuilder Direct(ISsdBuilder builder);
+    SsdBuilder Clone();
 }

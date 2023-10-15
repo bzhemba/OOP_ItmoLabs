@@ -4,38 +4,38 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjec
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Videocard;
 
-public class VideoCardBuilder : IVideoCardBuilder
+public class VideoCardBuilder
 {
     private VideoCardDimensions? _dimensions;
     private VideoMemoryAmount? _videoMemoryAmount;
     private PciVersion? _pciVersion;
     private ChipFrequency? _chipFrequency;
     private PowerConsumption? _powerConsumption;
-    public IVideoCardBuilder WithVideoCardDimensions(VideoCardDimensions dimensions)
+    public VideoCardBuilder WithVideoCardDimensions(VideoCardDimensions dimensions)
     {
         _dimensions = dimensions;
         return this;
     }
 
-    public IVideoCardBuilder WithVideoMemoryAmount(VideoMemoryAmount videoMemoryAmount)
+    public VideoCardBuilder WithVideoMemoryAmount(VideoMemoryAmount videoMemoryAmount)
     {
         _videoMemoryAmount = videoMemoryAmount;
         return this;
     }
 
-    public IVideoCardBuilder WithPciVersion(PciVersion pciVersion)
+    public VideoCardBuilder WithPciVersion(PciVersion pciVersion)
     {
         _pciVersion = pciVersion;
         return this;
     }
 
-    public IVideoCardBuilder WithChipFrequency(ChipFrequency chipFrequency)
+    public VideoCardBuilder WithChipFrequency(ChipFrequency chipFrequency)
     {
         _chipFrequency = chipFrequency;
         return this;
     }
 
-    public IVideoCardBuilder WithPowerConsumption(PowerConsumption powerConsumption)
+    public VideoCardBuilder WithPowerConsumption(PowerConsumption powerConsumption)
     {
         _powerConsumption = powerConsumption;
         return this;

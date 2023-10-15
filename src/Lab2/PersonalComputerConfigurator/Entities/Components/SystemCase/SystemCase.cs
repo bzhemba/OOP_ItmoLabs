@@ -2,11 +2,10 @@ using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.VideoCardCharacteristics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SystemCase;
 
-public class SystemCase : ISystemCaseBuilderDirector
+public class SystemCase
 {
     private VideoCardDimensions _videoCardDimensions;
     private IReadOnlyCollection<FormFactor> _supportiveMotherboardFormFactors;
@@ -19,18 +18,12 @@ public class SystemCase : ISystemCaseBuilderDirector
         _dimensions = dimensions;
     }
 
-    public ISystemCaseBuilder Direct(ISystemCaseBuilder builder)
+    public SystemCaseBuilder Clone()
     {
-        if (builder != null)
-        {
-            builder.WithDimensions(_dimensions);
-            builder.WithVideoCardDimensions(_videoCardDimensions);
-            builder.WithSupportiveFormFactors(_supportiveMotherboardFormFactors);
-            return builder;
-        }
-        else
-        {
-            throw new NullObjectException("Builder is empty");
-        }
+        var builder = new SystemCaseBuilder();
+        builder.WithDimensions(_dimensions);
+        builder.WithVideoCardDimensions(_videoCardDimensions);
+        builder.WithSupportiveFormFactors(_supportiveMotherboardFormFactors);
+        return builder;
     }
 }

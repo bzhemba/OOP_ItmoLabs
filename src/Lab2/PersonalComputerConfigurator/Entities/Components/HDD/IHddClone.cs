@@ -1,6 +1,6 @@
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.HDD;
 
-public interface IHddBuilderDirector
+public interface IHddClone
 {
-    IHddBuilder Direct(IHddBuilder builder);
+    HddBuilder Clone();
 }

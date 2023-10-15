@@ -1,6 +1,6 @@
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
 
-public interface ICpuBuilderDirector
+public interface ICpuClone
 {
-    ICpuBuilder Direct(ICpuBuilder cpuBuilder);
+    CpuBuilder Clone();
 }

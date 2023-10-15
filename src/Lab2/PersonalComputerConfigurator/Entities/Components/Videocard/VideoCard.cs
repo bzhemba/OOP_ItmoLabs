@@ -1,10 +1,9 @@
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.VideoCardCharacteristics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Videocard;
 
-public class VideoCard : IVideoCardBuilderDirector
+public class VideoCard
 {
     private VideoCardDimensions _dimensions;
     private VideoMemoryAmount _videoMemoryAmount;
@@ -21,20 +20,14 @@ public class VideoCard : IVideoCardBuilderDirector
         _powerConsumption = powerConsumption;
     }
 
-    public IVideoCardBuilder Direct(IVideoCardBuilder builder)
+    public VideoCardBuilder Clone()
     {
-        if (builder != null)
-        {
-            builder.WithChipFrequency(_chipFrequency);
-            builder.WithPciVersion(_pciVersion);
-            builder.WithPowerConsumption(_powerConsumption);
-            builder.WithVideoMemoryAmount(_videoMemoryAmount);
-            builder.WithVideoCardDimensions(_dimensions);
-            return builder;
+        var builder = new VideoCardBuilder();
+        builder.WithChipFrequency(_chipFrequency);
+        builder.WithPciVersion(_pciVersion);
+        builder.WithPowerConsumption(_powerConsumption);
+        builder.WithVideoMemoryAmount(_videoMemoryAmount);
+        builder.WithVideoCardDimensions(_dimensions);
+        return builder;
         }
-        else
-        {
-            throw new NullObjectException("Builder is empty");
-        }
-    }
 }

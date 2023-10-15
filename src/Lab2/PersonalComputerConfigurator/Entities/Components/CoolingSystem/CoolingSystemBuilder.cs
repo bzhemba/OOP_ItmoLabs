@@ -6,24 +6,24 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjec
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CoolingSystem;
 
-public class CoolingSystemBuilder : ICoolingSystemBuilder
+public class CoolingSystemBuilder
 {
     private Dimensions? _dimensions;
     private IReadOnlyCollection<Socket>? _supportiveSockets;
     private MaxTdp? _maxTdp;
-    public ICoolingSystemBuilder WithDimensions(Dimensions dimensions)
+    public CoolingSystemBuilder WithDimensions(Dimensions dimensions)
     {
         _dimensions = dimensions;
         return this;
     }
 
-    public ICoolingSystemBuilder WithSupportiveSockets(IReadOnlyCollection<Socket> sockets)
+    public CoolingSystemBuilder WithSupportiveSockets(IReadOnlyCollection<Socket> sockets)
     {
         _supportiveSockets = sockets;
         return this;
     }
 
-    public ICoolingSystemBuilder WithMaxTdp(MaxTdp maxTdp)
+    public CoolingSystemBuilder WithMaxTdp(MaxTdp maxTdp)
     {
         _maxTdp = maxTdp;
         return this;

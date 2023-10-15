@@ -2,11 +2,10 @@ using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.XmpProfile;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.RamCharacterisics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.RAM;
 
-public class Ram : IRamBuilderDirector
+public class Ram : IRamClone
 {
     private MemorySize _memorySize;
     private FormFactor _formFactor;
@@ -39,21 +38,15 @@ public class Ram : IRamBuilderDirector
         _supportiveFrequencyVoltagePairs[index] = new FrequencyVoltagePair(_profile.Frequency.Mhz, _profile.Voltage.V);
     }
 
-    public IRamBuilder Direct(IRamBuilder builder)
+    public RamBuilder Clone()
     {
-        if (builder != null)
-        {
-            builder.WithPowerConsumption(_powerConsumption);
-            builder.WithXmp(_profile);
-            builder.WithDdrVersion(_ddrVersion);
-            builder.WithFormFactor(_formFactor);
-            builder.WithMemorySize(_memorySize);
-            builder.WithSupportiveFrequencyVoltagePairs(_supportiveFrequencyVoltagePairs);
-            return builder;
-        }
-        else
-        {
-            throw new NullObjectException("Builder is empty");
-        }
+        var builder = new RamBuilder();
+        builder.WithPowerConsumption(_powerConsumption);
+        builder.WithXmp(_profile);
+        builder.WithDdrVersion(_ddrVersion);
+        builder.WithFormFactor(_formFactor);
+        builder.WithMemorySize(_memorySize);
+        builder.WithSupportiveFrequencyVoltagePairs(_supportiveFrequencyVoltagePairs);
+        return builder;
     }
 }

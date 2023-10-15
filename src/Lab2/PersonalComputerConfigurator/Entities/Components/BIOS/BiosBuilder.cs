@@ -6,24 +6,24 @@ using Version = Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.BIOS;
 
-public class BiosBuilder : IBiosBuilder
+public class BiosBuilder
 {
     private Type _type;
     private Version? _version;
     private IReadOnlyCollection<Cpu>? _supportiveCpus;
-    public IBiosBuilder WithType(Type type)
+    public BiosBuilder WithType(Type type)
     {
         _type = type;
         return this;
     }
 
-    public IBiosBuilder WithVersion(Version version)
+    public BiosBuilder WithVersion(Version version)
     {
         _version = version;
         return this;
     }
 
-    public IBiosBuilder WithSupportiveCpus(IReadOnlyCollection<Cpu> cpus)
+    public BiosBuilder WithSupportiveCpus(IReadOnlyCollection<Cpu> cpus)
     {
         _supportiveCpus = cpus;
         return this;

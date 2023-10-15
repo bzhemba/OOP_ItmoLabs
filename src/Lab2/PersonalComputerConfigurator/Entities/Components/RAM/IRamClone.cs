@@ -1,6 +1,6 @@
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.RAM;
 
-public interface IRamBuilderDirector
+public interface IRamClone
 {
-    IRamBuilder Direct(IRamBuilder builder);
+    RamBuilder Clone();
 }

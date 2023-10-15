@@ -6,7 +6,7 @@ using FormFactor = Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigura
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.MotherBoard;
 
-public class MotherboardBuilder : IMotherboardBuilder
+public class MotherboardBuilder
 {
     private Socket _cpuSocket;
     private PciLinesAmount? _pciLinesAmount;
@@ -16,49 +16,49 @@ public class MotherboardBuilder : IMotherboardBuilder
     private SlotsAmount? _ramSlotsAmount;
     private FormFactor _formFactor;
     private BiosTypeVersion? _biosTypeVersion;
-    public IMotherboardBuilder WithSocket(Socket cpuSocket)
+    public MotherboardBuilder WithSocket(Socket cpuSocket)
     {
         _cpuSocket = cpuSocket;
         return this;
     }
 
-    public IMotherboardBuilder WithPciLinesAmount(PciLinesAmount pciLinesAmount)
+    public MotherboardBuilder WithPciLinesAmount(PciLinesAmount pciLinesAmount)
     {
         _pciLinesAmount = pciLinesAmount;
         return this;
     }
 
-    public IMotherboardBuilder WithSataPortsAmount(SataPortsAmount sataPortsAmount)
+    public MotherboardBuilder WithSataPortsAmount(SataPortsAmount sataPortsAmount)
     {
         _sataPortsAmount = sataPortsAmount;
         return this;
     }
 
-    public IMotherboardBuilder WithChipset(Chipset chipset)
+    public MotherboardBuilder WithChipset(Chipset chipset)
     {
         _chipset = chipset;
         return this;
     }
 
-    public IMotherboardBuilder WithDdrVersion(DdrVersion supportiveDdrVersion)
+    public MotherboardBuilder WithDdrVersion(DdrVersion supportiveDdrVersion)
     {
         _supportiveDdrVersion = supportiveDdrVersion;
         return this;
     }
 
-    public IMotherboardBuilder WithSlotsAmount(SlotsAmount ramSlotsAmount)
+    public MotherboardBuilder WithSlotsAmount(SlotsAmount ramSlotsAmount)
     {
         _ramSlotsAmount = ramSlotsAmount;
         return this;
     }
 
-    public IMotherboardBuilder WithFormFactor(FormFactor formFactor)
+    public MotherboardBuilder WithFormFactor(FormFactor formFactor)
     {
         _formFactor = formFactor;
         return this;
     }
 
-    public IMotherboardBuilder BiosTypeVersion(BiosTypeVersion biosTypeVersion)
+    public MotherboardBuilder BiosTypeVersion(BiosTypeVersion biosTypeVersion)
     {
         _biosTypeVersion = biosTypeVersion;
         return this;

@@ -4,7 +4,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjec
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
 
-public class CpuBuilder : ICpuBuilder
+public class CpuBuilder
 {
     private Socket _socket;
     private CoresAmount? _coresAmount;
@@ -14,43 +14,43 @@ public class CpuBuilder : ICpuBuilder
     private PowerConsumption? _powerConsumption;
     private bool _hasVideoCore;
 
-    public ICpuBuilder WithSocket(Socket socket)
+    public CpuBuilder WithSocket(Socket socket)
     {
         _socket = socket;
         return this;
     }
 
-    public ICpuBuilder WithCoresAmount(CoresAmount coresAmount)
+    public CpuBuilder WithCoresAmount(CoresAmount coresAmount)
     {
         _coresAmount = coresAmount;
         return this;
     }
 
-    public ICpuBuilder WithCoresFrequency(CoresFrequency coresFrequency)
+    public CpuBuilder WithCoresFrequency(CoresFrequency coresFrequency)
     {
         _coresFrequency = coresFrequency;
         return this;
     }
 
-    public ICpuBuilder WithTDP(TDP tdp)
+    public CpuBuilder WithTDP(TDP tdp)
     {
         _tdp = tdp;
         return this;
     }
 
-    public ICpuBuilder WithMemoryFrequency(MemoryFrequency memoryFrequency)
+    public CpuBuilder WithMemoryFrequency(MemoryFrequency memoryFrequency)
     {
         _memoryFrequency = memoryFrequency;
         return this;
     }
 
-    public ICpuBuilder WithPowerConsumption(PowerConsumption powerConsumption)
+    public CpuBuilder WithPowerConsumption(PowerConsumption powerConsumption)
     {
         _powerConsumption = powerConsumption;
         return this;
     }
 
-    public ICpuBuilder WithVideoCore(bool hasVideoCore)
+    public CpuBuilder WithVideoCore(bool hasVideoCore)
     {
         _hasVideoCore = hasVideoCore;
         return this;

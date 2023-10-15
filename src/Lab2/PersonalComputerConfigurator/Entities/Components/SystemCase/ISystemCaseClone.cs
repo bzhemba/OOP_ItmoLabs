@@ -1,6 +1,6 @@
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SystemCase;
 
-public interface ISystemCaseBuilderDirector
+public interface ISystemCaseClone
 {
-    ISystemCaseBuilder Direct(ISystemCaseBuilder builder);
+    SystemCaseBuilder Clone();
 }

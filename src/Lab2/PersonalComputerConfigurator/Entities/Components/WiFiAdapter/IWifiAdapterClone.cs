@@ -1,6 +1,6 @@
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.WiFiAdapter;
 
-public interface IWifiAdapterBuilderDirector
+public interface IWifiAdapterClone
 {
-    IWifiAdapterBuilder Direct(IWifiAdapterBuilder builder);
+    WifiAdapterBuilder Clone();
 }

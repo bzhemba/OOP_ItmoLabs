@@ -3,11 +3,10 @@ using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.BiosCharacteristics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.BIOS;
 
-public class Bios : ICheckCompatibility, IBiosBuilderDirector
+public class Bios : ICheckCompatibility, IBiosClone
 {
     private Type _type;
     private Version _version;
@@ -26,18 +25,12 @@ public class Bios : ICheckCompatibility, IBiosBuilderDirector
             ? NotificationSystem.Ok : NotificationSystem.IncompatibilityProblem;
     }
 
-    public IBiosBuilder Direct(IBiosBuilder builder)
+    public BiosBuilder Clone()
     {
-        if (builder != null)
-        {
-            builder.WithType(_type);
-            builder.WithVersion(_version);
-            builder.WithSupportiveCpus(_supportiveCpus);
-            return builder;
-        }
-        else
-        {
-            throw new NullObjectException("Builder is empty");
-        }
+        var builder = new BiosBuilder();
+        builder.WithType(_type);
+        builder.WithVersion(_version);
+        builder.WithSupportiveCpus(_supportiveCpus);
+        return builder;
     }
 }

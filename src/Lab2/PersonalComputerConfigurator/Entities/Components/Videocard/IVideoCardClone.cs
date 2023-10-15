@@ -1,6 +1,6 @@
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Videocard;
 
-public interface IVideoCardBuilderDirector
+public interface IVideoCardClone
 {
-    IVideoCardBuilder Direct(IVideoCardBuilder builder);
+    IVideoCardBuilder Clone();
 }

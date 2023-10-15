@@ -3,10 +3,10 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjec
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.PU;
 
-public class PowerUnitBuilder : IPowerUnitBuilder
+public class PowerUnitBuilder
 {
     private PeakLoad? _peakLoad;
-    public IPowerUnitBuilder WithPeakload(PeakLoad peakLoad)
+    public PowerUnitBuilder WithPeakload(PeakLoad peakLoad)
     {
         _peakLoad = peakLoad;
         return this;
