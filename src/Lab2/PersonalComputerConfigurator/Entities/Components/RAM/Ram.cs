@@ -5,7 +5,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.Ra
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.RAM;
 
-public class Ram : IRamClone
+public class Ram : IClone<RamBuilder>
 {
     private MemorySize _memorySize;
     private FormFactor _formFactor;

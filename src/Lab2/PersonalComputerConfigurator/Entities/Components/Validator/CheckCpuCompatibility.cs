@@ -1,6 +1,6 @@
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Validator;
 
-public class CheckCpuCompatibility : IValidator
+public class CheckCpuCompatibility : Validator
 {
     public NotificationSystem IsCompatible(Cpu cpu)
     {
@@ -8,7 +8,7 @@ public class CheckCpuCompatibility : IValidator
             ? NotificationSystem.Ok : NotificationSystem.IncompatibilityProblem;
     }
 
-    public IValidator HadleRequest()
+    public Validator HadleRequest()
     {
         throw new System.NotImplementedException();
     }

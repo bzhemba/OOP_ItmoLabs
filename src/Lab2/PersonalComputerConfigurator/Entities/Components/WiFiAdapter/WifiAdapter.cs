@@ -3,7 +3,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.Wi
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.WiFiAdapter;
 
-public class WifiAdapter : IWifiAdapterClone
+public class WifiAdapter : IClone<WifiAdapterBuilder>
 {
     private StandartVersion _standartVersion;
     private bool _hasBluetoothModule;

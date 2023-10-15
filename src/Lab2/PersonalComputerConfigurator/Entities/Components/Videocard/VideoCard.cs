@@ -3,7 +3,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.Vi
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Videocard;
 
-public class VideoCard
+public class VideoCard : IClone<VideoCardBuilder>
 {
     private VideoCardDimensions _dimensions;
     private VideoMemoryAmount _videoMemoryAmount;

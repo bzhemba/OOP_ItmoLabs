@@ -3,7 +3,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CP
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
 
-public class Cpu : ICpuClone
+public class Cpu : IClone<CpuBuilder>
 {
     private CoresAmount _coresAmount;
     private CoresFrequency _coresFrequency;

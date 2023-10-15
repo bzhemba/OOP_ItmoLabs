@@ -6,7 +6,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.Bi
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.BIOS;
 
-public class Bios : ICheckCompatibility, IBiosClone
+public class Bios : ICheckCompatibility, IClone<BiosBuilder>
 {
     private Type _type;
     private Version _version;

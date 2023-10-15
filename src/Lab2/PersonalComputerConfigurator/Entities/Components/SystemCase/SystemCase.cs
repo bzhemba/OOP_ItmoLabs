@@ -5,7 +5,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.Vi
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SystemCase;
 
-public class SystemCase
+public class SystemCase : IClone<SystemCaseBuilder>
 {
     private VideoCardDimensions _videoCardDimensions;
     private IReadOnlyCollection<FormFactor> _supportiveMotherboardFormFactors;

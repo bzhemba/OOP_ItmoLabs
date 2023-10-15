@@ -14,7 +14,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjec
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Computer;
 
-public class Computer : IComputerConfigurator
+public class Computer
 {
     private Cpu _cpu;
     private Bios? _bios;
@@ -45,11 +45,14 @@ public class Computer : IComputerConfigurator
         _xmp = xmp;
     }
 
-    public IComputerBuilder Direct(ComputerBuilder builder)
+    public IComputerBuilder Direct(IComputerBuilder builder)
     {
         if (builder != null)
         {
-            builder
+            builder.WithMotherBoard(_motherboard).WithCpu(_cpu).WithBios(_bios).WithCoolingSystem(_coolingSystem)
+                .WithRam(_ram).WithXmp(_xmp).WithVideoCard(_videoCard).WithSsd(_ssd).WithHdd(_hdd)
+                .WithSystemCase(_systemCase).WithPowerUnit(_powerUnit).WithWifiAdapter(_wifiAdapter).;
+            return builder;
         }
         else
         {

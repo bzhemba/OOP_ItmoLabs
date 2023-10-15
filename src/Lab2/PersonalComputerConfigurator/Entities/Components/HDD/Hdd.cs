@@ -3,7 +3,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.Hd
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.HDD;
 
-public class Hdd : IHddClone
+public class Hdd : IClone<HddBuilder>
 {
     private Capacity _capacity;
     private SpindleSpeed _spindleSpeed;

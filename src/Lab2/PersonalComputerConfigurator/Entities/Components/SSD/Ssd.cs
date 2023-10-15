@@ -3,7 +3,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.Ss
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SSD;
 
-public class Ssd : ISsdClone
+public class Ssd : IClone<SsdBuilder>
 {
     private Connection _connection;
     private Capacity _capacity;

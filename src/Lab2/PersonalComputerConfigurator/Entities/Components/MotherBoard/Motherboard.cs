@@ -5,7 +5,7 @@ using FormFactor = Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigura
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.MotherBoard;
 
-public class Motherboard : IMotherboardClone
+public class Motherboard : IClone<MotherboardBuilder>
 {
     private Socket _cpuSocket;
     private PciLinesAmount _pciLinesAmount;

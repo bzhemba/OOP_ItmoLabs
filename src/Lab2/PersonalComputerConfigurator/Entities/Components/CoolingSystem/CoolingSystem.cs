@@ -8,7 +8,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjec
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CoolingSystem;
 
-public class CoolingSystem : ICheckCompatibility, ICoolingSystemClone
+public class CoolingSystem : ICheckCompatibility, IClone<CoolingSystemBuilder>
 {
     private Dimensions _dimensions;
     private IReadOnlyCollection<Socket> _supportiveSockets;
