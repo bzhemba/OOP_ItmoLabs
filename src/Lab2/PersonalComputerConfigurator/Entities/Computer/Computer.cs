@@ -17,7 +17,7 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 public class Computer
 {
     private Cpu _cpu;
-    private Bios? _bios;
+    private Bios _bios;
     private CoolingSystem _coolingSystem;
     private Hdd? _hdd;
     private Motherboard _motherboard;
@@ -51,7 +51,7 @@ public class Computer
         {
             builder.WithMotherBoard(_motherboard).WithCpu(_cpu).WithBios(_bios).WithCoolingSystem(_coolingSystem)
                 .WithRam(_ram).WithXmp(_xmp).WithVideoCard(_videoCard).WithSsd(_ssd).WithHdd(_hdd)
-                .WithSystemCase(_systemCase).WithPowerUnit(_powerUnit).WithWifiAdapter(_wifiAdapter).;
+                .WithSystemCase(_systemCase).WithPowerUnit(_powerUnit).WithWifiAdapter(_wifiAdapter);
             return builder;
         }
         else

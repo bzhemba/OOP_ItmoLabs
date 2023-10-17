@@ -1,3 +1,4 @@
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CPUDetails;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.RamCharacterisics;
@@ -5,7 +6,7 @@ using FormFactor = Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigura
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.MotherBoard;
 
-public class Motherboard : IClone<MotherboardBuilder>
+public class Motherboard : IClone<MotherboardBuilder>, ICheckCompatibility
 {
     private Socket _cpuSocket;
     private PciLinesAmount _pciLinesAmount;
@@ -16,7 +17,7 @@ public class Motherboard : IClone<MotherboardBuilder>
     private FormFactor _formFactor;
     private BiosTypeVersion _biosTypeVersion;
 
-    public Motherboard(Socket cpuSocket, PciLinesAmount pciLinesAmount, SataPortsAmount sataPortsAmount, Chipset chipset, DdrVersion supportiveDdrVersion, SlotsAmount ramSlotsAmount, FormFactor formFactor, BiosTypeVersion biosTypeVersion)
+    public Motherboard(Socket cpuSocket, PciLinesAmount pciLinesAmount, SataPortsAmount sataPortsAmount, Chipset chipset, DdrVersion supportiveDdrVersion, SlotsAmount ramSlotsAmount, FormFactor formFactor, BiosTypeVersion biosTypeVersion, bool hasWifiModule)
     {
         _cpuSocket = cpuSocket;
         _pciLinesAmount = pciLinesAmount;
@@ -26,7 +27,10 @@ public class Motherboard : IClone<MotherboardBuilder>
         _ramSlotsAmount = ramSlotsAmount;
         _formFactor = formFactor;
         _biosTypeVersion = biosTypeVersion;
+        HasWifiModule = hasWifiModule;
     }
+
+    public bool HasWifiModule { get; }
 
     public MotherboardBuilder Clone()
     {
@@ -40,5 +44,10 @@ public class Motherboard : IClone<MotherboardBuilder>
         motherboardBuilder.WithPciLinesAmount(_pciLinesAmount);
         motherboardBuilder.WithSataPortsAmount(_sataPortsAmount);
         return motherboardBuilder;
+    }
+
+    public bool IsCompatible(Cpu cpu)
+    {
+        return cpu?.Socket == _cpuSocket;
     }
 }

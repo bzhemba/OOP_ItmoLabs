@@ -1,6 +1,8 @@
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
+
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.WiFiAdapter;
 
 public interface IWifiAdapterBuilder
 {
-   Computer.Computer Build();
+   NotificationSystem Build();
 }

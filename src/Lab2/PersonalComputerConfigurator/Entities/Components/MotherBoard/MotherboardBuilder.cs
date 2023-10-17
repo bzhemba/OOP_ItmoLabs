@@ -16,6 +16,7 @@ public class MotherboardBuilder
     private SlotsAmount? _ramSlotsAmount;
     private FormFactor _formFactor;
     private BiosTypeVersion? _biosTypeVersion;
+    private bool _hasWifiModule;
     public MotherboardBuilder WithSocket(Socket cpuSocket)
     {
         _cpuSocket = cpuSocket;
@@ -64,6 +65,12 @@ public class MotherboardBuilder
         return this;
     }
 
+    public MotherboardBuilder WithWifiModule(bool hasModule)
+    {
+        _hasWifiModule = hasModule;
+        return this;
+    }
+
     public Motherboard Build()
     {
         if (_formFactor != default
@@ -71,7 +78,7 @@ public class MotherboardBuilder
             && _pciLinesAmount != null && _sataPortsAmount != null && _chipset != null
             && _supportiveDdrVersion != null && _ramSlotsAmount != null && _formFactor != default && _biosTypeVersion != null)
         {
-            return new Motherboard(_cpuSocket, _pciLinesAmount, _sataPortsAmount, _chipset, _supportiveDdrVersion, _ramSlotsAmount, _formFactor, _biosTypeVersion);
+            return new Motherboard(_cpuSocket, _pciLinesAmount, _sataPortsAmount, _chipset, _supportiveDdrVersion, _ramSlotsAmount, _formFactor, _biosTypeVersion, _hasWifiModule);
         }
         else
         {

@@ -21,13 +21,13 @@ public class CoolingSystem : ICheckCompatibility, IClone<CoolingSystemBuilder>
         _maxTdp = maxTdp;
     }
 
-    public NotificationSystem IsCompatible(Cpu cpu)
+    public bool IsCompatible(Cpu cpu)
     {
         if (cpu != null)
         {
             return _supportiveSockets.Any(supportiveSocket => cpu.Socket.Equals(supportiveSocket))
-                ? NotificationSystem.Ok
-                : NotificationSystem.IncompatibilityProblem;
+                ? true
+                : false;
         }
         else
         {
@@ -35,23 +35,16 @@ public class CoolingSystem : ICheckCompatibility, IClone<CoolingSystemBuilder>
         }
     }
 
-    public NotificationSystem CheckWarrantyObligations(Cpu cpu)
+    public bool CheckWarrantyObligations(Cpu cpu)
     {
-        if (cpu != null)
-        {
-            if (cpu.Tdp.Watt > _maxTdp.Watt)
+            if (cpu != null && cpu.Tdp.Watt > _maxTdp.Watt)
             {
-                return NotificationSystem.DisclaimerOfWarrantyObligations;
+                return false;
             }
             else
             {
-                return NotificationSystem.Ok;
+                return true;
             }
-        }
-        else
-        {
-            throw new NullObjectException();
-        }
     }
 
     public CoolingSystemBuilder Clone()

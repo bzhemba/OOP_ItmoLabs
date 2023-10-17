@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.BIOS;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CoolingSystem;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
@@ -102,9 +103,14 @@ public class ComputerBuilder : IComputerBuilder, IMotherboardBuilder, ICpuBuilde
         return this;
     }
 
-    public Computer Build()
+    public NotificationSystem Build()
     {
-        var validateDetails = new List<NotificationSystem>();
-        
+        if (_bios != null && _cpu != null && _motherboard != null)
+        {
+            if (!_bios.IsCompatible(_cpu) || !_motherboard.IsCompatible(_cpu))
+            {
+                return NotificationSystem.IncompatibilityProblem;
+            }
+        }
     }
 }
