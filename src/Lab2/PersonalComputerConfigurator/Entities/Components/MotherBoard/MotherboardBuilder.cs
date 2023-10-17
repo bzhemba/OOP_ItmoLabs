@@ -31,10 +31,8 @@ public class MotherboardBuilder
             _pciLinesAmount = pciLinesAmount;
             return this;
         }
-        else
-        {
-            throw new IncorrectFormatException($"Incorrect format of amount");
-        }
+
+        throw new IncorrectFormatException($"Incorrect format of amount");
     }
 
     public MotherboardBuilder WithSataPortsAmount(SataPortsAmount sataPortsAmount)
@@ -44,10 +42,8 @@ public class MotherboardBuilder
             _sataPortsAmount = sataPortsAmount;
             return this;
         }
-        else
-        {
-            throw new IncorrectFormatException($"Incorrect format of amount");
-        }
+
+        throw new IncorrectFormatException($"Incorrect format of amount");
     }
 
     public MotherboardBuilder WithChipset(Chipset chipset)
@@ -63,10 +59,8 @@ public class MotherboardBuilder
             _supportiveDdrVersion = supportiveDdrVersion;
             return this;
         }
-        else
-        {
-            throw new IncorrectFormatException($"Incorrect format of version");
-        }
+
+        throw new IncorrectFormatException($"Incorrect format of version");
     }
 
     public MotherboardBuilder WithSlotsAmount(SlotsAmount ramSlotsAmount)
@@ -76,10 +70,8 @@ public class MotherboardBuilder
             _ramSlotsAmount = ramSlotsAmount;
             return this;
         }
-        else
-        {
-            throw new IncorrectFormatException($"Incorrect format of amount");
-        }
+
+        throw new IncorrectFormatException($"Incorrect format of amount");
     }
 
     public MotherboardBuilder WithFormFactor(FormFactor formFactor)
@@ -109,9 +101,7 @@ public class MotherboardBuilder
         {
             return new Motherboard(_cpuSocket, _pciLinesAmount, _sataPortsAmount, _chipset, _supportiveDdrVersion, _ramSlotsAmount, _formFactor, _biosTypeVersion, _hasWifiModule);
         }
-        else
-        {
-            throw new NullObjectException("Unable to create component, some parts are missing");
-        }
+
+        throw new NullObjectException("Unable to create component, some parts are missing");
     }
 }
