@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.BIOS;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CoolingSystem;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
@@ -9,6 +7,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.RAM;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SSD;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SystemCase;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Validator;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Videocard;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.WiFiAdapter;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.XmpProfile;
@@ -103,14 +102,26 @@ public class ComputerBuilder : IComputerBuilder, IMotherboardBuilder, ICpuBuilde
         return this;
     }
 
-    public NotificationSystem Build()
+    public (AddNotification? Notification, DisclaimerOfWarrantyObligations? Disclaimer) Build()
     {
-        if (_bios != null && _cpu != null && _motherboard != null)
+        var validator = Validator.Link(
+            new CheckExistence(),
+            new CheckMotherboardCpuCompatibility(),
+            new CheckBiosCpuCompatibility(),
+            new CheckMotherboardRamCompatibility(),
+            new CheckCpuCoolingSystemCompatibility(),
+            new CheckCoolingSystemCpuSocketCompatibility(),
+            new CheckXmpCompatibility(),
+            new CheckWifiModule(),
+            new CheckSystemCaseDimensions());
+        if ((_cpu != null && _motherboard != null && _bios != null && _coolingSystem != null && _ram != null && _systemCase != null && _powerUnit != null) &&
+            validator.Check(_cpu, _bios, _motherboard, _coolingSystem, _ram, _videoCard, _ssd, _hdd, _systemCase, _powerUnit, _wifiAdapter, _xmp))
         {
-            if (!_bios.IsCompatible(_cpu) || !_motherboard.IsCompatible(_cpu))
-            {
-                return NotificationSystem.IncompatibilityProblem;
-            }
+            return (new Success(new Computer(_cpu, _bios, _coolingSystem, _hdd, _motherboard, _powerUnit, _ram, _ssd, _systemCase, _videoCard, _wifiAdapter, _xmp)), validator.DisclaimerOfWarrantyObligations);
+        }
+        else
+        {
+            return (validator.Notification, validator.DisclaimerOfWarrantyObligations);
         }
     }
 }

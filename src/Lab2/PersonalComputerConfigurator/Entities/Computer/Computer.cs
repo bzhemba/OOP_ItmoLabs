@@ -10,7 +10,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Videocard;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.WiFiAdapter;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.XmpProfile;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.NullObjectExceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Computer;
 
@@ -29,7 +29,7 @@ public class Computer
     private WifiAdapter? _wifiAdapter;
     private Xmp? _xmp;
 
-    private Computer(Cpu cpu, Bios bios, CoolingSystem coolingSystem, Hdd hdd, Motherboard motherboard, PowerUnit powerUnit, Ram ram, Ssd ssd, SystemCase systemCase, VideoCard videoCard, WifiAdapter wifiAdapter, Xmp xmp)
+    internal Computer(Cpu cpu, Bios bios, CoolingSystem coolingSystem, Hdd? hdd, Motherboard motherboard, PowerUnit powerUnit, Ram ram, Ssd? ssd, SystemCase systemCase, VideoCard? videoCard, WifiAdapter? wifiAdapter, Xmp? xmp)
     {
         _cpu = cpu;
         _bios = bios;

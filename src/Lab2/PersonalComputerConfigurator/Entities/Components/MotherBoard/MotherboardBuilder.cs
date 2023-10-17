@@ -1,7 +1,8 @@
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.IncorrectFormatExceptions;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.NullObjectExceptions;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CPUDetails;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.RamCharacterisics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
 using FormFactor = Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics.FormFactor;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.MotherBoard;
@@ -25,14 +26,28 @@ public class MotherboardBuilder
 
     public MotherboardBuilder WithPciLinesAmount(PciLinesAmount pciLinesAmount)
     {
-        _pciLinesAmount = pciLinesAmount;
-        return this;
+        if (pciLinesAmount is { Amount: > 0 })
+        {
+            _pciLinesAmount = pciLinesAmount;
+            return this;
+        }
+        else
+        {
+            throw new IncorrectFormatException($"Incorrect format of amount");
+        }
     }
 
     public MotherboardBuilder WithSataPortsAmount(SataPortsAmount sataPortsAmount)
     {
-        _sataPortsAmount = sataPortsAmount;
-        return this;
+        if (sataPortsAmount is { Amount: > 0 })
+        {
+            _sataPortsAmount = sataPortsAmount;
+            return this;
+        }
+        else
+        {
+            throw new IncorrectFormatException($"Incorrect format of amount");
+        }
     }
 
     public MotherboardBuilder WithChipset(Chipset chipset)
@@ -43,14 +58,28 @@ public class MotherboardBuilder
 
     public MotherboardBuilder WithDdrVersion(DdrVersion supportiveDdrVersion)
     {
-        _supportiveDdrVersion = supportiveDdrVersion;
-        return this;
+        if (supportiveDdrVersion is { Version: > 0 })
+        {
+            _supportiveDdrVersion = supportiveDdrVersion;
+            return this;
+        }
+        else
+        {
+            throw new IncorrectFormatException($"Incorrect format of version");
+        }
     }
 
     public MotherboardBuilder WithSlotsAmount(SlotsAmount ramSlotsAmount)
     {
-        _ramSlotsAmount = ramSlotsAmount;
-        return this;
+        if (ramSlotsAmount is { Amount: > 0 })
+        {
+            _ramSlotsAmount = ramSlotsAmount;
+            return this;
+        }
+        else
+        {
+            throw new IncorrectFormatException($"Incorrect format of amount");
+        }
     }
 
     public MotherboardBuilder WithFormFactor(FormFactor formFactor)

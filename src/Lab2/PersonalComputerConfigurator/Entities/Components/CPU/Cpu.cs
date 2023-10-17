@@ -7,7 +7,6 @@ public class Cpu : IClone<CpuBuilder>
 {
     private CoresAmount _coresAmount;
     private CoresFrequency _coresFrequency;
-    private MemoryFrequency _memoryFrequency;
     private PowerConsumption _powerConsumption;
 
     public Cpu(Socket socket, CoresAmount coresAmount, CoresFrequency coresFrequency, TDP tdp, bool hasVideoCore, MemoryFrequency memoryFrequency, PowerConsumption powerConsumption)
@@ -17,9 +16,11 @@ public class Cpu : IClone<CpuBuilder>
         _coresFrequency = coresFrequency;
         Tdp = tdp;
         HasVideoCore = hasVideoCore;
-        _memoryFrequency = memoryFrequency;
+        MemoryFrequency = memoryFrequency;
         _powerConsumption = powerConsumption;
     }
+
+    public MemoryFrequency MemoryFrequency { get; }
 
     public Socket Socket { get; }
 
@@ -32,7 +33,7 @@ public class Cpu : IClone<CpuBuilder>
         cpuBuilder.WithCoresAmount(_coresAmount);
         cpuBuilder.WithSocket(Socket);
         cpuBuilder.WithPowerConsumption(_powerConsumption);
-        cpuBuilder.WithMemoryFrequency(_memoryFrequency);
+        cpuBuilder.WithMemoryFrequency(MemoryFrequency);
         cpuBuilder.WithCoresFrequency(_coresFrequency);
         cpuBuilder.WithTDP(Tdp);
         return cpuBuilder;

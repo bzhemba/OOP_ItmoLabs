@@ -4,5 +4,5 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 
 public interface IWifiAdapterBuilder
 {
-   NotificationSystem Build();
+   (AddNotification? Notification, DisclaimerOfWarrantyObligations? Disclaimer) Build();
 }

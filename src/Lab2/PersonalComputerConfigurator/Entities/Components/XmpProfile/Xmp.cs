@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.XmpProfileCharacteristics;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.XmpProfile;
 
-public class Xmp
+public class Xmp : ICheckCompatibility
 {
     private IReadOnlyCollection<int> _timings;
 
@@ -17,4 +18,13 @@ public class Xmp
     public Voltage Voltage { get; }
 
     public Frequency Frequency { get; }
+    public bool IsCompatible(Cpu cpu)
+    {
+        if (cpu != null && cpu.MemoryFrequency.Mhz < Frequency.Mhz)
+        {
+            return false;
+        }
+
+        return true;
+    }
 }

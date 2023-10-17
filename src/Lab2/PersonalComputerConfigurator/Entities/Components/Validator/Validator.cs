@@ -20,13 +20,11 @@ public abstract class Validator
     public static Validator Link(Validator head, params Validator[] chain)
     {
         Validator internalHead = head;
-        if (chain != null)
+        if (chain == null) return head;
+        foreach (Validator nextLink in chain)
         {
-            foreach (Validator nextLink in chain)
-            {
-                if (internalHead != null) internalHead._nextHandler = nextLink;
-                internalHead = nextLink;
-            }
+            if (internalHead != null) internalHead._nextHandler = nextLink;
+            internalHead = nextLink;
         }
 
         return head;

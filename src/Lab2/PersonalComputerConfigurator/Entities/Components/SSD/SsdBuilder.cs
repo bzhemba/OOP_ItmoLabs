@@ -1,6 +1,7 @@
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.IncorrectFormatExceptions;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.NullObjectExceptions;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.SsdCharacteristics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SSD;
 
@@ -18,20 +19,41 @@ public class SsdBuilder
 
     public SsdBuilder WithCapacity(Capacity capacity)
     {
-        _capacity = capacity;
-        return this;
+        if (capacity is { Gb: > 0 })
+        {
+            _capacity = capacity;
+            return this;
+        }
+        else
+        {
+            throw new IncorrectFormatException($"Incorrect format of capacity");
+        }
     }
 
     public SsdBuilder WithMaxSpeed(MaxSpeed maxSpeed)
     {
-        _maxSpeed = maxSpeed;
-        return this;
+        if (maxSpeed is { Speed: > 0 })
+        {
+            _maxSpeed = maxSpeed;
+            return this;
+        }
+        else
+        {
+            throw new IncorrectFormatException($"Incorrect format of maximum speed");
+        }
     }
 
     public SsdBuilder WithPowerConsumption(PowerConsumption powerConsumption)
     {
-        _powerConsumption = powerConsumption;
-        return this;
+        if (powerConsumption is { Watt: > 0 })
+        {
+            _powerConsumption = powerConsumption;
+            return this;
+        }
+        else
+        {
+            throw new IncorrectFormatException($"Incorrect format of power consumption");
+        }
     }
 
     public Ssd Build()

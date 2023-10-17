@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.IncorrectFormatExceptions;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.NullObjectExceptions;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.VideoCardCharacteristics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SystemCase;
 
@@ -13,6 +14,8 @@ public class SystemCaseBuilder
     private Dimensions? _dimensions;
     public SystemCaseBuilder WithVideoCardDimensions(VideoCardDimensions videoCardDimensions)
     {
+        if (videoCardDimensions is not { Length: > 0, Width: > 0 })
+            throw new IncorrectFormatException($"Incorrect format of dimensions");
         _videoCardDimensions = videoCardDimensions;
         return this;
     }
@@ -25,8 +28,13 @@ public class SystemCaseBuilder
 
     public SystemCaseBuilder WithDimensions(Dimensions dimensions)
     {
-        _dimensions = dimensions;
-        return this;
+        if (dimensions is { Length: > 0 } and { Height: > 0, Width: > 0 })
+        {
+            _dimensions = dimensions;
+            return this;
+        }
+
+        throw new IncorrectFormatException($"Incorrect format of dimensions");
     }
 
     public SystemCase Build()

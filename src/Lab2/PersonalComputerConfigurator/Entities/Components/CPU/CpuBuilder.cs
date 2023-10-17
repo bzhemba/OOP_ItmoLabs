@@ -1,6 +1,7 @@
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.IncorrectFormatExceptions;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.NullObjectExceptions;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CPUDetails;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
 
@@ -22,32 +23,67 @@ public class CpuBuilder
 
     public CpuBuilder WithCoresAmount(CoresAmount coresAmount)
     {
-        _coresAmount = coresAmount;
-        return this;
+        if (coresAmount is { Amount: > 0 })
+        {
+            _coresAmount = coresAmount;
+            return this;
+        }
+        else
+        {
+            throw new IncorrectFormatException($"Incorrect format of cores amount");
+        }
     }
 
     public CpuBuilder WithCoresFrequency(CoresFrequency coresFrequency)
     {
-        _coresFrequency = coresFrequency;
-        return this;
+        if (coresFrequency is { Frequency: > 0 })
+        {
+            _coresFrequency = coresFrequency;
+            return this;
+        }
+        else
+        {
+            throw new IncorrectFormatException($"Incorrect format of cores frequency");
+        }
     }
 
     public CpuBuilder WithTDP(TDP tdp)
     {
-        _tdp = tdp;
-        return this;
+        if (tdp is { Watt: > 0 })
+        {
+            _tdp = tdp;
+            return this;
+        }
+        else
+        {
+            throw new IncorrectFormatException($"Incorrect format of TDP");
+        }
     }
 
     public CpuBuilder WithMemoryFrequency(MemoryFrequency memoryFrequency)
     {
-        _memoryFrequency = memoryFrequency;
-        return this;
+        if (memoryFrequency is { Mhz: > 0 })
+        {
+            _memoryFrequency = memoryFrequency;
+            return this;
+        }
+        else
+        {
+            throw new IncorrectFormatException($"Incorrect format of memory frequency");
+        }
     }
 
     public CpuBuilder WithPowerConsumption(PowerConsumption powerConsumption)
     {
-        _powerConsumption = powerConsumption;
-        return this;
+        if (powerConsumption is { Watt: > 0 })
+        {
+            _powerConsumption = powerConsumption;
+            return this;
+        }
+        else
+        {
+            throw new IncorrectFormatException($"Incorrect format of power consumption");
+        }
     }
 
     public CpuBuilder WithVideoCore(bool hasVideoCore)

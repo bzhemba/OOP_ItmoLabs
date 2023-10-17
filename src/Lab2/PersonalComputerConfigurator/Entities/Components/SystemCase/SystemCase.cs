@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.MotherBoard;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Videocard;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.VideoCardCharacteristics;
@@ -16,6 +19,18 @@ public class SystemCase : IClone<SystemCaseBuilder>
         _videoCardDimensions = videoCardDimensions;
         _supportiveMotherboardFormFactors = supportiveMotherboardFormFactors;
         _dimensions = dimensions;
+    }
+
+    public bool IsVideoCardFits(VideoCard videocard)
+    {
+        return videocard != null &&
+               (videocard.Dimensions.Length <= _videoCardDimensions.Length) &&
+               (videocard.Dimensions.Width <= _videoCardDimensions.Width);
+    }
+
+    public bool IsMotherboardFits(Motherboard motherBoard)
+    {
+        return _supportiveMotherboardFormFactors.Any(formFactor => motherBoard != null && formFactor == motherBoard.Formfactor);
     }
 
     public SystemCaseBuilder Clone()

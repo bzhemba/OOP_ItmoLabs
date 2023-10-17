@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.XmpProfile;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.IncorrectFormatExceptions;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.NullObjectExceptions;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.RamCharacterisics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.RAM;
 
@@ -17,8 +18,15 @@ public class RamBuilder
 
     public RamBuilder WithMemorySize(MemorySize memorySize)
     {
-        _memorySize = memorySize;
-        return this;
+        if (memorySize is { Gb: > 0 })
+        {
+            _memorySize = memorySize;
+            return this;
+        }
+        else
+        {
+            throw new IncorrectFormatException($"Incorrect format of memory size");
+        }
     }
 
     public RamBuilder WithFormFactor(FormFactor formFactor)
@@ -35,14 +43,28 @@ public class RamBuilder
 
     public RamBuilder WithDdrVersion(DdrVersion ddrVersion)
     {
-        _ddrVersion = ddrVersion;
-        return this;
+        if (ddrVersion is { Version: > 0 })
+        {
+            _ddrVersion = ddrVersion;
+            return this;
+        }
+        else
+        {
+            throw new IncorrectFormatException($"Incorrect format of version");
+        }
     }
 
     public RamBuilder WithPowerConsumption(PowerConsumption powerConsumption)
     {
-        _powerConsumption = powerConsumption;
-        return this;
+        if (powerConsumption is { Watt: > 0 })
+        {
+            _powerConsumption = powerConsumption;
+            return this;
+        }
+        else
+        {
+            throw new IncorrectFormatException($"Incorrect format of power consumption");
+        }
     }
 
     public RamBuilder WithSupportiveFrequencyVoltagePairs(IList<FrequencyVoltagePair> supportiveFrequencyVoltagePairs)

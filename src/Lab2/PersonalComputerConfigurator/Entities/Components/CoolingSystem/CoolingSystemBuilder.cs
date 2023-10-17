@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.IncorrectFormatExceptions;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.NullObjectExceptions;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CoolingSystemCharacteristics;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CPUDetails;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CoolingSystem;
 
@@ -13,8 +14,13 @@ public class CoolingSystemBuilder
     private MaxTdp? _maxTdp;
     public CoolingSystemBuilder WithDimensions(Dimensions dimensions)
     {
-        _dimensions = dimensions;
-        return this;
+        if (dimensions is { Length: > 0 } and { Height: > 0, Width: > 0 })
+        {
+            _dimensions = dimensions;
+            return this;
+        }
+
+        throw new IncorrectFormatException($"Incorrect format of dimensions");
     }
 
     public CoolingSystemBuilder WithSupportiveSockets(IReadOnlyCollection<Socket> sockets)
@@ -25,8 +31,13 @@ public class CoolingSystemBuilder
 
     public CoolingSystemBuilder WithMaxTdp(MaxTdp maxTdp)
     {
-        _maxTdp = maxTdp;
-        return this;
+        if (maxTdp is { Watt: > 0 })
+        {
+            _maxTdp = maxTdp;
+            return this;
+        }
+
+        throw new IncorrectFormatException($"Incorrect format of dimensions");
     }
 
     public CoolingSystem Build()

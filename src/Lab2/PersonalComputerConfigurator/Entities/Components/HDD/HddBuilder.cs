@@ -1,6 +1,7 @@
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.IncorrectFormatExceptions;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.NullObjectExceptions;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.HddCharacteristics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.NullObjectExceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.HDD;
 
@@ -12,20 +13,41 @@ public class HddBuilder
 
     public HddBuilder WithCapacity(Capacity capacity)
     {
-        _capacity = capacity;
-        return this;
+        if (capacity is { Gb: > 0 })
+        {
+            _capacity = capacity;
+            return this;
+        }
+        else
+        {
+            throw new IncorrectFormatException($"Incorrect format of capacity");
+        }
     }
 
     public HddBuilder WithSpindleSpeed(SpindleSpeed spindleSpeed)
     {
-        _spindleSpeed = spindleSpeed;
-        return this;
+        if (spindleSpeed is { Speed: > 0 })
+        {
+            _spindleSpeed = spindleSpeed;
+            return this;
+        }
+        else
+        {
+            throw new IncorrectFormatException($"Incorrect format of spindle speed");
+        }
     }
 
     public HddBuilder WithPowerConsumption(PowerConsumption powerConsumption)
     {
-        _powerConsumption = powerConsumption;
-        return this;
+        if (powerConsumption is { Watt: > 0 })
+        {
+            _powerConsumption = powerConsumption;
+            return this;
+        }
+        else
+        {
+            throw new IncorrectFormatException($"Incorrect format of power consumption");
+        }
     }
 
     public Hdd Build()
