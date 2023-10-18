@@ -8,16 +8,12 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Videocard;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.WiFiAdapter;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.XmpProfile;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.Notifications;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Validator;
 
 public abstract class Validator
 {
     private Validator? _nextHandler;
-    public AddNotification Notification { get; protected set; } = new Ok();
-    public DisclaimerOfWarrantyObligations? DisclaimerOfWarrantyObligations { get; protected set; }
-    public NonComplianceOfRecommendedPeakLoad? NonComplianceOfRecommendedPeakLoad { get; protected set; }
     public static Validator Link(Validator head, params Validator[] chain)
     {
         Validator internalHead = head;

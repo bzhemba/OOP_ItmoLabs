@@ -31,7 +31,7 @@ public class BiosBuilder
 
     public Bios Build()
     {
-        if (_type != default && _version != null && _supportiveCpus != null)
+        if (_version != null && _supportiveCpus != null)
         {
             return new Bios(_type, _version, _supportiveCpus);
         }

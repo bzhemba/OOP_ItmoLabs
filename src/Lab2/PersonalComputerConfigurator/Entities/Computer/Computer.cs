@@ -45,7 +45,7 @@ public class Computer
         _xmp = xmp;
     }
 
-    public ComputerBuilder Direct(ComputerBuilder builder)
+    public ComputerDirector Direct(ComputerDirector builder)
     {
         if (builder != null)
         {

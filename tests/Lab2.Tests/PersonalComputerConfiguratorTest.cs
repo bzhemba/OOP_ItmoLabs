@@ -13,10 +13,15 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.XmpProfile;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Computer;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Repository;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.ComponentsExceptions;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.BiosCharacteristics;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CPUDetails;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.Notifications;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.PowerUnitCharacteristics;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.RamCharacterisics;
 using Xunit;
+using FormFactor = Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics.FormFactor;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.Tests;
 
@@ -50,25 +55,21 @@ public class PersonalComputerConfiguratorTest
         SystemCase systemCase = _systemCaseStorage[1];
         VideoCard videoCard = _videoCardStorage[0];
         Xmp xmp = _xmpStorage[0];
-        (AddNotification? notification, DisclaimerOfWarrantyObligations? disclaimer, NonComplianceOfRecommendedPeakLoad? recommendence, _) = computerBuilder.WithMotherBoard(motherboard).WithCpu(cpu).WithBios(bios).WithCoolingSystem(coolingSystem)
+        (AddNotification notification,  _) = computerBuilder.WithMotherBoard(motherboard).WithCpu(cpu).WithBios(bios).WithCoolingSystem(coolingSystem)
             .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(ssd).WithHdd(null).WithSystemCase(systemCase)
             .WithPowerUnit(powerUnit).WithWifiAdapter(null).Build();
         Assert.Equal(new Success(), notification);
-        Assert.Null(disclaimer);
-        Assert.Null(recommendence);
     }
 
     [Fact]
     public void ConfiguratePCWithPeakLoadWarning()
     {
         Computer computer = _computerStorage[2];
-        var newComputer = new ComputerBuilder();
+        var newComputer = new ComputerDirector();
         newComputer = computer.Direct(newComputer);
         PowerUnit newPowerUnit = new PowerUnitBuilder().WithPeakload(new PeakLoad(300)).Build();
-        newComputer.WithPowerUnit(newPowerUnit).Build();
+        (AddNotification? notification, _) = newComputer.WithPowerUnit(newPowerUnit).Build();
         Assert.Equal(new Success(), notification);
-        Assert.Null(disclaimer);
-        Assert.Null(recommendence);
     }
 
     [Fact]
@@ -88,11 +89,36 @@ public class PersonalComputerConfiguratorTest
         VideoCard videoCard = _videoCardStorage[0];
         Xmp xmp = _xmpStorage[0];
         WifiAdapter wifiAdapter = _wifiAdapterStorage[1];
-        (AddNotification? notification, DisclaimerOfWarrantyObligations? disclaimer, NonComplianceOfRecommendedPeakLoad? recommendence, _) = computerBuilder.WithMotherBoard(motherboard).WithCpu(cpu).WithBios(bios).WithCoolingSystem(coolingSystem)
+        (AddNotification? notification, _) = computerBuilder.WithMotherBoard(motherboard).WithCpu(cpu).WithBios(bios).WithCoolingSystem(coolingSystem)
             .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(null).WithHdd(hdd).WithSystemCase(systemCase)
             .WithPowerUnit(powerUnit).WithWifiAdapter(wifiAdapter).Build();
         Assert.Equal(new Success(), notification);
-        Assert.Equal(new NonComplianceOfRecommendedPeakLoad(), recommendence);
-        Assert.Null(disclaimer);
+    }
+
+    [Fact]
+    public void ConfiguratePCWithIncompatibileSocketsThrowExceptionTest()
+    {
+        IComputerBuilder computerBuilder = new ComputerBuilder();
+        Cpu cpu = _cpuStorage[3];
+        CpuBuilder cpuWithModifiedTdp = cpu.Clone();
+        cpuWithModifiedTdp.WithTDP(new TDP(200));
+        Motherboard motherboard = new MotherboardBuilder().WithSocket(Socket.SocketG2)
+            .WithChipset(new Chipset(ChipsetType.W480, true)).WithFormFactor(FormFactor.MiniItx)
+            .WithDdrVersion(new DdrVersion(2)).BiosTypeVersion(new BiosTypeVersion(Type.Phoenix, new Version("1.00.24")))
+            .WithSlotsAmount(new SlotsAmount(4)).WithWifiModule(true).WithPciLinesAmount(new PciLinesAmount(23))
+            .WithPciLinesAmount(new PciLinesAmount(21)).WithSataPortsAmount(new SataPortsAmount(12)).Build();
+        Bios bios = _biosStorage[0];
+        CoolingSystem coolingSystem = _coolingSystemStorage[1];
+        PowerUnit powerUnit = _powerUnitStorage[1];
+        Ram ram = _ramStorage[1];
+        Hdd hdd = _hddStorage[1];
+        SystemCase systemCase = _systemCaseStorage[1];
+        VideoCard videoCard = _videoCardStorage[0];
+        Xmp xmp = _xmpStorage[0];
+        WifiAdapter wifiAdapter = _wifiAdapterStorage[1];
+        Assert.Throws<IncompatibilityProblemException>(() => computerBuilder.WithMotherBoard(motherboard).WithCpu(cpu)
+            .WithBios(bios).WithCoolingSystem(coolingSystem)
+            .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(null).WithHdd(hdd).WithSystemCase(systemCase)
+            .WithPowerUnit(powerUnit).WithWifiAdapter(wifiAdapter).Build());
     }
 }

@@ -58,7 +58,7 @@ public class SsdBuilder
 
     public Ssd Build()
     {
-        if (_powerConsumption != null && _maxSpeed != default && _capacity != null && _connection != default)
+        if (_powerConsumption != null && _maxSpeed != default && _capacity != null)
         {
             return new Ssd(_connection, _capacity, _maxSpeed,  _powerConsumption);
         }

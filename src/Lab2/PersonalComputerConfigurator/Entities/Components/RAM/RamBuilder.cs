@@ -75,7 +75,7 @@ public class RamBuilder
 
     public Ram Build()
     {
-        if (_memorySize != null && _formFactor != default && _powerConsumption != null && _profile != null
+        if (_memorySize != null && _powerConsumption != null && _profile != null
             && _ddrVersion != null && _supportiveFrequencyVoltagePairs != null)
         {
             return new Ram(_memorySize, _formFactor, _profile, _ddrVersion, _powerConsumption, _supportiveFrequencyVoltagePairs);

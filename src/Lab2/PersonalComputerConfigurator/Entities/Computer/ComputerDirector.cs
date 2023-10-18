@@ -15,9 +15,8 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.No
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Computer;
 
-// Class for building new computer
-public class ComputerBuilder : IComputerBuilder, IMotherboardBuilder, ICpuBuilder, IBiosBuilder, ICoolingSystemBuilder, IRamBuilder,
-    IXmpBuilder, IVideoCardBuilder, ISsdBuilder, IHddBuilder, ISystemCaseBuilder, IPowerUnitBuilder, IWifiAdapterBuilder
+// Class for modifying existing computer
+public class ComputerDirector
 {
     private Cpu? _cpu;
     private Bios? _bios;
@@ -31,79 +30,79 @@ public class ComputerBuilder : IComputerBuilder, IMotherboardBuilder, ICpuBuilde
     private VideoCard? _videoCard;
     private WifiAdapter? _wifiAdapter;
     private Xmp? _xmp;
-    public IMotherboardBuilder WithMotherBoard(Motherboard motherboard)
+    public ComputerDirector WithMotherBoard(Motherboard motherboard)
     {
         _motherboard = motherboard;
         return this;
     }
 
-    public ICpuBuilder WithCpu(Cpu cpu)
+    public ComputerDirector WithCpu(Cpu cpu)
     {
         _cpu = cpu;
         return this;
     }
 
-    public IBiosBuilder WithBios(Bios? bios)
+    public ComputerDirector WithBios(Bios? bios)
     {
         _bios = bios;
         return this;
     }
 
-    public ICoolingSystemBuilder WithCoolingSystem(CoolingSystem coolingSystem)
+    public ComputerDirector WithCoolingSystem(CoolingSystem coolingSystem)
     {
         _coolingSystem = coolingSystem;
         return this;
     }
 
-    public IRamBuilder WithRam(Ram ram)
+    public ComputerDirector WithRam(Ram ram)
     {
         _ram = ram;
         return this;
     }
 
-    public IXmpBuilder WithXmp(Xmp? xmp)
+    public ComputerDirector WithXmp(Xmp? xmp)
     {
         _xmp = xmp;
         return this;
     }
 
-    public IVideoCardBuilder WithVideoCard(VideoCard? videoCard)
+    public ComputerDirector WithVideoCard(VideoCard? videoCard)
     {
         _videoCard = videoCard;
         return this;
     }
 
-    public ISsdBuilder WithSsd(Ssd? ssd)
+    public ComputerDirector WithSsd(Ssd? ssd)
     {
         _ssd = ssd;
         return this;
     }
 
-    public IHddBuilder WithHdd(Hdd? hdd)
+    public ComputerDirector WithHdd(Hdd? hdd)
     {
         _hdd = hdd;
         return this;
     }
 
-    public ISystemCaseBuilder WithSystemCase(SystemCase systemCase)
+    public ComputerDirector WithSystemCase(SystemCase systemCase)
     {
         _systemCase = systemCase;
         return this;
     }
 
-    public IPowerUnitBuilder WithPowerUnit(PowerUnit powerUnit)
+    public ComputerDirector WithPowerUnit(PowerUnit powerUnit)
     {
         _powerUnit = powerUnit;
         return this;
     }
 
-    public IWifiAdapterBuilder WithWifiAdapter(WifiAdapter? wifiAdapter)
+    public ComputerDirector WithWifiAdapter(WifiAdapter? wifiAdapter)
     {
         _wifiAdapter = wifiAdapter;
         return this;
     }
 
-    public (AddNotification Notification, Computer? Computer) Build()
+    public (AddNotification Notification,  Computer? Computer) Build()
     {
         var validator = Validator.Link(
             new CheckExistence(),

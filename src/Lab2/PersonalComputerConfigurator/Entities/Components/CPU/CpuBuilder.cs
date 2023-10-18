@@ -94,7 +94,7 @@ public class CpuBuilder
 
     public Cpu Build()
     {
-        if (_socket != default && _coresAmount != null && _coresFrequency != null
+        if (_coresAmount != null && _coresFrequency != null
             && _tdp != null && _memoryFrequency != null && _powerConsumption != null)
         {
             return new Cpu(_socket, _coresAmount, _coresFrequency, _tdp, _hasVideoCore, _memoryFrequency, _powerConsumption);

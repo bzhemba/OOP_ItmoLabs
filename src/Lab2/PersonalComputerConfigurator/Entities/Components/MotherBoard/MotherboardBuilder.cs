@@ -94,10 +94,8 @@ public class MotherboardBuilder
 
     public Motherboard Build()
     {
-        if (_formFactor != default
-            && _cpuSocket != default
-            && _pciLinesAmount != null && _sataPortsAmount != null && _chipset != null
-            && _supportiveDdrVersion != null && _ramSlotsAmount != null && _formFactor != default && _biosTypeVersion != null)
+        if (_pciLinesAmount != null && _sataPortsAmount != null && _chipset != null
+            && _supportiveDdrVersion != null && _ramSlotsAmount != null && _biosTypeVersion != null)
         {
             return new Motherboard(_cpuSocket, _pciLinesAmount, _sataPortsAmount, _chipset, _supportiveDdrVersion, _ramSlotsAmount, _formFactor, _biosTypeVersion, _hasWifiModule);
         }

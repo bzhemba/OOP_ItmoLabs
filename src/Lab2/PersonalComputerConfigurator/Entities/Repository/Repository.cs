@@ -39,19 +39,19 @@ public class Repository
     private const int CoresAmountIntelPentium = 2;
     private const int CoresFrequencyIntelPentium = 1000;
     private const int TdpIntelPentium = 54;
-    private const int MemoryFrequencyIntelPentium = 2133;
+    private const int MemoryFrequencyIntelPentium = 3200;
     private const int PowerConsumptionIntelPentium = 65;
 
     private const int CoresAmountAMDPhenom = 4;
     private const int CoresFrequencyAMDPhenom = 3000;
     private const int TdpAMDPhenom = 125;
-    private const int MemoryFrequencyAMDPhenom = 1600;
+    private const int MemoryFrequencyAMDPhenom = 2100;
     private const int PowerConsumptionAMDPhenom = 95;
 
     private const int CoresAmountIntelCorei7 = 8;
     private const int CoresFrequencyIntelCorei7 = 4000;
     private const int TdpIntelCorei7 = 140;
-    private const int MemoryFrequencyIntelCorei7 = 2400;
+    private const int MemoryFrequencyIntelCorei7 = 3500;
     private const int PowerConsumptionIntelCorei7 = 95;
 
     private static Cpu _amdPhenomCpu = new CpuBuilder().WithSocket(Socket.SocketAm4)
@@ -136,7 +136,7 @@ public class Repository
     private static Xmp _xmp2 = new XmpBuilder()
         .WithTimings(new List<int> { 16, 18, 18, 36 })
         .WithVoltage(new Voltage(1.2))
-        .WithFrequency(new Frequency(2666))
+        .WithFrequency(new Frequency(2000))
         .Build();
 
     private static Ram _ram1 = new RamBuilder()
@@ -201,7 +201,7 @@ public class Repository
         .Build();
     private static SystemCase _systemCase2 = new SystemCaseBuilder()
         .WithVideoCardDimensions(new VideoCardDimensions(320, 140))
-        .WithSupportiveFormFactors(new List<FormFactor> { FormFactor.Аtx, FormFactor.MicroAtx })
+        .WithSupportiveFormFactors(new List<FormFactor> { FormFactor.Аtx, FormFactor.MiniAtx })
         .WithDimensions(new Dimensions(350, 170, 300))
         .Build();
     private static SystemCase _systemCase3 = new SystemCaseBuilder()

@@ -1,4 +1,3 @@
-using System.Runtime.Serialization;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.HDD;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.RAM;
@@ -13,6 +12,10 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 public class PowerUnit
 {
     private PeakLoad _peakLoad;
+    public PowerUnit(PeakLoad peakLoad)
+    {
+        _peakLoad = peakLoad;
+    }
 
     public AddNotification IsPeakLoadEnough(Cpu cpu, Hdd? hdd, Ssd? ssd, Ram ram, VideoCard? videocard, WifiAdapter? wifiAdapter)
     {
@@ -43,10 +46,5 @@ public class PowerUnit
             < 100 and >= 0 => new NonComplianceOfRecommendedPeakLoad(),
             _ => new IncompatibilityProblem(null),
         };
-    }
-
-    public PowerUnit(PeakLoad peakLoad)
-    {
-        _peakLoad = peakLoad;
     }
 }
