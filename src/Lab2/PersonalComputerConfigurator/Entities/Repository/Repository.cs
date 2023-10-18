@@ -126,7 +126,7 @@ public class Repository
         .WithWifiModule(false)
         .Build();
     private static PowerUnit _powerUnit1 = new PowerUnitBuilder().WithPeakload(new PeakLoad(1000)).Build();
-    private static PowerUnit _powerUnit2 = new PowerUnitBuilder().WithPeakload(new PeakLoad(2000)).Build();
+    private static PowerUnit _powerUnit2 = new PowerUnitBuilder().WithPeakload(new PeakLoad(500)).Build();
     private static Xmp _xmp1 = new XmpBuilder()
         .WithTimings(new List<int> { 15, 17, 17, 35 })
         .WithVoltage(new Voltage(1.35))

@@ -10,7 +10,6 @@ public class Ram : IClone<RamBuilder>
     private MemorySize _memorySize;
     private FormFactor _formFactor;
     private Xmp _profile;
-    private PowerConsumption _powerConsumption;
     private IList<FrequencyVoltagePair> _supportiveFrequencyVoltagePairs;
 
     public Ram(
@@ -25,9 +24,11 @@ public class Ram : IClone<RamBuilder>
         _formFactor = formFactor;
         _profile = profile;
         DdrVersion = ddrVersion;
-        _powerConsumption = powerConsumption;
+        PowerConsumption = powerConsumption;
         _supportiveFrequencyVoltagePairs = supportiveFrequencyVoltagePairs;
     }
+
+    public PowerConsumption PowerConsumption { get; }
 
     public DdrVersion DdrVersion { get; }
 
@@ -42,7 +43,7 @@ public class Ram : IClone<RamBuilder>
     public RamBuilder Clone()
     {
         var builder = new RamBuilder();
-        builder.WithPowerConsumption(_powerConsumption);
+        builder.WithPowerConsumption(PowerConsumption);
         builder.WithXmp(_profile);
         builder.WithDdrVersion(DdrVersion);
         builder.WithFormFactor(_formFactor);

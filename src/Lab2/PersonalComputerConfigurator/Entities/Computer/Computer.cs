@@ -45,7 +45,7 @@ public class Computer
         _xmp = xmp;
     }
 
-    public IComputerBuilder Direct(IComputerBuilder builder)
+    public ComputerBuilder Direct(ComputerBuilder builder)
     {
         if (builder != null)
         {

@@ -8,20 +8,21 @@ public class Ssd : IClone<SsdBuilder>
     private Connection _connection;
     private Capacity _capacity;
     private MaxSpeed _maxSpeed;
-    private PowerConsumption _powerConsumption;
 
     public Ssd(Connection connection, Capacity capacity, MaxSpeed maxSpeed, PowerConsumption powerConsumption)
     {
         _connection = connection;
         _capacity = capacity;
         _maxSpeed = maxSpeed;
-        _powerConsumption = powerConsumption;
+        PowerConsumption = powerConsumption;
     }
+
+    public PowerConsumption PowerConsumption { get; }
 
     public SsdBuilder Clone()
     {
         var builder = new SsdBuilder();
-        builder.WithPowerConsumption(_powerConsumption);
+        builder.WithPowerConsumption(PowerConsumption);
         builder.WithConnection(_connection);
         builder.WithCapacity(_capacity);
         builder.WithMaxSpeed(_maxSpeed);

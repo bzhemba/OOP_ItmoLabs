@@ -8,7 +8,6 @@ public class VideoCard : IClone<VideoCardBuilder>
     private VideoMemoryAmount _videoMemoryAmount;
     private PciVersion _pciVersion;
     private ChipFrequency _chipFrequency;
-    private PowerConsumption _powerConsumption;
 
     public VideoCard(VideoCardDimensions dimensions, VideoMemoryAmount videoMemoryAmount, PciVersion pciVersion, ChipFrequency chipFrequency, PowerConsumption powerConsumption)
     {
@@ -16,9 +15,10 @@ public class VideoCard : IClone<VideoCardBuilder>
         _videoMemoryAmount = videoMemoryAmount;
         _pciVersion = pciVersion;
         _chipFrequency = chipFrequency;
-        _powerConsumption = powerConsumption;
+        PowerConsumption = powerConsumption;
     }
 
+    public PowerConsumption PowerConsumption { get; }
     public VideoCardDimensions Dimensions { get; }
 
     public VideoCardBuilder Clone()
@@ -26,7 +26,7 @@ public class VideoCard : IClone<VideoCardBuilder>
         var builder = new VideoCardBuilder();
         builder.WithChipFrequency(_chipFrequency);
         builder.WithPciVersion(_pciVersion);
-        builder.WithPowerConsumption(_powerConsumption);
+        builder.WithPowerConsumption(PowerConsumption);
         builder.WithVideoMemoryAmount(_videoMemoryAmount);
         builder.WithVideoCardDimensions(Dimensions);
         return builder;

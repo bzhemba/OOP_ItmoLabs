@@ -1,3 +1,3 @@
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.Notifications;
 
-public record Success() : AddNotification;
+public record NonComplianceOfRecommendedPeakLoad : AddNotification;

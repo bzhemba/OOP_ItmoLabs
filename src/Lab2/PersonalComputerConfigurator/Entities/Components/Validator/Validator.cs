@@ -17,6 +17,7 @@ public abstract class Validator
     private Validator? _nextHandler;
     public AddNotification Notification { get; protected set; } = new Ok();
     public DisclaimerOfWarrantyObligations? DisclaimerOfWarrantyObligations { get; protected set; }
+    public NonComplianceOfRecommendedPeakLoad? NonComplianceOfRecommendedPeakLoad { get; protected set; }
     public static Validator Link(Validator head, params Validator[] chain)
     {
         Validator internalHead = head;

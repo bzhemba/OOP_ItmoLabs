@@ -2,5 +2,5 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 
 public interface IComputerDirector
 {
-    IComputerBuilder Direct(ComputerBuilder builder);
+    ComputerBuilder Direct(ComputerBuilder builder);
 }

@@ -102,7 +102,7 @@ public class ComputerBuilder : IComputerBuilder, IMotherboardBuilder, ICpuBuilde
         return this;
     }
 
-    public (AddNotification? Notification, DisclaimerOfWarrantyObligations? Disclaimer) Build()
+    public (AddNotification? Notification, DisclaimerOfWarrantyObligations? Disclaimer, NonComplianceOfRecommendedPeakLoad? NonComplianceOfRecommendedPeakLoad, Computer? Computer) Build()
     {
         var validator = Validator.Link(
             new CheckExistence(),
@@ -117,11 +117,11 @@ public class ComputerBuilder : IComputerBuilder, IMotherboardBuilder, ICpuBuilde
         if ((_cpu != null && _motherboard != null && _bios != null && _coolingSystem != null && _ram != null && _systemCase != null && _powerUnit != null) &&
             validator.Check(_cpu, _bios, _motherboard, _coolingSystem, _ram, _videoCard, _ssd, _hdd, _systemCase, _powerUnit, _wifiAdapter, _xmp))
         {
-            return (new Success(new Computer(_cpu, _bios, _coolingSystem, _hdd, _motherboard, _powerUnit, _ram, _ssd, _systemCase, _videoCard, _wifiAdapter, _xmp)), validator.DisclaimerOfWarrantyObligations);
+            return (new Success(), validator.DisclaimerOfWarrantyObligations, validator.NonComplianceOfRecommendedPeakLoad, new Computer(_cpu, _bios, _coolingSystem, _hdd, _motherboard, _powerUnit, _ram, _ssd, _systemCase, _videoCard, _wifiAdapter, _xmp));
         }
         else
         {
-            return (validator.Notification, validator.DisclaimerOfWarrantyObligations);
+            return (validator.Notification, validator.DisclaimerOfWarrantyObligations, validator.NonComplianceOfRecommendedPeakLoad, null);
         }
     }
 }

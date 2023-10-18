@@ -7,19 +7,20 @@ public class Hdd : IClone<HddBuilder>
 {
     private Capacity _capacity;
     private SpindleSpeed _spindleSpeed;
-    private PowerConsumption _powerConsumption;
 
-    public Hdd(Capacity capacity, SpindleSpeed spindleSpeed, PowerConsumption powerConsumption)
+    public Hdd(Capacity capacity, SpindleSpeed spindleSpeed, PowerConsumption powerPowerConsumption)
     {
         _capacity = capacity;
         _spindleSpeed = spindleSpeed;
-        _powerConsumption = powerConsumption;
+        PowerConsumption = powerPowerConsumption;
     }
+
+    public PowerConsumption PowerConsumption { get; }
 
     public HddBuilder Clone()
     {
         var builder = new HddBuilder();
-        builder.WithPowerConsumption(_powerConsumption);
+        builder.WithPowerConsumption(PowerConsumption);
         builder.WithSpindleSpeed(_spindleSpeed);
         builder.WithCapacity(_capacity);
         return builder;
