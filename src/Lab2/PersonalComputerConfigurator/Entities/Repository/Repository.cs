@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.BIOS;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CoolingSystem;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
@@ -11,6 +12,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Videocard;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.WiFiAdapter;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.XmpProfile;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Computer;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CoolingSystemCharacteristics;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CPUDetails;
@@ -68,7 +70,7 @@ public class Repository
         .WithCoresAmount(new CoresAmount(CoresAmountIntelCeleron)).WithCoresFrequency(new CoresFrequency(CoresFrequencyIntelCeleron))
         .WithMemoryFrequency(new MemoryFrequency(MemoryFrequencyIntelCeleron)).WithVideoCore(true)
         .WithPowerConsumption(new PowerConsumption(PowerConsumptionIntelCeleron)).WithTDP(new TDP(TdpIntelCeleron)).Build();
-    private static Cpu _intelPentiumCpu = new CpuBuilder().WithSocket(Socket.Lga1155)
+    private static Cpu _intelPentiumCpu = new CpuBuilder().WithSocket(Socket.Lga1200)
         .WithCoresAmount(new CoresAmount(CoresAmountIntelPentium)).WithCoresFrequency(new CoresFrequency(CoresFrequencyIntelPentium))
         .WithMemoryFrequency(new MemoryFrequency(MemoryFrequencyIntelPentium)).WithVideoCore(true)
         .WithPowerConsumption(new PowerConsumption(PowerConsumptionIntelPentium)).WithTDP(new TDP(TdpIntelPentium)).Build();
@@ -212,6 +214,8 @@ public class Repository
         .WithPowerConsumption(new PowerConsumption(8))
         .Build();
 
+    private static IComputerBuilder _builderDexp = new ComputerBuilder();
+    private static Computer.Computer _computerDexp = _builderDexp.WithMotherBoard(_motherboard2).WithCpu(_intelPentiumCpu).WithBios()
     public IList<Cpu> СpuList { get; } = new List<Cpu>() { _intelPentiumCpu, _intelCeleronCpu, _intelCorei7Cpu, _amdPhenomCpu };
     public IList<Bios> BiosList { get; } = new List<Bios>() { _bios1, _bios2 };
     public IList<CoolingSystem> CoolingSystems { get; } = new List<CoolingSystem>() { _coolerMasterCooler, _noctuaCooler };
