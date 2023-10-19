@@ -6,7 +6,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.PU;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.RAM;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SSD;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SystemCase;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SystemCases;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Validator;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Videocard;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.WiFiAdapter;
@@ -15,7 +15,6 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.No
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Computer;
 
-// Class for modifying existing computer
 public class ComputerDirector
 {
     private Cpu? _cpu;
@@ -26,7 +25,7 @@ public class ComputerDirector
     private PowerUnit? _powerUnit;
     private Ram? _ram;
     private Ssd? _ssd;
-    private SystemCase? _systemCase;
+    private SystemUnit? _systemCase;
     private VideoCard? _videoCard;
     private WifiAdapter? _wifiAdapter;
     private Xmp? _xmp;
@@ -84,9 +83,9 @@ public class ComputerDirector
         return this;
     }
 
-    public ComputerDirector WithSystemCase(SystemCase systemCase)
+    public ComputerDirector WithSystemCase(SystemUnit systemUnit)
     {
-        _systemCase = systemCase;
+        _systemCase = systemUnit;
         return this;
     }
 

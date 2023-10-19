@@ -1,20 +1,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.MotherBoard;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SystemCase;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Videocard;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.VideoCardCharacteristics;
 
-namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SystemCase;
+namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SystemCases;
 
-public class SystemCase : IClone<SystemCaseBuilder>
+public class SystemUnit : IClone<SystemCaseBuilder>
 {
     private VideoCardDimensions _videoCardDimensions;
     private IReadOnlyCollection<FormFactor> _supportiveMotherboardFormFactors;
     private Dimensions _dimensions;
 
-    public SystemCase(VideoCardDimensions videoCardDimensions, IReadOnlyCollection<FormFactor> supportiveMotherboardFormFactors, Dimensions dimensions)
+    public SystemUnit(VideoCardDimensions videoCardDimensions, IReadOnlyCollection<FormFactor> supportiveMotherboardFormFactors, Dimensions dimensions)
     {
         _videoCardDimensions = videoCardDimensions;
         _supportiveMotherboardFormFactors = supportiveMotherboardFormFactors;

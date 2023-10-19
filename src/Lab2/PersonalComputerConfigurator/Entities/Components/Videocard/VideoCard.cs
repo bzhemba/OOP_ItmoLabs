@@ -5,15 +5,15 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 
 public class VideoCard : IClone<VideoCardBuilder>
 {
-    private VideoMemoryAmount _videoMemoryAmount;
-    private PciVersion _pciVersion;
-    private ChipFrequency _chipFrequency;
+    private MemorySize _videoMemoryAmount;
+    private VersionNumber _versionNumber;
+    private Frequency _chipFrequency;
 
-    public VideoCard(VideoCardDimensions dimensions, VideoMemoryAmount videoMemoryAmount, PciVersion pciVersion, ChipFrequency chipFrequency, PowerConsumption powerConsumption)
+    public VideoCard(VideoCardDimensions dimensions, MemorySize videoMemoryAmount, VersionNumber versionNumber, Frequency chipFrequency, PowerConsumption powerConsumption)
     {
         Dimensions = dimensions;
         _videoMemoryAmount = videoMemoryAmount;
-        _pciVersion = pciVersion;
+        _versionNumber = versionNumber;
         _chipFrequency = chipFrequency;
         PowerConsumption = powerConsumption;
     }
@@ -25,7 +25,7 @@ public class VideoCard : IClone<VideoCardBuilder>
     {
         var builder = new VideoCardBuilder();
         builder.WithChipFrequency(_chipFrequency);
-        builder.WithPciVersion(_pciVersion);
+        builder.WithPciVersion(_versionNumber);
         builder.WithPowerConsumption(PowerConsumption);
         builder.WithVideoMemoryAmount(_videoMemoryAmount);
         builder.WithVideoCardDimensions(Dimensions);

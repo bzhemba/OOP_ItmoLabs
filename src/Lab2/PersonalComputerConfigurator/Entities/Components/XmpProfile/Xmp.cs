@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.XmpProfileCharacteristics;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.XmpProfile;
 
-public class Xmp : ICheckCompatibility
+public class Xmp
 {
     private IReadOnlyCollection<int> _timings;
 

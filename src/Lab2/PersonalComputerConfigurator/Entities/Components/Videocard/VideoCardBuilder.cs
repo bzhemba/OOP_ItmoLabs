@@ -1,5 +1,4 @@
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.IncorrectFormatExceptions;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.NullObjectExceptions;
+using System;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.VideoCardCharacteristics;
 
@@ -8,57 +7,47 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 public class VideoCardBuilder
 {
     private VideoCardDimensions? _dimensions;
-    private VideoMemoryAmount? _videoMemoryAmount;
-    private PciVersion? _pciVersion;
-    private ChipFrequency? _chipFrequency;
+    private MemorySize? _videoMemoryAmount;
+    private VersionNumber? _pciVersion;
+    private Frequency? _chipFrequency;
     private PowerConsumption? _powerConsumption;
     public VideoCardBuilder WithVideoCardDimensions(VideoCardDimensions dimensions)
     {
-        if (dimensions is not { Length: > 0, Width: > 0 })
-            throw new IncorrectFormatException($"Incorrect format of PCI version");
         _dimensions = dimensions;
         return this;
     }
 
-    public VideoCardBuilder WithVideoMemoryAmount(VideoMemoryAmount videoMemoryAmount)
+    public VideoCardBuilder WithVideoMemoryAmount(MemorySize videoMemoryAmount)
     {
-        if (videoMemoryAmount is not { Gb: > 0 })
-            throw new IncorrectFormatException($"Incorrect format of PCI version");
         _videoMemoryAmount = videoMemoryAmount;
         return this;
     }
 
-    public VideoCardBuilder WithPciVersion(PciVersion pciVersion)
+    public VideoCardBuilder WithPciVersion(VersionNumber versionNumber)
     {
-        if (pciVersion is not { Version: > 0 }) throw new IncorrectFormatException($"Incorrect format of PCI version");
-        _pciVersion = pciVersion;
+        _pciVersion = versionNumber;
         return this;
     }
 
-    public VideoCardBuilder WithChipFrequency(ChipFrequency chipFrequency)
+    public VideoCardBuilder WithChipFrequency(Frequency chipFrequency)
     {
-        if (chipFrequency is not { Frequency: > 0 })
-            throw new IncorrectFormatException($"Incorrect format of chip frequency");
         _chipFrequency = chipFrequency;
         return this;
     }
 
     public VideoCardBuilder WithPowerConsumption(PowerConsumption powerConsumption)
     {
-        if (powerConsumption is not { Watt: > 0 })
-            throw new IncorrectFormatException($"Incorrect format of power consumption");
         _powerConsumption = powerConsumption;
         return this;
     }
 
     public VideoCard Build()
     {
-        if (_dimensions != null && _powerConsumption != null && _chipFrequency != null && _pciVersion != null &&
-            _videoMemoryAmount != null)
-        {
-            return new VideoCard(_dimensions, _videoMemoryAmount, _pciVersion, _chipFrequency, _powerConsumption);
-        }
-
-        throw new NullObjectException("Unable to create component, some parts are missing");
+        return new VideoCard(
+            _dimensions ?? throw new ArgumentNullException(nameof(_dimensions)),
+            _videoMemoryAmount ?? throw new ArgumentNullException(nameof(_videoMemoryAmount)),
+            _pciVersion ?? throw new ArgumentNullException(nameof(_pciVersion)),
+            _chipFrequency ?? throw new ArgumentNullException(nameof(_chipFrequency)),
+            _powerConsumption ?? throw new ArgumentNullException(nameof(_powerConsumption)));
     }
 }

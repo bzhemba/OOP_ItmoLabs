@@ -7,6 +7,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.RAM;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SSD;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SystemCase;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SystemCases;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Validator;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Videocard;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.WiFiAdapter;
@@ -15,7 +16,6 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.No
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Computer;
 
-// Class for building new computer
 public class ComputerBuilder : IComputerBuilder, IMotherboardBuilder, ICpuBuilder, IBiosBuilder, ICoolingSystemBuilder, IRamBuilder,
     IXmpBuilder, IVideoCardBuilder, ISsdBuilder, IHddBuilder, ISystemCaseBuilder, IPowerUnitBuilder, IWifiAdapterBuilder
 {
@@ -27,7 +27,7 @@ public class ComputerBuilder : IComputerBuilder, IMotherboardBuilder, ICpuBuilde
     private PowerUnit? _powerUnit;
     private Ram? _ram;
     private Ssd? _ssd;
-    private SystemCase? _systemCase;
+    private SystemUnit? _systemCase;
     private VideoCard? _videoCard;
     private WifiAdapter? _wifiAdapter;
     private Xmp? _xmp;
@@ -85,9 +85,9 @@ public class ComputerBuilder : IComputerBuilder, IMotherboardBuilder, ICpuBuilde
         return this;
     }
 
-    public ISystemCaseBuilder WithSystemCase(SystemCase systemCase)
+    public ISystemCaseBuilder WithSystemCase(SystemUnit systemUnit)
     {
-        _systemCase = systemCase;
+        _systemCase = systemUnit;
         return this;
     }
 

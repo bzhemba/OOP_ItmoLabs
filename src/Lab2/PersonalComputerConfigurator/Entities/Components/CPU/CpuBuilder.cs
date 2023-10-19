@@ -1,17 +1,15 @@
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.IncorrectFormatExceptions;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.NullObjectExceptions;
+using System;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CPUDetails;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
 
 public class CpuBuilder
 {
-    private Socket _socket;
-    private CoresAmount? _coresAmount;
-    private CoresFrequency? _coresFrequency;
-    private TDP? _tdp;
-    private MemoryFrequency? _memoryFrequency;
+    private Socket? _socket;
+    private Amount? _coresAmount;
+    private Frequency? _coresFrequency;
+    private Tdp? _tdp;
+    private Frequency? _memoryFrequency;
     private PowerConsumption? _powerConsumption;
     private bool _hasVideoCore;
 
@@ -21,69 +19,34 @@ public class CpuBuilder
         return this;
     }
 
-    public CpuBuilder WithCoresAmount(CoresAmount coresAmount)
+    public CpuBuilder WithCoresAmount(Amount amount)
     {
-        if (coresAmount is { Amount: > 0 })
-        {
-            _coresAmount = coresAmount;
+            _coresAmount = amount;
             return this;
         }
-        else
-        {
-            throw new IncorrectFormatException($"Incorrect format of cores amount");
-        }
-    }
 
-    public CpuBuilder WithCoresFrequency(CoresFrequency coresFrequency)
+    public CpuBuilder WithCoresFrequency(Frequency coresFrequency)
     {
-        if (coresFrequency is { Frequency: > 0 })
-        {
             _coresFrequency = coresFrequency;
             return this;
-        }
-        else
-        {
-            throw new IncorrectFormatException($"Incorrect format of cores frequency");
-        }
     }
 
-    public CpuBuilder WithTDP(TDP tdp)
+    public CpuBuilder WithTDP(Tdp tdp)
     {
-        if (tdp is { Watt: > 0 })
-        {
-            _tdp = tdp;
-            return this;
-        }
-        else
-        {
-            throw new IncorrectFormatException($"Incorrect format of TDP");
-        }
+        _tdp = tdp;
+        return this;
     }
 
-    public CpuBuilder WithMemoryFrequency(MemoryFrequency memoryFrequency)
+    public CpuBuilder WithMemoryFrequency(Frequency memoryFrequency)
     {
-        if (memoryFrequency is { Mhz: > 0 })
-        {
             _memoryFrequency = memoryFrequency;
             return this;
-        }
-        else
-        {
-            throw new IncorrectFormatException($"Incorrect format of memory frequency");
-        }
     }
 
     public CpuBuilder WithPowerConsumption(PowerConsumption powerConsumption)
     {
-        if (powerConsumption is { Watt: > 0 })
-        {
             _powerConsumption = powerConsumption;
             return this;
-        }
-        else
-        {
-            throw new IncorrectFormatException($"Incorrect format of power consumption");
-        }
     }
 
     public CpuBuilder WithVideoCore(bool hasVideoCore)
@@ -94,14 +57,13 @@ public class CpuBuilder
 
     public Cpu Build()
     {
-        if (_coresAmount != null && _coresFrequency != null
-            && _tdp != null && _memoryFrequency != null && _powerConsumption != null)
-        {
-            return new Cpu(_socket, _coresAmount, _coresFrequency, _tdp, _hasVideoCore, _memoryFrequency, _powerConsumption);
-        }
-        else
-        {
-            throw new NullObjectException("Unable to create component, some parts are missing");
-        }
+        return new Cpu(
+            _socket ?? throw new ArgumentNullException(nameof(_socket)),
+            _coresAmount ?? throw new ArgumentNullException(nameof(_coresAmount)),
+            _coresFrequency ?? throw new ArgumentNullException(nameof(_coresFrequency)),
+            _tdp ?? throw new ArgumentNullException(nameof(_tdp)),
+            _hasVideoCore,
+            _memoryFrequency ?? throw new ArgumentNullException(nameof(_memoryFrequency)),
+            _powerConsumption ?? throw new ArgumentNullException(nameof(_powerConsumption)));
     }
 }

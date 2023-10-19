@@ -1,3 +1,0 @@
-namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics;
-
-public record SataPortsAmount(int Amount);

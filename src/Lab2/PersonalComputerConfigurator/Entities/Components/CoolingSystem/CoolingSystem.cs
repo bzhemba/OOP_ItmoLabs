@@ -3,18 +3,16 @@ using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.NullObjectExceptions;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CoolingSystemCharacteristics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CPUDetails;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CoolingSystem;
 
-public class CoolingSystem : ICheckCompatibility, IClone<CoolingSystemBuilder>
+public class CoolingSystem : IClone<CoolingSystemBuilder>
 {
     private Dimensions _dimensions;
     private IReadOnlyCollection<Socket> _supportiveSockets;
-    private MaxTdp _maxTdp;
+    private Tdp _maxTdp;
 
-    public CoolingSystem(Dimensions dimensions, IReadOnlyCollection<Socket> supportiveSockets, MaxTdp maxTdp)
+    public CoolingSystem(Dimensions dimensions, IReadOnlyCollection<Socket> supportiveSockets, Tdp maxTdp)
     {
         _dimensions = dimensions;
         _supportiveSockets = supportiveSockets;
@@ -25,9 +23,7 @@ public class CoolingSystem : ICheckCompatibility, IClone<CoolingSystemBuilder>
     {
         if (cpu != null)
         {
-            return _supportiveSockets.Any(supportiveSocket => cpu.Socket.Equals(supportiveSocket))
-                ? true
-                : false;
+            return _supportiveSockets.Any(supportiveSocket => cpu.Socket.Equals(supportiveSocket));
         }
         else
         {

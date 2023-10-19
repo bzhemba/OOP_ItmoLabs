@@ -8,20 +8,20 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 public class Ram : IClone<RamBuilder>
 {
     private MemorySize _memorySize;
-    private FormFactor _formFactor;
+    private RamFormFactor _ramFormFactor;
     private Xmp _profile;
-    private IList<FrequencyVoltagePair> _supportiveFrequencyVoltagePairs;
+    private IList<(Frequency Frequency, Voltage Voltage)> _supportiveFrequencyVoltagePairs;
 
     public Ram(
         MemorySize memorySize,
-        FormFactor formFactor,
+        RamFormFactor ramFormFactor,
         Xmp profile,
         DdrVersion ddrVersion,
         PowerConsumption powerConsumption,
-        IList<FrequencyVoltagePair> supportiveFrequencyVoltagePairs)
+        IList<(Frequency Frequency, Voltage Voltage)> supportiveFrequencyVoltagePairs)
     {
         _memorySize = memorySize;
-        _formFactor = formFactor;
+        _ramFormFactor = ramFormFactor;
         _profile = profile;
         DdrVersion = ddrVersion;
         PowerConsumption = powerConsumption;
@@ -32,12 +32,12 @@ public class Ram : IClone<RamBuilder>
 
     public DdrVersion DdrVersion { get; }
 
-    public IList<FrequencyVoltagePair> SupportiveFrequencyVoltagePairs =>
+    public IList<(Frequency Frequency, Voltage Voltage)> SupportiveFrequencyVoltagePairs =>
         _supportiveFrequencyVoltagePairs;
 
     public void ApplyXmpModifications(int index)
     {
-        _supportiveFrequencyVoltagePairs[index] = new FrequencyVoltagePair(_profile.Frequency.Mhz, _profile.Voltage.V);
+        _supportiveFrequencyVoltagePairs[index] = (new Frequency(_profile.Frequency.Mhz), new Voltage(_profile.Voltage.V));
     }
 
     public RamBuilder Clone()
@@ -46,7 +46,7 @@ public class Ram : IClone<RamBuilder>
         builder.WithPowerConsumption(PowerConsumption);
         builder.WithXmp(_profile);
         builder.WithDdrVersion(DdrVersion);
-        builder.WithFormFactor(_formFactor);
+        builder.WithFormFactor(_ramFormFactor);
         builder.WithMemorySize(_memorySize);
         builder.WithSupportiveFrequencyVoltagePairs(_supportiveFrequencyVoltagePairs);
         return builder;

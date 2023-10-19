@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.NullObjectExceptions;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.XmpProfileCharacteristics;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.XmpProfile;
 
@@ -29,13 +29,9 @@ public class XmpBuilder
 
     public Xmp Build()
     {
-        if (_timings != null && _voltage != null && _frequency != null)
-        {
-            return new Xmp(_timings, _frequency, _voltage);
-        }
-        else
-        {
-            throw new NullObjectException("Unable to create component, some parts are missing");
-        }
+        return new Xmp(
+            _timings ?? throw new ArgumentNullException(nameof(_timings)),
+            _frequency ?? throw new ArgumentNullException(nameof(_frequency)),
+            _voltage ?? throw new ArgumentNullException(nameof(_voltage)));
     }
 }

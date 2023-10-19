@@ -7,13 +7,13 @@ public class Ssd : IClone<SsdBuilder>
 {
     private Connection _connection;
     private Capacity _capacity;
-    private MaxSpeed _maxSpeed;
+    private Speed _speed;
 
-    public Ssd(Connection connection, Capacity capacity, MaxSpeed maxSpeed, PowerConsumption powerConsumption)
+    public Ssd(Connection connection, Capacity capacity, Speed speed, PowerConsumption powerConsumption)
     {
         _connection = connection;
         _capacity = capacity;
-        _maxSpeed = maxSpeed;
+        _speed = speed;
         PowerConsumption = powerConsumption;
     }
 
@@ -25,7 +25,7 @@ public class Ssd : IClone<SsdBuilder>
         builder.WithPowerConsumption(PowerConsumption);
         builder.WithConnection(_connection);
         builder.WithCapacity(_capacity);
-        builder.WithMaxSpeed(_maxSpeed);
+        builder.WithMaxSpeed(_speed);
         return builder;
     }
 }

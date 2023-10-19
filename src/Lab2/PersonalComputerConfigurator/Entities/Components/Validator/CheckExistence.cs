@@ -14,11 +14,11 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 
 public class CheckExistence : Validator
 {
-    public override bool Check(Cpu cpu, Bios bios, Motherboard motherboard, CoolingSystem.CoolingSystem coolingSystem, Ram ram, VideoCard? videoCard, Ssd? ssd, Hdd? hdd, SystemCase.SystemCase systemCase, PowerUnit powerUnit, WifiAdapter? wifiAdapter, Xmp? xmpProfile)
+    public override bool Check(Cpu cpu, Bios bios, Motherboard motherboard, CoolingSystem.CoolingSystem coolingSystem, Ram ram, VideoCard? videoCard, Ssd? ssd, Hdd? hdd, SystemCases.SystemUnit systemUnit, PowerUnit powerUnit, WifiAdapter? wifiAdapter, Xmp? xmpProfile)
     {
-        if ((cpu != null && bios != null && motherboard != null && ram != null && systemCase != null && powerUnit != null && coolingSystem != null) && (ssd != null || hdd != null) && (cpu.HasVideoCore || videoCard != null))
+        if ((cpu != null && bios != null && motherboard != null && ram != null && systemUnit != null && powerUnit != null && coolingSystem != null) && (ssd != null || hdd != null) && (cpu.HasVideoCore || videoCard != null))
         {
-            return CheckNext(cpu, bios, motherboard, coolingSystem, ram, videoCard, ssd, hdd, systemCase, powerUnit, wifiAdapter, xmpProfile);
+            return CheckNext(cpu, bios, motherboard, coolingSystem, ram, videoCard, ssd, hdd, systemUnit, powerUnit, wifiAdapter, xmpProfile);
         }
         else
         {

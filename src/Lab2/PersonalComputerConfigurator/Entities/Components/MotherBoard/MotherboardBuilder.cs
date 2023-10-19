@@ -1,22 +1,23 @@
+using System;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.IncorrectFormatExceptions;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.NullObjectExceptions;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CPUDetails;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.BiosCharacteristics;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.RamCharacterisics;
-using FormFactor = Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics.FormFactor;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.MotherBoard;
 
 public class MotherboardBuilder
 {
-    private Socket _cpuSocket;
-    private PciLinesAmount? _pciLinesAmount;
-    private SataPortsAmount? _sataPortsAmount;
+    private Socket? _cpuSocket;
+    private Amount? _pciLinesAmount;
+    private Amount? _sataPortsAmount;
     private Chipset? _chipset;
     private DdrVersion? _supportiveDdrVersion;
-    private SlotsAmount? _ramSlotsAmount;
+    private Amount? _ramSlotsAmount;
     private FormFactor _formFactor;
-    private BiosTypeVersion? _biosTypeVersion;
+    private BiosType? _biosType;
+    private BiosVersion? _biosVersion;
     private bool _hasWifiModule;
     public MotherboardBuilder WithSocket(Socket cpuSocket)
     {
@@ -24,26 +25,16 @@ public class MotherboardBuilder
         return this;
     }
 
-    public MotherboardBuilder WithPciLinesAmount(PciLinesAmount pciLinesAmount)
+    public MotherboardBuilder WithPciLinesAmount(Amount pciLinesAmount)
     {
-        if (pciLinesAmount is { Amount: > 0 })
-        {
             _pciLinesAmount = pciLinesAmount;
             return this;
-        }
-
-        throw new IncorrectFormatException($"Incorrect format of amount");
     }
 
-    public MotherboardBuilder WithSataPortsAmount(SataPortsAmount sataPortsAmount)
+    public MotherboardBuilder WithSataPortsAmount(Amount sataPortsAmount)
     {
-        if (sataPortsAmount is { Amount: > 0 })
-        {
             _sataPortsAmount = sataPortsAmount;
             return this;
-        }
-
-        throw new IncorrectFormatException($"Incorrect format of amount");
     }
 
     public MotherboardBuilder WithChipset(Chipset chipset)
@@ -63,15 +54,10 @@ public class MotherboardBuilder
         throw new IncorrectFormatException($"Incorrect format of version");
     }
 
-    public MotherboardBuilder WithSlotsAmount(SlotsAmount ramSlotsAmount)
+    public MotherboardBuilder WithSlotsAmount(Amount ramSlotsAmount)
     {
-        if (ramSlotsAmount is { Amount: > 0 })
-        {
             _ramSlotsAmount = ramSlotsAmount;
             return this;
-        }
-
-        throw new IncorrectFormatException($"Incorrect format of amount");
     }
 
     public MotherboardBuilder WithFormFactor(FormFactor formFactor)
@@ -80,9 +66,15 @@ public class MotherboardBuilder
         return this;
     }
 
-    public MotherboardBuilder BiosTypeVersion(BiosTypeVersion biosTypeVersion)
+    public MotherboardBuilder WithBiosType(BiosType biosType)
     {
-        _biosTypeVersion = biosTypeVersion;
+        _biosType = biosType;
+        return this;
+    }
+
+    public MotherboardBuilder WithBiosVersion(BiosVersion biosVersion)
+    {
+        _biosVersion = biosVersion;
         return this;
     }
 
@@ -94,12 +86,16 @@ public class MotherboardBuilder
 
     public Motherboard Build()
     {
-        if (_pciLinesAmount != null && _sataPortsAmount != null && _chipset != null
-            && _supportiveDdrVersion != null && _ramSlotsAmount != null && _biosTypeVersion != null)
-        {
-            return new Motherboard(_cpuSocket, _pciLinesAmount, _sataPortsAmount, _chipset, _supportiveDdrVersion, _ramSlotsAmount, _formFactor, _biosTypeVersion, _hasWifiModule);
-        }
-
-        throw new NullObjectException("Unable to create component, some parts are missing");
+        return new Motherboard(
+            _cpuSocket ?? throw new ArgumentNullException(nameof(_cpuSocket)),
+            _pciLinesAmount ?? throw new ArgumentNullException(nameof(_cpuSocket)),
+            _sataPortsAmount ?? throw new ArgumentNullException(nameof(_cpuSocket)),
+            _chipset ?? throw new ArgumentNullException(nameof(_cpuSocket)),
+            _supportiveDdrVersion ?? throw new ArgumentNullException(nameof(_cpuSocket)),
+            _ramSlotsAmount ?? throw new ArgumentNullException(nameof(_cpuSocket)),
+            _formFactor,
+            _biosType ?? throw new ArgumentNullException(nameof(_cpuSocket)),
+            _biosVersion ?? throw new ArgumentNullException(nameof(_cpuSocket)),
+            _hasWifiModule);
     }
 }

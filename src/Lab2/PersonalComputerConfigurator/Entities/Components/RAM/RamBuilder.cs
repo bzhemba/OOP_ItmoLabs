@@ -1,7 +1,6 @@
+using System;
 using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.XmpProfile;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.IncorrectFormatExceptions;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.NullObjectExceptions;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.RamCharacterisics;
 
@@ -10,28 +9,21 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 public class RamBuilder
 {
     private MemorySize? _memorySize;
-    private FormFactor _formFactor;
+    private RamFormFactor _ramFormFactor;
     private Xmp? _profile;
     private DdrVersion? _ddrVersion;
     private PowerConsumption? _powerConsumption;
-    private IList<FrequencyVoltagePair>? _supportiveFrequencyVoltagePairs;
+    private IList<(Frequency Frequency, Voltage Voltage)>? _supportiveFrequencyVoltagePairs;
 
     public RamBuilder WithMemorySize(MemorySize memorySize)
     {
-        if (memorySize is { Gb: > 0 })
-        {
             _memorySize = memorySize;
             return this;
-        }
-        else
-        {
-            throw new IncorrectFormatException($"Incorrect format of memory size");
-        }
     }
 
-    public RamBuilder WithFormFactor(FormFactor formFactor)
+    public RamBuilder WithFormFactor(RamFormFactor ramFormFactor)
     {
-        _formFactor = formFactor;
+        _ramFormFactor = ramFormFactor;
         return this;
     }
 
@@ -43,31 +35,17 @@ public class RamBuilder
 
     public RamBuilder WithDdrVersion(DdrVersion ddrVersion)
     {
-        if (ddrVersion is { Version: > 0 })
-        {
             _ddrVersion = ddrVersion;
             return this;
-        }
-        else
-        {
-            throw new IncorrectFormatException($"Incorrect format of version");
-        }
     }
 
     public RamBuilder WithPowerConsumption(PowerConsumption powerConsumption)
     {
-        if (powerConsumption is { Watt: > 0 })
-        {
             _powerConsumption = powerConsumption;
             return this;
-        }
-        else
-        {
-            throw new IncorrectFormatException($"Incorrect format of power consumption");
-        }
     }
 
-    public RamBuilder WithSupportiveFrequencyVoltagePairs(IList<FrequencyVoltagePair> supportiveFrequencyVoltagePairs)
+    public RamBuilder WithSupportiveFrequencyVoltagePairs(IList<(Frequency Frequency, Voltage Voltage)> supportiveFrequencyVoltagePairs)
     {
         _supportiveFrequencyVoltagePairs = supportiveFrequencyVoltagePairs;
         return this;
@@ -75,14 +53,12 @@ public class RamBuilder
 
     public Ram Build()
     {
-        if (_memorySize != null && _powerConsumption != null && _profile != null
-            && _ddrVersion != null && _supportiveFrequencyVoltagePairs != null)
-        {
-            return new Ram(_memorySize, _formFactor, _profile, _ddrVersion, _powerConsumption, _supportiveFrequencyVoltagePairs);
-        }
-        else
-        {
-            throw new NullObjectException("Unable to create component, some parts are missing");
-        }
+            return new Ram(
+                _memorySize ?? throw new ArgumentNullException(nameof(_memorySize)),
+                _ramFormFactor,
+                _profile ?? throw new ArgumentNullException(nameof(_profile)),
+                _ddrVersion ?? throw new ArgumentNullException(nameof(_ddrVersion)),
+                _powerConsumption ?? throw new ArgumentNullException(nameof(_powerConsumption)),
+                _supportiveFrequencyVoltagePairs ?? throw new ArgumentNullException(nameof(_supportiveFrequencyVoltagePairs)));
     }
 }

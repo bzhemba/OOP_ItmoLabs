@@ -1,9 +1,6 @@
+using System;
 using System.Collections.Generic;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.IncorrectFormatExceptions;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.NullObjectExceptions;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CoolingSystemCharacteristics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CPUDetails;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CoolingSystem;
 
@@ -11,16 +8,11 @@ public class CoolingSystemBuilder
 {
     private Dimensions? _dimensions;
     private IReadOnlyCollection<Socket>? _supportiveSockets;
-    private MaxTdp? _maxTdp;
+    private Tdp? _maxTdp;
     public CoolingSystemBuilder WithDimensions(Dimensions dimensions)
     {
-        if (dimensions is { Length: > 0 } and { Height: > 0, Width: > 0 })
-        {
             _dimensions = dimensions;
             return this;
-        }
-
-        throw new IncorrectFormatException($"Incorrect format of dimensions");
     }
 
     public CoolingSystemBuilder WithSupportiveSockets(IReadOnlyCollection<Socket> sockets)
@@ -29,26 +21,17 @@ public class CoolingSystemBuilder
         return this;
     }
 
-    public CoolingSystemBuilder WithMaxTdp(MaxTdp maxTdp)
+    public CoolingSystemBuilder WithMaxTdp(Tdp maxTdp)
     {
-        if (maxTdp is { Watt: > 0 })
-        {
             _maxTdp = maxTdp;
             return this;
-        }
-
-        throw new IncorrectFormatException($"Incorrect format of dimensions");
     }
 
     public CoolingSystem Build()
     {
-        if (_dimensions != null && _supportiveSockets != null && _maxTdp != null)
-        {
-            return new CoolingSystem(_dimensions, _supportiveSockets, _maxTdp);
-        }
-        else
-        {
-            throw new NullObjectException();
-        }
+            return new CoolingSystem(
+                _dimensions ?? throw new ArgumentNullException(nameof(_dimensions)),
+                _supportiveSockets ?? throw new ArgumentNullException(nameof(_supportiveSockets)),
+                _maxTdp ?? throw new ArgumentNullException(nameof(_maxTdp)));
     }
 }

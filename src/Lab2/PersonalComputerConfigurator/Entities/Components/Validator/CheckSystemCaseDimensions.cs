@@ -14,11 +14,11 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 
 public class CheckSystemCaseDimensions : Validator
 {
-    public override bool Check(Cpu cpu, Bios bios, Motherboard motherboard, CoolingSystem.CoolingSystem coolingSystem, Ram ram, VideoCard? videoCard, Ssd? ssd, Hdd? hdd, SystemCase.SystemCase systemCase, PowerUnit powerUnit, WifiAdapter? wifiAdapter, Xmp? xmpProfile)
+    public override bool Check(Cpu cpu, Bios bios, Motherboard motherboard, CoolingSystem.CoolingSystem coolingSystem, Ram ram, VideoCard? videoCard, Ssd? ssd, Hdd? hdd, SystemCases.SystemUnit systemUnit, PowerUnit powerUnit, WifiAdapter? wifiAdapter, Xmp? xmpProfile)
     {
-        if (systemCase != null && videoCard != null && systemCase.IsMotherboardFits(motherboard) && systemCase.IsVideoCardFits(videoCard))
+        if (systemUnit != null && videoCard != null && systemUnit.IsMotherboardFits(motherboard) && systemUnit.IsVideoCardFits(videoCard))
         {
-            return CheckNext(cpu, bios, motherboard, coolingSystem, ram, videoCard, ssd, hdd, systemCase, powerUnit, wifiAdapter, xmpProfile);
+            return CheckNext(cpu, bios, motherboard, coolingSystem, ram, videoCard, ssd, hdd, systemUnit, powerUnit, wifiAdapter, xmpProfile);
         }
 
         throw new IncompatibilityProblemException("System Case dimensions incompatibility");

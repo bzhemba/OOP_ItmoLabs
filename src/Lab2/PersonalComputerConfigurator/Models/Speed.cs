@@ -2,17 +2,17 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exception
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 
-public record PowerConsumption
+public record Speed
 {
-    public PowerConsumption(int watt)
+    public Speed(int mbS)
     {
-        if (watt < 0)
+        if (mbS <= 0)
         {
-            throw new IncorrectFormatException($"Incorrect format of power consumption");
+            throw new IncorrectFormatException($"Incorrect format of speed");
         }
 
-        Watt = watt;
+        MbS = mbS;
     }
 
-    public int Watt { get; }
+    public int MbS { get; }
 }

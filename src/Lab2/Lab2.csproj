@@ -5,7 +5,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="PersonalComputerConfigurator\Models\SystemCaseCharacteristics\" />
       <Folder Include="PersonalComputerConfigurator\Services\" />
     </ItemGroup>
 

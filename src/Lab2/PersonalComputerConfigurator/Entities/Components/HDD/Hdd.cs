@@ -1,14 +1,13 @@
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.HddCharacteristics;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.HDD;
 
 public class Hdd : IClone<HddBuilder>
 {
     private Capacity _capacity;
-    private SpindleSpeed _spindleSpeed;
+    private Speed _spindleSpeed;
 
-    public Hdd(Capacity capacity, SpindleSpeed spindleSpeed, PowerConsumption powerPowerConsumption)
+    public Hdd(Capacity capacity, Speed spindleSpeed, PowerConsumption powerPowerConsumption)
     {
         _capacity = capacity;
         _spindleSpeed = spindleSpeed;

@@ -8,14 +8,15 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.RAM;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SSD;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SystemCase;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SystemCases;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Videocard;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.WiFiAdapter;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.XmpProfile;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Computer;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Repository;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.ComponentsExceptions;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.BiosCharacteristics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CPUDetails;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.Notifications;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.PowerUnitCharacteristics;
@@ -36,7 +37,7 @@ public class PersonalComputerConfiguratorTest
     private IList<PowerUnit> _powerUnitStorage = _repository.PowerUnits;
     private IList<Ram> _ramStorage = _repository.Rams;
     private IList<Ssd> _ssdStorage = _repository.SsdList;
-    private IList<SystemCase> _systemCaseStorage = _repository.SystemCases;
+    private IList<SystemUnit> _systemCaseStorage = _repository.SystemCases;
     private IList<VideoCard> _videoCardStorage = _repository.VideoCards;
     private IList<WifiAdapter> _wifiAdapterStorage = _repository.WifiAdapters;
     private IList<Xmp> _xmpStorage = _repository.Xmps;
@@ -52,11 +53,11 @@ public class PersonalComputerConfiguratorTest
         PowerUnit powerUnit = _powerUnitStorage[0];
         Ram ram = _ramStorage[0];
         Ssd ssd = _ssdStorage[0];
-        SystemCase systemCase = _systemCaseStorage[1];
+        SystemUnit systemUnit = _systemCaseStorage[1];
         VideoCard videoCard = _videoCardStorage[0];
         Xmp xmp = _xmpStorage[0];
         (AddNotification notification,  _) = computerBuilder.WithMotherBoard(motherboard).WithCpu(cpu).WithBios(bios).WithCoolingSystem(coolingSystem)
-            .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(ssd).WithHdd(null).WithSystemCase(systemCase)
+            .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(ssd).WithHdd(null).WithSystemCase(systemUnit)
             .WithPowerUnit(powerUnit).WithWifiAdapter(null).Build();
         Assert.Equal(new Success(), notification);
     }
@@ -78,19 +79,19 @@ public class PersonalComputerConfiguratorTest
         IComputerBuilder computerBuilder = new ComputerBuilder();
         Cpu cpu = _cpuStorage[0];
         CpuBuilder cpuWithModifiedTdp = cpu.Clone();
-        cpuWithModifiedTdp.WithTDP(new TDP(200));
+        cpuWithModifiedTdp.WithTDP(new Tdp(200));
         Motherboard motherboard = _motherboardStorage[2];
         Bios bios = _biosStorage[0];
         CoolingSystem coolingSystem = _coolingSystemStorage[0];
         PowerUnit powerUnit = _powerUnitStorage[0];
         Ram ram = _ramStorage[0];
         Hdd hdd = _hddStorage[0];
-        SystemCase systemCase = _systemCaseStorage[1];
+        SystemUnit systemUnit = _systemCaseStorage[1];
         VideoCard videoCard = _videoCardStorage[0];
         Xmp xmp = _xmpStorage[0];
         WifiAdapter wifiAdapter = _wifiAdapterStorage[1];
         (AddNotification? notification, _) = computerBuilder.WithMotherBoard(motherboard).WithCpu(cpu).WithBios(bios).WithCoolingSystem(coolingSystem)
-            .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(null).WithHdd(hdd).WithSystemCase(systemCase)
+            .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(null).WithHdd(hdd).WithSystemCase(systemUnit)
             .WithPowerUnit(powerUnit).WithWifiAdapter(wifiAdapter).Build();
         Assert.Equal(new Success(), notification);
     }
@@ -101,10 +102,10 @@ public class PersonalComputerConfiguratorTest
         IComputerBuilder computerBuilder = new ComputerBuilder();
         Cpu cpu = _cpuStorage[3];
         CpuBuilder cpuWithModifiedTdp = cpu.Clone();
-        cpuWithModifiedTdp.WithTDP(new TDP(200));
+        cpuWithModifiedTdp.WithTDP(new Tdp(200));
         Motherboard motherboard = new MotherboardBuilder().WithSocket(Socket.SocketG2)
             .WithChipset(new Chipset(ChipsetType.W480, true)).WithFormFactor(FormFactor.MiniItx)
-            .WithDdrVersion(new DdrVersion(2)).BiosTypeVersion(new BiosTypeVersion(Type.Phoenix, new Version("1.00.24")))
+            .WithDdrVersion(new DdrVersion(2)).BiosTypeVersion(new BiosTypeVersion(BiosType.Phoenix, new BiosVersion("1.00.24")))
             .WithSlotsAmount(new SlotsAmount(4)).WithWifiModule(true).WithPciLinesAmount(new PciLinesAmount(23))
             .WithPciLinesAmount(new PciLinesAmount(21)).WithSataPortsAmount(new SataPortsAmount(12)).Build();
         Bios bios = _biosStorage[0];
@@ -112,13 +113,13 @@ public class PersonalComputerConfiguratorTest
         PowerUnit powerUnit = _powerUnitStorage[1];
         Ram ram = _ramStorage[1];
         Hdd hdd = _hddStorage[1];
-        SystemCase systemCase = _systemCaseStorage[1];
+        SystemUnit systemUnit = _systemCaseStorage[1];
         VideoCard videoCard = _videoCardStorage[0];
         Xmp xmp = _xmpStorage[0];
         WifiAdapter wifiAdapter = _wifiAdapterStorage[1];
         Assert.Throws<IncompatibilityProblemException>(() => computerBuilder.WithMotherBoard(motherboard).WithCpu(cpu)
             .WithBios(bios).WithCoolingSystem(coolingSystem)
-            .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(null).WithHdd(hdd).WithSystemCase(systemCase)
+            .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(null).WithHdd(hdd).WithSystemCase(systemUnit)
             .WithPowerUnit(powerUnit).WithWifiAdapter(wifiAdapter).Build());
     }
 }

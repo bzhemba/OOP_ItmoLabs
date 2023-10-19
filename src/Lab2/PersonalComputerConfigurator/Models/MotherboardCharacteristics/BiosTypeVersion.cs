@@ -1,5 +1,0 @@
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.BiosCharacteristics;
-
-namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics;
-
-public record BiosTypeVersion(Type Type, Version Version);
