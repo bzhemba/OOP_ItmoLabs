@@ -1,3 +1,4 @@
+using System;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.SsdCharacteristics;
 
@@ -27,5 +28,19 @@ public class Ssd : IClone<SsdBuilder>
         builder.WithCapacity(_capacity);
         builder.WithMaxSpeed(_speed);
         return builder;
+    }
+
+    public SsdBuilder Direct(SsdBuilder builder)
+    {
+        if (builder != null)
+        {
+            builder.WithConnection(_connection).WithCapacity(_capacity).WithPowerConsumption(PowerConsumption)
+                .WithMaxSpeed(_speed).Build();
+            return builder;
+        }
+        else
+        {
+            throw new ArgumentNullException(nameof(builder));
+        }
     }
 }

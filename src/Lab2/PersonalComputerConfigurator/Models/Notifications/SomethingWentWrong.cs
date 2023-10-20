@@ -1,3 +1,3 @@
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.Notifications;
 
-public record SomethingWentWrong() : AddNotification;
+public record SomethingWentWrong() : Notification;

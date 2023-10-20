@@ -27,9 +27,9 @@ public class CoolingSystemBuilder
             return this;
     }
 
-    public CoolingSystem Build()
+    public Cooler Build()
     {
-            return new CoolingSystem(
+            return new Cooler(
                 _dimensions ?? throw new ArgumentNullException(nameof(_dimensions)),
                 _supportiveSockets ?? throw new ArgumentNullException(nameof(_supportiveSockets)),
                 _maxTdp ?? throw new ArgumentNullException(nameof(_maxTdp)));

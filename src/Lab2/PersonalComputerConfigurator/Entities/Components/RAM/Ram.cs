@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.XmpProfile;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.RamCharacterisics;
@@ -32,12 +34,13 @@ public class Ram : IClone<RamBuilder>
 
     public DdrVersion DdrVersion { get; }
 
-    public IList<(Frequency Frequency, Voltage Voltage)> SupportiveFrequencyVoltagePairs =>
-        _supportiveFrequencyVoltagePairs;
-
-    public void ApplyXmpModifications(int index)
+    public void ApplyXmpModificationsTo(Frequency frequency, Voltage voltage)
     {
-        _supportiveFrequencyVoltagePairs[index] = (new Frequency(_profile.Frequency.Mhz), new Voltage(_profile.Voltage.V));
+        (Frequency Frequency, Voltage Voltage) firstPairWithThisCharacteristics =
+            _supportiveFrequencyVoltagePairs.FirstOrDefault(pair =>
+                pair.Frequency == frequency && pair.Voltage == voltage);
+        int ind = _supportiveFrequencyVoltagePairs.IndexOf(firstPairWithThisCharacteristics);
+        _supportiveFrequencyVoltagePairs[ind] = (new Frequency(_profile.Frequency.Mhz), new Voltage(_profile.Voltage.V));
     }
 
     public RamBuilder Clone()
@@ -50,5 +53,20 @@ public class Ram : IClone<RamBuilder>
         builder.WithMemorySize(_memorySize);
         builder.WithSupportiveFrequencyVoltagePairs(_supportiveFrequencyVoltagePairs);
         return builder;
+    }
+
+    public RamBuilder Direct(RamBuilder builder)
+    {
+        if (builder != null)
+        {
+            builder.WithDdrVersion(DdrVersion).WithXmp(_profile).WithPowerConsumption(PowerConsumption)
+                .WithFormFactor(_ramFormFactor).WithMemorySize(_memorySize)
+                .WithSupportiveFrequencyVoltagePairs(_supportiveFrequencyVoltagePairs).Build();
+            return builder;
+        }
+        else
+        {
+            throw new ArgumentNullException(nameof(builder));
+        }
     }
 }

@@ -1,6 +1,6 @@
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.Notifications;
 
-public abstract record AddNotification
+public abstract record Notification
 {
-    protected AddNotification() { }
+    protected Notification() { }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
@@ -5,7 +6,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.Bi
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.BIOS;
 
-public class Bios : IClone<BiosBuilder>
+public class Bios : ICloneable, IBiosDirector
 {
     private BiosType _biosType;
     private BiosVersion _biosVersion;
@@ -23,12 +24,30 @@ public class Bios : IClone<BiosBuilder>
         return _supportiveCpus.Any(supportiveCpu => cpu == supportiveCpu);
     }
 
-    public BiosBuilder Clone()
+    public void AddSupportiveCpu(Cpu cpu)
+    {
+        _supportiveCpus.Add(cpu);
+    }
+
+    public object Clone()
     {
         var builder = new BiosBuilder();
         builder.WithType(_biosType);
         builder.WithVersion(_biosVersion);
         builder.WithSupportiveCpus(_supportiveCpus);
         return builder;
+    }
+
+    public BiosBuilder Direct(BiosBuilder builder)
+    {
+        if (builder != null)
+        {
+            builder.WithType(_biosType).WithVersion(_biosVersion).WithSupportiveCpus(_supportiveCpus).Build();
+            return builder;
+        }
+        else
+        {
+            throw new ArgumentNullException(nameof(builder));
+        }
     }
 }

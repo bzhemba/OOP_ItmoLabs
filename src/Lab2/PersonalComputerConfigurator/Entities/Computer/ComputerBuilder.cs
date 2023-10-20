@@ -17,11 +17,11 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.No
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Computer;
 
 public class ComputerBuilder : IComputerBuilder, IMotherboardBuilder, ICpuBuilder, IBiosBuilder, ICoolingSystemBuilder, IRamBuilder,
-    IXmpBuilder, IVideoCardBuilder, ISsdBuilder, IHddBuilder, ISystemCaseBuilder, IPowerUnitBuilder, IWifiAdapterBuilder
+    IXmpBuilder, IVideoCardBuilder, ISsdBuilder, IHddBuilder, ISystemUnitBuilder, IPowerUnitBuilder, IWifiAdapterBuilder
 {
     private Cpu? _cpu;
     private Bios? _bios;
-    private CoolingSystem? _coolingSystem;
+    private Cooler? _coolingSystem;
     private Hdd? _hdd;
     private Motherboard? _motherboard;
     private PowerUnit? _powerUnit;
@@ -49,9 +49,9 @@ public class ComputerBuilder : IComputerBuilder, IMotherboardBuilder, ICpuBuilde
         return this;
     }
 
-    public ICoolingSystemBuilder WithCoolingSystem(CoolingSystem coolingSystem)
+    public ICoolingSystemBuilder WithCoolingSystem(Cooler cooler)
     {
-        _coolingSystem = coolingSystem;
+        _coolingSystem = cooler;
         return this;
     }
 
@@ -85,7 +85,7 @@ public class ComputerBuilder : IComputerBuilder, IMotherboardBuilder, ICpuBuilde
         return this;
     }
 
-    public ISystemCaseBuilder WithSystemCase(SystemUnit systemUnit)
+    public ISystemUnitBuilder WithSystemCase(SystemUnit systemUnit)
     {
         _systemCase = systemUnit;
         return this;
@@ -103,7 +103,7 @@ public class ComputerBuilder : IComputerBuilder, IMotherboardBuilder, ICpuBuilde
         return this;
     }
 
-    public (AddNotification Notification, Computer? Computer) Build()
+    public Notification Build()
     {
         var validator = Validator.Link(
             new CheckExistence(),
@@ -116,14 +116,24 @@ public class ComputerBuilder : IComputerBuilder, IMotherboardBuilder, ICpuBuilde
             new CheckXmpCompatibility(),
             new CheckWifiModule(),
             new CheckSystemCaseDimensions());
-        if ((_cpu != null && _motherboard != null && _bios != null && _coolingSystem != null && _ram != null && _systemCase != null && _powerUnit != null) &&
-            validator.Check(_cpu, _bios, _motherboard, _coolingSystem, _ram, _videoCard, _ssd, _hdd, _systemCase, _powerUnit, _wifiAdapter, _xmp))
+        if (_cpu != null && _motherboard != null && _bios != null && _coolingSystem != null && _ram != null &&
+            _systemCase != null && _powerUnit != null)
         {
-            return (new Success(), new Computer(_cpu, _bios, _coolingSystem, _hdd, _motherboard, _powerUnit, _ram, _ssd, _systemCase, _videoCard, _wifiAdapter, _xmp));
+            return validator.Check(
+                _cpu,
+                _bios,
+                _motherboard,
+                _coolingSystem,
+                _ram,
+                _videoCard,
+                _ssd,
+                _hdd,
+                _systemCase,
+                _powerUnit,
+                _wifiAdapter,
+                _xmp);
         }
-        else
-        {
-            return (new SomethingWentWrong(), null);
-        }
+
+        return new MissingComponent("Some components are missing");
     }
 }

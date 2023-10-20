@@ -2,7 +2,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SystemCase;
 
-public interface ISystemCaseBuilder
+public interface ISystemUnitBuilder
 {
     IPowerUnitBuilder WithPowerUnit(PowerUnit powerUnit);
 }

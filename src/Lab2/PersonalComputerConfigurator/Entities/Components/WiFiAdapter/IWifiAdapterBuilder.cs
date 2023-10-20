@@ -4,5 +4,5 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 
 public interface IWifiAdapterBuilder
 {
-   (AddNotification Notification, Computer.Computer? Computer) Build();
+   Notification Build();
 }

@@ -3,5 +3,5 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.BIOS;
 public interface IBiosBuilder
 {
-    ICoolingSystemBuilder WithCoolingSystem(CoolingSystem.CoolingSystem coolingSystem);
+    ICoolingSystemBuilder WithCoolingSystem(CoolingSystem.Cooler cooler);
 }

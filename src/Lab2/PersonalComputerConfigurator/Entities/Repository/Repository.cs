@@ -7,249 +7,29 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.PU;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.RAM;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SSD;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SystemCase;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.SystemCases;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Videocard;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.WiFiAdapter;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.XmpProfile;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.BiosCharacteristics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.CoolingSystemCharacteristics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.HddCharacteristics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.PowerUnitCharacteristics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.RamCharacterisics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.SsdCharacteristics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.VideoCardCharacteristics;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.WiFiAdapterCharacteristics;
-using FormFactor = Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics.FormFactor;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Computer;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Repository;
 
 public class Repository
 {
-    private const int CoresAmountIntelCeleron = 2;
-    private const int CoresFrequencyIntelCeleron = 1050;
-    private const int TdpIntelCeleron = 58;
-    private const int MemoryFrequencyIntelCeleron = 2666;
-    private const int PowerConsumptionIntelCeleron = 70;
-
-    private const int CoresAmountIntelPentium = 2;
-    private const int CoresFrequencyIntelPentium = 1000;
-    private const int TdpIntelPentium = 54;
-    private const int MemoryFrequencyIntelPentium = 3200;
-    private const int PowerConsumptionIntelPentium = 65;
-
-    private const int CoresAmountAMDPhenom = 4;
-    private const int CoresFrequencyAMDPhenom = 3000;
-    private const int TdpAMDPhenom = 125;
-    private const int MemoryFrequencyAMDPhenom = 2100;
-    private const int PowerConsumptionAMDPhenom = 95;
-
-    private const int CoresAmountIntelCorei7 = 8;
-    private const int CoresFrequencyIntelCorei7 = 4000;
-    private const int TdpIntelCorei7 = 140;
-    private const int MemoryFrequencyIntelCorei7 = 3500;
-    private const int PowerConsumptionIntelCorei7 = 95;
-
-    private static Cpu _amdPhenomCpu = new CpuBuilder().WithSocket(Socket.SocketAm4)
-        .WithCoresAmount(new Amount(CoresAmountAMDPhenom)).WithCoresFrequency(new CoresFrequency(CoresFrequencyAMDPhenom))
-        .WithMemoryFrequency(new MemoryFrequency(MemoryFrequencyAMDPhenom)).WithVideoCore(false)
-        .WithPowerConsumption(new PowerConsumption(PowerConsumptionAMDPhenom)).WithTDP(new Tdp(TdpAMDPhenom)).Build();
-
-    private static Cpu _intelCorei7Cpu = new CpuBuilder().WithSocket(Socket.Lga1155)
-        .WithCoresAmount(new Amount(CoresAmountIntelCorei7)).WithCoresFrequency(new CoresFrequency(CoresFrequencyIntelCorei7))
-        .WithMemoryFrequency(new MemoryFrequency(MemoryFrequencyIntelCorei7)).WithVideoCore(false)
-        .WithPowerConsumption(new PowerConsumption(PowerConsumptionIntelCorei7)).WithTDP(new Tdp(TdpIntelCorei7)).Build();
-
-    private static Cpu _intelCeleronCpu = new CpuBuilder().WithSocket(Socket.SocketAm4)
-        .WithCoresAmount(new Amount(CoresAmountIntelCeleron)).WithCoresFrequency(new CoresFrequency(CoresFrequencyIntelCeleron))
-        .WithMemoryFrequency(new MemoryFrequency(MemoryFrequencyIntelCeleron)).WithVideoCore(true)
-        .WithPowerConsumption(new PowerConsumption(PowerConsumptionIntelCeleron)).WithTDP(new Tdp(TdpIntelCeleron)).Build();
-
-    private static Cpu _intelPentiumCpu = new CpuBuilder().WithSocket(Socket.Lga1200)
-        .WithCoresAmount(new Amount(CoresAmountIntelPentium)).WithCoresFrequency(new CoresFrequency(CoresFrequencyIntelPentium))
-        .WithMemoryFrequency(new MemoryFrequency(MemoryFrequencyIntelPentium)).WithVideoCore(true)
-        .WithPowerConsumption(new PowerConsumption(PowerConsumptionIntelPentium)).WithTDP(new Tdp(TdpIntelPentium)).Build();
-
-    private static IReadOnlyCollection<Cpu> _supportiveCpus1 = new List<Cpu>() { _intelPentiumCpu, _intelCorei7Cpu };
-    private static IReadOnlyCollection<Cpu> _supportiveCpus2 = new List<Cpu>() { _intelCeleronCpu, _amdPhenomCpu };
-
-    private static Bios _bios1 = new BiosBuilder().WithType(BiosType.Intel).WithVersion(new BiosVersion("2.02.2")).WithSupportiveCpus(_supportiveCpus1).Build();
-    private static Bios _bios2 = new BiosBuilder().WithType(BiosType.Ami).WithVersion(new BiosVersion("3.02.22")).WithSupportiveCpus(_supportiveCpus2).Build();
-
-    private static CoolingSystem _coolerMasterCooler = new CoolingSystemBuilder()
-        .WithDimensions(new Dimensions(120, 120, 25)).WithSupportiveSockets(new List<Socket> { Socket.SocketAm4, Socket.Lga1200 })
-        .WithMaxTdp(new MaxTdp(150)).Build();
-
-    private static CoolingSystem _noctuaCooler = new CoolingSystemBuilder()
-        .WithDimensions(new Dimensions(140, 140, 25)).WithSupportiveSockets(new List<Socket> { Socket.SocketG2, Socket.Lga1155 })
-        .WithMaxTdp(new MaxTdp(200)).Build();
-
-    private static Hdd _hdd1 = new HddBuilder().WithCapacity(new Capacity(1000)).WithSpindleSpeed(new SpindleSpeed(7200)).WithPowerConsumption(new PowerConsumption(10)).Build();
-    private static Hdd _hdd2 = new HddBuilder().WithCapacity(new Capacity(2000)).WithSpindleSpeed(new SpindleSpeed(5400)).WithPowerConsumption(new PowerConsumption(8)).Build();
-    private static Motherboard _motherboard1 = new MotherboardBuilder()
-        .WithSocket(Socket.SocketAm4)
-        .WithPciLinesAmount(new PciLinesAmount(4))
-        .WithSataPortsAmount(new SataPortsAmount(6))
-        .WithChipset(new Chipset(ChipsetType.B460, true))
-        .WithDdrVersion(new DdrVersion(4))
-        .WithSlotsAmount(new SlotsAmount(4))
-        .WithFormFactor(FormFactor.Аtx)
-        .BiosTypeVersion(new BiosTypeVersion(BiosType.Uefi, new BiosVersion("01.2.23")))
-        .WithWifiModule(true)
-        .Build();
-
-    private static Motherboard _motherboard2 = new MotherboardBuilder()
-        .WithSocket(Socket.Lga1155)
-        .WithPciLinesAmount(new PciLinesAmount(3))
-        .WithSataPortsAmount(new SataPortsAmount(4))
-        .WithChipset(new Chipset(ChipsetType.H470, true))
-        .WithDdrVersion(new DdrVersion(5))
-        .WithSlotsAmount(new SlotsAmount(2))
-        .WithFormFactor(FormFactor.MicroAtx)
-        .BiosTypeVersion(new BiosTypeVersion(BiosType.Intel, new BiosVersion("3.02.22")))
-        .WithWifiModule(false)
-        .Build();
-
-    private static Motherboard _motherboard3 = new MotherboardBuilder()
-        .WithSocket(Socket.Lga1200)
-        .WithPciLinesAmount(new PciLinesAmount(5))
-        .WithSataPortsAmount(new SataPortsAmount(8))
-        .WithChipset(new Chipset(ChipsetType.Q470, true))
-        .WithDdrVersion(new DdrVersion(4))
-        .WithSlotsAmount(new SlotsAmount(8))
-        .WithFormFactor(FormFactor.MiniAtx)
-        .BiosTypeVersion(new BiosTypeVersion(BiosType.Ami, new BiosVersion("2.02.2")))
-        .WithWifiModule(false)
-        .Build();
-    private static PowerUnit _powerUnit1 = new PowerUnitBuilder().WithPeakload(new PeakLoad(1000)).Build();
-    private static PowerUnit _powerUnit2 = new PowerUnitBuilder().WithPeakload(new PeakLoad(500)).Build();
-    private static Xmp _xmp1 = new XmpBuilder()
-        .WithTimings(new List<int> { 15, 17, 17, 35 })
-        .WithVoltage(new Voltage(1.35))
-        .WithFrequency(new Frequency(3200))
-        .Build();
-
-    private static Xmp _xmp2 = new XmpBuilder()
-        .WithTimings(new List<int> { 16, 18, 18, 36 })
-        .WithVoltage(new Voltage(1.2))
-        .WithFrequency(new Frequency(2000))
-        .Build();
-
-    private static Ram _ram1 = new RamBuilder()
-        .WithMemorySize(new MemorySize(8))
-        .WithFormFactor(Models.RamCharacterisics.RamFormFactor.Dimm)
-        .WithXmp(_xmp1)
-        .WithDdrVersion(new DdrVersion(4))
-        .WithPowerConsumption(new PowerConsumption(10))
-        .WithSupportiveFrequencyVoltagePairs(new List<FrequencyVoltagePair>
-        {
-            new(3200, 1.35),
-            new(2400, 1.2),
-        })
-        .Build();
-
-    private static Ram _ram2 = new RamBuilder()
-        .WithMemorySize(new MemorySize(16))
-        .WithFormFactor(Models.RamCharacterisics.RamFormFactor.SoDimm)
-        .WithXmp(_xmp1)
-        .WithDdrVersion(new DdrVersion(4))
-        .WithPowerConsumption(new PowerConsumption(12))
-        .WithSupportiveFrequencyVoltagePairs(new List<FrequencyVoltagePair>
-        {
-            new FrequencyVoltagePair(2666, 1.35),
-            new FrequencyVoltagePair(2133, 1.2),
-        })
-        .Build();
-
-    private static Ram _ram3 = new RamBuilder()
-        .WithMemorySize(new MemorySize(8))
-        .WithFormFactor(Models.RamCharacterisics.RamFormFactor.Dimm)
-        .WithXmp(_xmp1)
-        .WithDdrVersion(new DdrVersion(5))
-        .WithPowerConsumption(new PowerConsumption(10))
-        .WithSupportiveFrequencyVoltagePairs(new List<FrequencyVoltagePair>
-        {
-            new(4800, 2.35),
-        })
-        .Build();
-    private static Ssd _ssd1 = new SsdBuilder()
-        .WithConnection(Connection.Sata)
-        .WithCapacity(new Capacity(500))
-        .WithMaxSpeed(new Speed(550))
-        .WithPowerConsumption(new PowerConsumption(2))
-        .Build();
-    private static Ssd _ssd2 = new SsdBuilder()
-        .WithConnection(Connection.Pci)
-        .WithCapacity(new Capacity(1000))
-        .WithMaxSpeed(new Speed(3500))
-        .WithPowerConsumption(new PowerConsumption(4))
-        .Build();
-    private static Ssd _ssd3 = new SsdBuilder()
-        .WithConnection(Connection.Pci)
-        .WithCapacity(new Capacity(4096))
-        .WithMaxSpeed(new Speed(5000))
-        .WithPowerConsumption(new PowerConsumption(7))
-        .Build();
-    private static SystemUnit _systemUnit = new SystemCaseBuilder()
-        .WithVideoCardDimensions(new VideoCardDimensions(280, 128))
-        .WithSupportiveFormFactors(new List<FormFactor> { FormFactor.MiniAtx, FormFactor.MicroAtx })
-        .WithDimensions(new Dimensions(400, 200, 350))
-        .Build();
-    private static SystemUnit _systemCase2 = new SystemCaseBuilder()
-        .WithVideoCardDimensions(new VideoCardDimensions(320, 140))
-        .WithSupportiveFormFactors(new List<FormFactor> { FormFactor.Аtx, FormFactor.MiniAtx })
-        .WithDimensions(new Dimensions(350, 170, 300))
-        .Build();
-    private static SystemUnit _systemCase3 = new SystemCaseBuilder()
-        .WithVideoCardDimensions(new VideoCardDimensions(320, 140))
-        .WithSupportiveFormFactors(new List<FormFactor> { FormFactor.Аtx, FormFactor.MicroAtx })
-        .WithDimensions(new Dimensions(400, 190, 189))
-        .Build();
-    private static VideoCard _videoCard1 = new VideoCardBuilder()
-        .WithVideoCardDimensions(new VideoCardDimensions(280, 128))
-    .WithVideoMemoryAmount(new VideoMemoryAmount(8))
-    .WithPciVersion(new VersionNumber(3))
-    .WithChipFrequency(new ChipFrequency(1600))
-    .WithPowerConsumption(new PowerConsumption(120))
-    .Build();
-    private static VideoCard _videoCard2 = new VideoCardBuilder()
-        .WithVideoCardDimensions(new VideoCardDimensions(320, 140))
-        .WithVideoMemoryAmount(new VideoMemoryAmount(16))
-        .WithPciVersion(new VersionNumber(4))
-        .WithChipFrequency(new ChipFrequency(2000))
-        .WithPowerConsumption(new PowerConsumption(150))
-        .Build();
-    private static WifiAdapter _wifiAdapter1 = new WifiAdapterBuilder()
-        .WithStandartVersion(new StandartVersion(4))
-        .WithBluetoothModule(true)
-        .WithPciVersion(new VersionNumber(3))
-        .WithPowerConsumption(new PowerConsumption(5))
-        .Build();
-    private static WifiAdapter _wifiAdapter2 = new WifiAdapterBuilder()
-        .WithStandartVersion(new StandartVersion(6))
-        .WithBluetoothModule(false)
-        .WithPciVersion(new VersionNumber(4))
-        .WithPowerConsumption(new PowerConsumption(8))
-        .Build();
-
-    private static Computer.Computer _computerDexp = new Computer.Computer(_intelPentiumCpu, _bios1, _coolerMasterCooler, null, _motherboard3, _powerUnit1, _ram1, _ssd1, _systemCase2, _videoCard1, null, _xmp1);
-    private static Computer.Computer _computerGigabyte = new Computer.Computer(_intelCorei7Cpu, _bios1, _noctuaCooler, null, _motherboard2, _powerUnit1, _ram3, _ssd3, _systemCase3, _videoCard1, _wifiAdapter1, _xmp1);
-    private static Computer.Computer _computerAsus = new Computer.Computer(_amdPhenomCpu, _bios2, _coolerMasterCooler, _hdd2, _motherboard1, _powerUnit2, _ram1, null, _systemCase2, _videoCard2, null, null);
-    public IList<Cpu> СpuList { get; } = new List<Cpu>() { _intelPentiumCpu, _intelCeleronCpu, _intelCorei7Cpu, _amdPhenomCpu };
-    public IList<Bios> BiosList { get; } = new List<Bios>() { _bios1, _bios2 };
-    public IList<CoolingSystem> CoolingSystems { get; } = new List<CoolingSystem>() { _coolerMasterCooler, _noctuaCooler };
-    public IList<Hdd> Hdds { get; } = new List<Hdd>() { _hdd1, _hdd2 };
-    public IList<Motherboard> Motherboards { get; } = new List<Motherboard>() { _motherboard1, _motherboard2, _motherboard3 };
-    public IList<PowerUnit> PowerUnits { get; } = new List<PowerUnit>() { _powerUnit1, _powerUnit2 };
-    public IList<Ram> Rams { get; } = new List<Ram>() { _ram1, _ram2, _ram3 };
-    public IList<Ssd> SsdList { get; } = new List<Ssd>() { _ssd1, _ssd2, _ssd3 };
-    public IList<SystemUnit> SystemCases { get; } = new List<SystemUnit>() { _systemUnit, _systemCase2, _systemCase3 };
-    public IList<VideoCard> VideoCards { get; } = new List<VideoCard>() { _videoCard1, _videoCard2 };
-    public IList<WifiAdapter> WifiAdapters { get; } = new List<WifiAdapter>() { _wifiAdapter1, _wifiAdapter2 };
-    public IList<Xmp> Xmps { get; } = new List<Xmp>() { _xmp1, _xmp2 };
-    public IList<Computer.Computer> Computers { get; } = new List<Computer.Computer>() { _computerDexp, _computerGigabyte, _computerAsus };
+    public IList<Cpu> СpuList { get; } = new List<Cpu>();
+    public IList<Bios> BiosList { get; } = new List<Bios>();
+    public IList<Cooler> CoolingSystems { get; } = new List<Cooler>();
+    public IList<Hdd> Hdds { get; } = new List<Hdd>();
+    public IList<Motherboard> Motherboards { get; } = new List<Motherboard>();
+    public IList<PowerUnit> PowerUnits { get; } = new List<PowerUnit>();
+    public IList<Ram> Rams { get; } = new List<Ram>();
+    public IList<Ssd> SsdList { get; } = new List<Ssd>();
+    public IList<SystemUnit> SystemCases { get; } = new List<SystemUnit>();
+    public IList<VideoCard> VideoCards { get; } = new List<VideoCard>();
+    public IList<WifiAdapter> WifiAdapters { get; } = new List<WifiAdapter>();
+    public IList<Xmp> Xmps { get; } = new List<Xmp>();
+    public IList<Computer.PersonalComputer> Computers { get; } = new List<Computer.PersonalComputer>();
 
     public void AddCpu(Cpu cpu)
     {
@@ -261,9 +41,9 @@ public class Repository
         BiosList.Add(bios);
     }
 
-    public void AddCoolingSystem(CoolingSystem coolingSystem)
+    public void AddCoolingSystem(Cooler cooler)
     {
-        CoolingSystems.Add(coolingSystem);
+        CoolingSystems.Add(cooler);
     }
 
     public void AddHdd(Hdd hdd)
@@ -291,7 +71,7 @@ public class Repository
         SsdList.Add(ssd);
     }
 
-    public void AddSystemCase(SystemUnit systemUnit)
+    public void AddSystemUnit(SystemUnit systemUnit)
     {
         SystemCases.Add(systemUnit);
     }
@@ -311,8 +91,8 @@ public class Repository
         Xmps.Add(xmp);
     }
 
-    public void AddComputer(Computer.Computer computer)
+    public void AddComputer(PersonalComputer personalComputer)
     {
-        Computers.Add(computer);
+        Computers.Add(personalComputer);
     }
 }

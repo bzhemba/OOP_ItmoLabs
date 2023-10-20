@@ -1,3 +1,4 @@
+using System;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.VideoCardCharacteristics;
 
@@ -31,4 +32,19 @@ public class VideoCard : IClone<VideoCardBuilder>
         builder.WithVideoCardDimensions(Dimensions);
         return builder;
         }
+
+    public VideoCardBuilder Direct(VideoCardBuilder builder)
+    {
+        if (builder != null)
+        {
+            builder.WithChipFrequency(_chipFrequency).WithPciVersion(_versionNumber)
+                .WithPowerConsumption(PowerConsumption).WithVideoMemoryAmount(_videoMemoryAmount)
+                .WithVideoCardDimensions(Dimensions).Build();
+            return builder;
+        }
+        else
+        {
+            throw new ArgumentNullException(nameof(builder));
+        }
+    }
 }

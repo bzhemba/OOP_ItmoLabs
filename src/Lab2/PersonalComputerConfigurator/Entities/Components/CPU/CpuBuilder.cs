@@ -11,7 +11,6 @@ public class CpuBuilder
     private Tdp? _tdp;
     private Frequency? _memoryFrequency;
     private PowerConsumption? _powerConsumption;
-    private bool _hasVideoCore;
 
     public CpuBuilder WithSocket(Socket socket)
     {
@@ -49,12 +48,6 @@ public class CpuBuilder
             return this;
     }
 
-    public CpuBuilder WithVideoCore(bool hasVideoCore)
-    {
-        _hasVideoCore = hasVideoCore;
-        return this;
-    }
-
     public Cpu Build()
     {
         return new Cpu(
@@ -62,7 +55,6 @@ public class CpuBuilder
             _coresAmount ?? throw new ArgumentNullException(nameof(_coresAmount)),
             _coresFrequency ?? throw new ArgumentNullException(nameof(_coresFrequency)),
             _tdp ?? throw new ArgumentNullException(nameof(_tdp)),
-            _hasVideoCore,
             _memoryFrequency ?? throw new ArgumentNullException(nameof(_memoryFrequency)),
             _powerConsumption ?? throw new ArgumentNullException(nameof(_powerConsumption)));
     }

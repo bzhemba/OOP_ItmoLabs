@@ -72,4 +72,20 @@ public class Motherboard : ICloneable
     {
         return ram?.DdrVersion.Version == _supportiveDdrVersion.Version;
     }
+
+    public MotherboardBuilder Direct(MotherboardBuilder builder)
+    {
+        if (builder != null)
+        {
+            builder.WithSocket(_cpuSocket).WithChipset(Chipset).WithDdrVersion(_supportiveDdrVersion)
+                .WithBiosVersion(_biosVersion).WithBiosType(_biosType).WithFormFactor(Formfactor)
+                .WithSlotsAmount(_ramSlotsAmount).WithSataPortsAmount(_sataPortsAmount)
+                .WithPciLinesAmount(_pciLinesAmount).Build();
+            return builder;
+        }
+        else
+        {
+            throw new ArgumentNullException(nameof(builder));
+        }
+    }
 }

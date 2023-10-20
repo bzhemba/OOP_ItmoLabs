@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
@@ -26,5 +27,18 @@ public class Xmp
         }
 
         return true;
+    }
+
+    public XmpBuilder Direct(XmpBuilder builder)
+    {
+        if (builder != null)
+        {
+            builder.WithFrequency(Frequency).WithTimings(_timings).WithVoltage(Voltage).Build();
+            return builder;
+        }
+        else
+        {
+            throw new ArgumentNullException(nameof(builder));
+        }
     }
 }

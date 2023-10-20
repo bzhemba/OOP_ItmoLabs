@@ -1,23 +1,28 @@
+using System;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
 
-public class Cpu : IClone<CpuBuilder>
+public class Cpu
 {
-    private Amount _amount;
-    private Frequency _coresFrequency;
-
-    public Cpu(Socket socket, Amount amount, Frequency coresFrequency, Tdp tdp, bool hasVideoCore, Frequency memoryFrequency, PowerConsumption powerConsumption)
+    public Cpu(
+        Socket socket,
+        Amount coresAmount,
+        Frequency coresFrequency,
+        Tdp tdp,
+        Frequency memoryFrequency,
+        PowerConsumption powerConsumption)
     {
         Socket = socket;
-        _amount = amount;
-        _coresFrequency = coresFrequency;
+        CoresAmount = coresAmount;
+        CoresFrequency = coresFrequency;
         Tdp = tdp;
-        HasVideoCore = hasVideoCore;
         MemoryFrequency = memoryFrequency;
         PowerConsumption = powerConsumption;
     }
 
+    public Amount CoresAmount { get; }
+    public Frequency CoresFrequency { get; }
     public PowerConsumption PowerConsumption { get; }
 
     public Frequency MemoryFrequency { get; }
@@ -26,16 +31,30 @@ public class Cpu : IClone<CpuBuilder>
 
     public Tdp Tdp { get; }
 
-    public bool HasVideoCore { get; }
-    public CpuBuilder Clone()
+    public virtual bool HasVideoCore { get; }
+    public object Clone()
     {
         var cpuBuilder = new CpuBuilder();
-        cpuBuilder.WithCoresAmount(_amount);
+        cpuBuilder.WithCoresAmount(CoresAmount);
         cpuBuilder.WithSocket(Socket);
         cpuBuilder.WithPowerConsumption(PowerConsumption);
         cpuBuilder.WithMemoryFrequency(MemoryFrequency);
-        cpuBuilder.WithCoresFrequency(_coresFrequency);
+        cpuBuilder.WithCoresFrequency(CoresFrequency);
         cpuBuilder.WithTDP(Tdp);
         return cpuBuilder;
+    }
+
+    public CpuBuilder Direct(CpuBuilder builder)
+    {
+        if (builder != null)
+        {
+            builder.WithPowerConsumption(PowerConsumption).WithSocket(Socket).WithCoresAmount(CoresAmount)
+                .WithCoresFrequency(CoresFrequency).WithMemoryFrequency(MemoryFrequency).WithTDP(Tdp).Build();
+            return builder;
+        }
+        else
+        {
+            throw new ArgumentNullException(nameof(builder));
+        }
     }
 }

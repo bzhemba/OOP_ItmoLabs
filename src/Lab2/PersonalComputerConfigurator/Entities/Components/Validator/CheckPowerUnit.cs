@@ -9,16 +9,15 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Videocard;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.WiFiAdapter;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.XmpProfile;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.ComponentsExceptions;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.Notifications;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Validator;
 
 public class CheckPowerUnit : Validator
 {
-    public override bool Check(Cpu cpu, Bios bios, Motherboard motherboard, CoolingSystem.CoolingSystem coolingSystem, Ram ram, VideoCard? videoCard, Ssd? ssd, Hdd? hdd, SystemCases.SystemUnit systemUnit, PowerUnit powerUnit, WifiAdapter? wifiAdapter, Xmp? xmpProfile)
+    public override Notification Check(Cpu cpu, Bios bios, Motherboard motherboard, CoolingSystem.Cooler cooler, Ram ram, VideoCard? videoCard, Ssd? ssd, Hdd? hdd, SystemCases.SystemUnit systemUnit, PowerUnit powerUnit, WifiAdapter? wifiAdapter, Xmp? xmpProfile)
     {
-        AddNotification result = new Ok();
+        Notification result = new Ok();
         if (powerUnit != null)
         {
             result = powerUnit.IsPeakLoadEnough(cpu, hdd, ssd, ram, videoCard, wifiAdapter);
@@ -26,13 +25,37 @@ public class CheckPowerUnit : Validator
 
         switch (result)
         {
-            case Models.Notifications.NonComplianceOfRecommendedPeakLoad:
-                Console.WriteLine("Non-compliance of recommended peak load");
-                return powerUnit != null && CheckNext(cpu, bios, motherboard, coolingSystem, ram, videoCard, ssd, hdd, systemUnit, powerUnit, wifiAdapter, xmpProfile);
+            case NonComplianceOfRecommendedPeakLoad:
+                Recommendation = new NonComplianceOfRecommendedPeakLoad();
+                return CheckNext(
+                    cpu,
+                    bios,
+                    motherboard,
+                    cooler,
+                    ram,
+                    videoCard,
+                    ssd,
+                    hdd,
+                    systemUnit,
+                    powerUnit ?? throw new ArgumentNullException(nameof(powerUnit)),
+                    wifiAdapter,
+                    xmpProfile);
             case IncompatibilityProblem:
-                throw new IncompatibilityProblemException("Power Unit incompatibility");
+                return new IncompatibilityProblem("Power Unit incompatibility");
             default:
-                return powerUnit != null && CheckNext(cpu, bios, motherboard, coolingSystem, ram, videoCard, ssd, hdd, systemUnit, powerUnit, wifiAdapter, xmpProfile);
+                return CheckNext(
+                    cpu,
+                    bios,
+                    motherboard,
+                    cooler,
+                    ram,
+                    videoCard,
+                    ssd,
+                    hdd,
+                    systemUnit,
+                    powerUnit ?? throw new ArgumentNullException(nameof(powerUnit)),
+                    wifiAdapter,
+                    xmpProfile);
         }
     }
 }

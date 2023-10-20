@@ -14,11 +14,11 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exception
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Computer;
 
-public class Computer
+public class PersonalComputer
 {
     private Cpu _cpu;
     private Bios _bios;
-    private CoolingSystem _coolingSystem;
+    private Cooler _cooler;
     private Hdd? _hdd;
     private Motherboard _motherboard;
     private PowerUnit _powerUnit;
@@ -29,11 +29,23 @@ public class Computer
     private WifiAdapter? _wifiAdapter;
     private Xmp? _xmp;
 
-    internal Computer(Cpu cpu, Bios bios, CoolingSystem coolingSystem, Hdd? hdd, Motherboard motherboard, PowerUnit powerUnit, Ram ram, Ssd? ssd, SystemUnit systemUnit, VideoCard? videoCard, WifiAdapter? wifiAdapter, Xmp? xmp)
+    internal PersonalComputer(
+        Cpu cpu,
+        Bios bios,
+        Cooler cooler,
+        Hdd? hdd,
+        Motherboard motherboard,
+        PowerUnit powerUnit,
+        Ram ram,
+        Ssd? ssd,
+        SystemUnit systemUnit,
+        VideoCard? videoCard,
+        WifiAdapter? wifiAdapter,
+        Xmp? xmp)
     {
         _cpu = cpu;
         _bios = bios;
-        _coolingSystem = coolingSystem;
+        _cooler = cooler;
         _hdd = hdd;
         _motherboard = motherboard;
         _powerUnit = powerUnit;
@@ -49,7 +61,7 @@ public class Computer
     {
         if (builder != null)
         {
-            builder.WithMotherBoard(_motherboard).WithCpu(_cpu).WithBios(_bios).WithCoolingSystem(_coolingSystem)
+            builder.WithMotherBoard(_motherboard).WithCpu(_cpu).WithBios(_bios).WithCoolingSystem(_cooler)
                 .WithRam(_ram).WithXmp(_xmp).WithVideoCard(_videoCard).WithSsd(_ssd).WithHdd(_hdd)
                 .WithSystemCase(_systemUnit).WithPowerUnit(_powerUnit).WithWifiAdapter(_wifiAdapter);
             return builder;

@@ -5,5 +5,5 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 
 public interface IHddBuilder
 {
-    ISystemCaseBuilder WithSystemCase(SystemUnit systemUnit);
+    ISystemUnitBuilder WithSystemCase(SystemUnit systemUnit);
 }

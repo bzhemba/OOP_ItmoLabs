@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
@@ -6,13 +7,13 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CoolingSystem;
 
-public class CoolingSystem : IClone<CoolingSystemBuilder>
+public class Cooler : IClone<CoolingSystemBuilder>
 {
     private Dimensions _dimensions;
     private IReadOnlyCollection<Socket> _supportiveSockets;
     private Tdp _maxTdp;
 
-    public CoolingSystem(Dimensions dimensions, IReadOnlyCollection<Socket> supportiveSockets, Tdp maxTdp)
+    public Cooler(Dimensions dimensions, IReadOnlyCollection<Socket> supportiveSockets, Tdp maxTdp)
     {
         _dimensions = dimensions;
         _supportiveSockets = supportiveSockets;
@@ -50,5 +51,18 @@ public class CoolingSystem : IClone<CoolingSystemBuilder>
         coolingSystemBuilder.WithDimensions(_dimensions);
         coolingSystemBuilder.WithSupportiveSockets(_supportiveSockets);
         return coolingSystemBuilder;
+    }
+
+    public CoolingSystemBuilder Direct(CoolingSystemBuilder builder)
+    {
+        if (builder != null)
+        {
+            builder.WithDimensions(_dimensions).WithMaxTdp(_maxTdp).WithSupportiveSockets(_supportiveSockets).Build();
+            return builder;
+        }
+        else
+        {
+            throw new ArgumentNullException(nameof(builder));
+        }
     }
 }

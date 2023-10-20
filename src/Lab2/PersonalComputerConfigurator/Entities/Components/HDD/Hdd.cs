@@ -1,3 +1,4 @@
+using System;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.HDD;
@@ -23,5 +24,19 @@ public class Hdd : IClone<HddBuilder>
         builder.WithSpindleSpeed(_spindleSpeed);
         builder.WithCapacity(_capacity);
         return builder;
+    }
+
+    public HddBuilder Direct(HddBuilder builder)
+    {
+        if (builder != null)
+        {
+            builder.WithCapacity(_capacity).WithPowerConsumption(PowerConsumption).WithSpindleSpeed(_spindleSpeed)
+                .Build();
+            return builder;
+        }
+        else
+        {
+            throw new ArgumentNullException(nameof(builder));
+        }
     }
 }

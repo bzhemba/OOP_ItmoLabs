@@ -19,7 +19,7 @@ public class ComputerDirector
 {
     private Cpu? _cpu;
     private Bios? _bios;
-    private CoolingSystem? _coolingSystem;
+    private Cooler? _coolingSystem;
     private Hdd? _hdd;
     private Motherboard? _motherboard;
     private PowerUnit? _powerUnit;
@@ -29,6 +29,7 @@ public class ComputerDirector
     private VideoCard? _videoCard;
     private WifiAdapter? _wifiAdapter;
     private Xmp? _xmp;
+
     public ComputerDirector WithMotherBoard(Motherboard motherboard)
     {
         _motherboard = motherboard;
@@ -47,9 +48,9 @@ public class ComputerDirector
         return this;
     }
 
-    public ComputerDirector WithCoolingSystem(CoolingSystem coolingSystem)
+    public ComputerDirector WithCoolingSystem(Cooler cooler)
     {
-        _coolingSystem = coolingSystem;
+        _coolingSystem = cooler;
         return this;
     }
 
@@ -101,7 +102,7 @@ public class ComputerDirector
         return this;
     }
 
-    public (AddNotification Notification,  Computer? Computer) Build()
+    public Notification Build()
     {
         var validator = Validator.Link(
             new CheckExistence(),
@@ -114,14 +115,24 @@ public class ComputerDirector
             new CheckXmpCompatibility(),
             new CheckWifiModule(),
             new CheckSystemCaseDimensions());
-        if ((_cpu != null && _motherboard != null && _bios != null && _coolingSystem != null && _ram != null && _systemCase != null && _powerUnit != null) &&
-            validator.Check(_cpu, _bios, _motherboard, _coolingSystem, _ram, _videoCard, _ssd, _hdd, _systemCase, _powerUnit, _wifiAdapter, _xmp))
+        if (_cpu != null && _motherboard != null && _bios != null && _coolingSystem != null && _ram != null &&
+            _systemCase != null && _powerUnit != null)
         {
-            return (new Success(), new Computer(_cpu, _bios, _coolingSystem, _hdd, _motherboard, _powerUnit, _ram, _ssd, _systemCase, _videoCard, _wifiAdapter, _xmp));
+            return validator.Check(
+                _cpu,
+                _bios,
+                _motherboard,
+                _coolingSystem,
+                _ram,
+                _videoCard,
+                _ssd,
+                _hdd,
+                _systemCase,
+                _powerUnit,
+                _wifiAdapter,
+                _xmp);
         }
-        else
-        {
-            return (new SomethingWentWrong(), null);
-        }
+
+        return new MissingComponent("Some components are missing");
     }
 }

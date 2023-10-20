@@ -1,3 +1,4 @@
+using System;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.HDD;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.RAM;
@@ -11,16 +12,17 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 
 public class PowerUnit
 {
+    private const int RecommendedPowerStock = 100;
     private PeakLoad _peakLoad;
     public PowerUnit(PeakLoad peakLoad)
     {
         _peakLoad = peakLoad;
     }
 
-    public AddNotification IsPeakLoadEnough(Cpu cpu, Hdd? hdd, Ssd? ssd, Ram ram, VideoCard? videocard, WifiAdapter? wifiAdapter)
+    public Notification IsPeakLoadEnough(Cpu cpuWithoutVideoCore, Hdd? hdd, Ssd? ssd, Ram ram, VideoCard? videocard, WifiAdapter? wifiAdapter)
     {
         int totalPowerConsumption = 0;
-        if (cpu != null && ram != null) totalPowerConsumption = cpu.PowerConsumption.Watt + ram.PowerConsumption.Watt;
+        if (cpuWithoutVideoCore != null && ram != null) totalPowerConsumption = cpuWithoutVideoCore.PowerConsumption.Watt + ram.PowerConsumption.Watt;
         if (hdd != null)
         {
             totalPowerConsumption += hdd.PowerConsumption.Watt;
@@ -42,9 +44,22 @@ public class PowerUnit
 
         return (_peakLoad.Watt - totalPowerConsumption) switch
         {
-            >= 100 => new Ok(),
-            < 100 and >= 0 => new NonComplianceOfRecommendedPeakLoad(),
+            >= RecommendedPowerStock => new Ok(),
+            < RecommendedPowerStock and >= 0 => new NonComplianceOfRecommendedPeakLoad(),
             _ => new IncompatibilityProblem(null),
         };
+    }
+
+    public PowerUnitBuilder Direct(PowerUnitBuilder builder)
+    {
+        if (builder != null)
+        {
+            builder.WithPeakload(_peakLoad).Build();
+            return builder;
+        }
+        else
+        {
+            throw new ArgumentNullException(nameof(builder));
+        }
     }
 }
