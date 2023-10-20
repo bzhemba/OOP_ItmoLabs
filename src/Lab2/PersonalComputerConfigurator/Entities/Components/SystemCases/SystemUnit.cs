@@ -11,22 +11,23 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 
 public class SystemUnit : IClone<SystemUnitBuilder>
 {
-    private VideoCardDimensions _videoCardDimensions;
     private ICollection<FormFactor> _supportiveMotherboardFormFactors;
-    private Dimensions _dimensions;
 
     public SystemUnit(VideoCardDimensions videoCardDimensions, ICollection<FormFactor> supportiveMotherboardFormFactors, Dimensions dimensions)
     {
-        _videoCardDimensions = videoCardDimensions;
+        CardDimensions = videoCardDimensions;
         _supportiveMotherboardFormFactors = supportiveMotherboardFormFactors;
-        _dimensions = dimensions;
+        Dimensions = dimensions;
     }
+
+    public VideoCardDimensions CardDimensions { get; }
+    public Dimensions Dimensions { get; }
 
     public bool DoesVideoCardFit(VideoCard videocard)
     {
         return videocard != null &&
-               (videocard.Dimensions.Length <= _videoCardDimensions.Length) &&
-               (videocard.Dimensions.Width <= _videoCardDimensions.Width);
+               (videocard.Dimensions.Length <= CardDimensions.Length) &&
+               (videocard.Dimensions.Width <= CardDimensions.Width);
     }
 
     public void AddSupportiveMotherBoardFormFactors(FormFactor formFactor)
@@ -42,8 +43,8 @@ public class SystemUnit : IClone<SystemUnitBuilder>
     public SystemUnitBuilder Clone()
     {
         var builder = new SystemUnitBuilder();
-        builder.WithDimensions(_dimensions);
-        builder.WithVideoCardDimensions(_videoCardDimensions);
+        builder.WithDimensions(Dimensions);
+        builder.WithVideoCardDimensions(CardDimensions);
         builder.WithSupportiveFormFactors(_supportiveMotherboardFormFactors);
         return builder;
     }
@@ -52,7 +53,7 @@ public class SystemUnit : IClone<SystemUnitBuilder>
     {
         if (builder != null)
         {
-            builder.WithDimensions(_dimensions).WithVideoCardDimensions(_videoCardDimensions)
+            builder.WithDimensions(Dimensions).WithVideoCardDimensions(CardDimensions)
                 .WithSupportiveFormFactors(_supportiveMotherboardFormFactors).Build();
             return builder;
         }

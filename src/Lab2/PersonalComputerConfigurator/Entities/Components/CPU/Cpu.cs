@@ -3,7 +3,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
 
-public class Cpu
+public class Cpu : ICpu
 {
     public Cpu(
         Socket socket,
@@ -31,8 +31,8 @@ public class Cpu
 
     public Tdp Tdp { get; }
 
-    public virtual bool HasVideoCore { get; }
-    public object Clone()
+    public bool HasVideoCore { get; }
+    public CpuBuilder Clone()
     {
         var cpuBuilder = new CpuBuilder();
         cpuBuilder.WithCoresAmount(CoresAmount);

@@ -6,27 +6,26 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 
 public class Ssd : IClone<SsdBuilder>
 {
-    private Connection _connection;
-    private Capacity _capacity;
-    private Speed _speed;
-
     public Ssd(Connection connection, Capacity capacity, Speed speed, PowerConsumption powerConsumption)
     {
-        _connection = connection;
-        _capacity = capacity;
-        _speed = speed;
+        Connection = connection;
+        Capacity = capacity;
+        Speed = speed;
         PowerConsumption = powerConsumption;
     }
 
+    public Connection Connection { get; }
+    public Capacity Capacity { get; }
+    public Speed Speed { get; }
     public PowerConsumption PowerConsumption { get; }
 
     public SsdBuilder Clone()
     {
         var builder = new SsdBuilder();
         builder.WithPowerConsumption(PowerConsumption);
-        builder.WithConnection(_connection);
-        builder.WithCapacity(_capacity);
-        builder.WithMaxSpeed(_speed);
+        builder.WithConnection(Connection);
+        builder.WithCapacity(Capacity);
+        builder.WithMaxSpeed(Speed);
         return builder;
     }
 
@@ -34,8 +33,8 @@ public class Ssd : IClone<SsdBuilder>
     {
         if (builder != null)
         {
-            builder.WithConnection(_connection).WithCapacity(_capacity).WithPowerConsumption(PowerConsumption)
-                .WithMaxSpeed(_speed).Build();
+            builder.WithConnection(Connection).WithCapacity(Capacity).WithPowerConsumption(PowerConsumption)
+                .WithMaxSpeed(Speed).Build();
             return builder;
         }
         else

@@ -6,29 +6,29 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 
 public class VideoCard : IClone<VideoCardBuilder>
 {
-    private MemorySize _videoMemoryAmount;
     private VersionNumber _versionNumber;
-    private Frequency _chipFrequency;
 
     public VideoCard(VideoCardDimensions dimensions, MemorySize videoMemoryAmount, VersionNumber versionNumber, Frequency chipFrequency, PowerConsumption powerConsumption)
     {
         Dimensions = dimensions;
-        _videoMemoryAmount = videoMemoryAmount;
+        VideoMemoryAmount = videoMemoryAmount;
         _versionNumber = versionNumber;
-        _chipFrequency = chipFrequency;
+        ChipFrequency = chipFrequency;
         PowerConsumption = powerConsumption;
     }
 
+    public MemorySize VideoMemoryAmount { get; }
+    public Frequency ChipFrequency { get; }
     public PowerConsumption PowerConsumption { get; }
     public VideoCardDimensions Dimensions { get; }
 
     public VideoCardBuilder Clone()
     {
         var builder = new VideoCardBuilder();
-        builder.WithChipFrequency(_chipFrequency);
+        builder.WithChipFrequency(ChipFrequency);
         builder.WithPciVersion(_versionNumber);
         builder.WithPowerConsumption(PowerConsumption);
-        builder.WithVideoMemoryAmount(_videoMemoryAmount);
+        builder.WithVideoMemoryAmount(VideoMemoryAmount);
         builder.WithVideoCardDimensions(Dimensions);
         return builder;
         }
@@ -37,8 +37,8 @@ public class VideoCard : IClone<VideoCardBuilder>
     {
         if (builder != null)
         {
-            builder.WithChipFrequency(_chipFrequency).WithPciVersion(_versionNumber)
-                .WithPowerConsumption(PowerConsumption).WithVideoMemoryAmount(_videoMemoryAmount)
+            builder.WithChipFrequency(ChipFrequency).WithPciVersion(_versionNumber)
+                .WithPowerConsumption(PowerConsumption).WithVideoMemoryAmount(VideoMemoryAmount)
                 .WithVideoCardDimensions(Dimensions).Build();
             return builder;
         }

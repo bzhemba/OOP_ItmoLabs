@@ -5,24 +5,23 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 
 public class Hdd : IClone<HddBuilder>
 {
-    private Capacity _capacity;
-    private Speed _spindleSpeed;
-
     public Hdd(Capacity capacity, Speed spindleSpeed, PowerConsumption powerPowerConsumption)
     {
-        _capacity = capacity;
-        _spindleSpeed = spindleSpeed;
+        Capacity = capacity;
+        SpindleSpeed = spindleSpeed;
         PowerConsumption = powerPowerConsumption;
     }
 
+    public Speed SpindleSpeed { get; }
+    public Capacity Capacity { get; }
     public PowerConsumption PowerConsumption { get; }
 
     public HddBuilder Clone()
     {
         var builder = new HddBuilder();
         builder.WithPowerConsumption(PowerConsumption);
-        builder.WithSpindleSpeed(_spindleSpeed);
-        builder.WithCapacity(_capacity);
+        builder.WithSpindleSpeed(SpindleSpeed);
+        builder.WithCapacity(Capacity);
         return builder;
     }
 
@@ -30,7 +29,7 @@ public class Hdd : IClone<HddBuilder>
     {
         if (builder != null)
         {
-            builder.WithCapacity(_capacity).WithPowerConsumption(PowerConsumption).WithSpindleSpeed(_spindleSpeed)
+            builder.WithCapacity(Capacity).WithPowerConsumption(PowerConsumption).WithSpindleSpeed(SpindleSpeed)
                 .Build();
             return builder;
         }

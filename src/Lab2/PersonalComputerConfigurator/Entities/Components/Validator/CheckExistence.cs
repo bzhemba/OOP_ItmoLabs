@@ -32,9 +32,7 @@ public class CheckExistence : Validator
                 wifiAdapter,
                 xmpProfile);
         }
-        else
-        {
-            return new MissingComponent("Some components are missing");
-        }
+
+        return new MissingComponent("Some components are missing");
     }
 }

@@ -6,18 +6,11 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 public class WifiAdapterBuilder
 {
     private VersionNumber? _standartVersion;
-    private bool _hasBluetoothModule;
     private VersionNumber? _pciVersion;
     private PowerConsumption? _powerConsumption;
     public WifiAdapterBuilder WithStandartVersion(VersionNumber standartVersion)
     {
         _standartVersion = standartVersion;
-        return this;
-    }
-
-    public WifiAdapterBuilder WithBluetoothModule(bool hasBluetoothModule)
-    {
-        _hasBluetoothModule = hasBluetoothModule;
         return this;
     }
 
@@ -37,7 +30,6 @@ public class WifiAdapterBuilder
     {
         return new WifiAdapter(
             _standartVersion ?? throw new ArgumentNullException(nameof(_standartVersion)),
-            _hasBluetoothModule,
             _pciVersion ?? throw new ArgumentNullException(nameof(_pciVersion)),
             _powerConsumption ?? throw new ArgumentNullException(nameof(_powerConsumption)));
     }

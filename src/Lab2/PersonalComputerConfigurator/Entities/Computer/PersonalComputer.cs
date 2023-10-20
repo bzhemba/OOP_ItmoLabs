@@ -16,19 +16,6 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 
 public class PersonalComputer
 {
-    private Cpu _cpu;
-    private Bios _bios;
-    private Cooler _cooler;
-    private Hdd? _hdd;
-    private Motherboard _motherboard;
-    private PowerUnit _powerUnit;
-    private Ram _ram;
-    private Ssd? _ssd;
-    private SystemUnit _systemUnit;
-    private VideoCard? _videoCard;
-    private WifiAdapter? _wifiAdapter;
-    private Xmp? _xmp;
-
     internal PersonalComputer(
         Cpu cpu,
         Bios bios,
@@ -43,27 +30,40 @@ public class PersonalComputer
         WifiAdapter? wifiAdapter,
         Xmp? xmp)
     {
-        _cpu = cpu;
-        _bios = bios;
-        _cooler = cooler;
-        _hdd = hdd;
-        _motherboard = motherboard;
-        _powerUnit = powerUnit;
-        _ram = ram;
-        _ssd = ssd;
-        _systemUnit = systemUnit;
-        _videoCard = videoCard;
-        _wifiAdapter = wifiAdapter;
-        _xmp = xmp;
+        Cpu = cpu;
+        Bios = bios;
+        Cooler = cooler;
+        Hdd = hdd;
+        Motherboard = motherboard;
+        PowerUnit = powerUnit;
+        Ram = ram;
+        Ssd = ssd;
+        SystemUnit = systemUnit;
+        Videocard = videoCard;
+        WifiAdapter = wifiAdapter;
+        Xmp = xmp;
     }
+
+    public Cpu Cpu { get; }
+    public Bios Bios { get; }
+    public Cooler Cooler { get; }
+    public Hdd? Hdd { get; }
+    public Motherboard Motherboard { get; }
+    public PowerUnit PowerUnit { get; }
+    public Ram Ram { get; }
+    public Ssd? Ssd { get; }
+    public SystemUnit SystemUnit { get; }
+    public VideoCard? Videocard { get; }
+    public WifiAdapter? WifiAdapter { get; }
+    public Xmp? Xmp { get; }
 
     public ComputerDirector Direct(ComputerDirector builder)
     {
         if (builder != null)
         {
-            builder.WithMotherBoard(_motherboard).WithCpu(_cpu).WithBios(_bios).WithCoolingSystem(_cooler)
-                .WithRam(_ram).WithXmp(_xmp).WithVideoCard(_videoCard).WithSsd(_ssd).WithHdd(_hdd)
-                .WithSystemCase(_systemUnit).WithPowerUnit(_powerUnit).WithWifiAdapter(_wifiAdapter);
+            builder.WithMotherBoard(Motherboard).WithCpu(Cpu).WithBios(Bios).WithCoolingSystem(Cooler)
+                .WithRam(Ram).WithXmp(Xmp).WithVideoCard(Videocard).WithSsd(Ssd).WithHdd(Hdd)
+                .WithSystemCase(SystemUnit).WithPowerUnit(PowerUnit).WithWifiAdapter(WifiAdapter);
             return builder;
         }
         else

@@ -13,11 +13,13 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 public class PowerUnit
 {
     private const int RecommendedPowerStock = 100;
-    private PeakLoad _peakLoad;
+
     public PowerUnit(PeakLoad peakLoad)
     {
-        _peakLoad = peakLoad;
+        PeakLoad = peakLoad;
     }
+
+    public PeakLoad PeakLoad { get; }
 
     public Notification IsPeakLoadEnough(Cpu cpuWithoutVideoCore, Hdd? hdd, Ssd? ssd, Ram ram, VideoCard? videocard, WifiAdapter? wifiAdapter)
     {
@@ -42,7 +44,7 @@ public class PowerUnit
             totalPowerConsumption += videocard.PowerConsumption.Watt;
         }
 
-        return (_peakLoad.Watt - totalPowerConsumption) switch
+        return (PeakLoad.Watt - totalPowerConsumption) switch
         {
             >= RecommendedPowerStock => new Ok(),
             < RecommendedPowerStock and >= 0 => new NonComplianceOfRecommendedPeakLoad(),
@@ -54,7 +56,7 @@ public class PowerUnit
     {
         if (builder != null)
         {
-            builder.WithPeakload(_peakLoad).Build();
+            builder.WithPeakload(PeakLoad).Build();
             return builder;
         }
         else

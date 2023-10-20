@@ -8,17 +8,17 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 
 public class Bios : ICloneable, IBiosDirector
 {
-    private BiosType _biosType;
-    private BiosVersion _biosVersion;
     private ICollection<Cpu> _supportiveCpus;
 
     public Bios(BiosType biosType, BiosVersion biosVersion, ICollection<Cpu> supportiveCpus)
     {
-        _biosType = biosType;
-        _biosVersion = biosVersion;
+        BiosType = biosType;
+        BiosVersion = biosVersion;
         _supportiveCpus = supportiveCpus;
     }
 
+    public BiosType BiosType { get; }
+    public BiosVersion BiosVersion { get; }
     public bool IsCompatible(Cpu cpu)
     {
         return _supportiveCpus.Any(supportiveCpu => cpu == supportiveCpu);
@@ -32,8 +32,8 @@ public class Bios : ICloneable, IBiosDirector
     public object Clone()
     {
         var builder = new BiosBuilder();
-        builder.WithType(_biosType);
-        builder.WithVersion(_biosVersion);
+        builder.WithType(BiosType);
+        builder.WithVersion(BiosVersion);
         builder.WithSupportiveCpus(_supportiveCpus);
         return builder;
     }
@@ -42,7 +42,7 @@ public class Bios : ICloneable, IBiosDirector
     {
         if (builder != null)
         {
-            builder.WithType(_biosType).WithVersion(_biosVersion).WithSupportiveCpus(_supportiveCpus).Build();
+            builder.WithType(BiosType).WithVersion(BiosVersion).WithSupportiveCpus(_supportiveCpus).Build();
             return builder;
         }
         else

@@ -9,16 +9,17 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 
 public class Cooler : IClone<CoolingSystemBuilder>
 {
-    private Dimensions _dimensions;
     private IReadOnlyCollection<Socket> _supportiveSockets;
-    private Tdp _maxTdp;
 
     public Cooler(Dimensions dimensions, IReadOnlyCollection<Socket> supportiveSockets, Tdp maxTdp)
     {
-        _dimensions = dimensions;
+        Dimensions = dimensions;
         _supportiveSockets = supportiveSockets;
-        _maxTdp = maxTdp;
+        MaxTdp = maxTdp;
     }
+
+    public Dimensions Dimensions { get; }
+    public Tdp MaxTdp { get; }
 
     public bool IsCompatible(Cpu cpu)
     {
@@ -34,7 +35,7 @@ public class Cooler : IClone<CoolingSystemBuilder>
 
     public bool CheckWarrantyObligations(Cpu cpu)
     {
-            if (cpu != null && cpu.Tdp.Watt > _maxTdp.Watt)
+            if (cpu != null && cpu.Tdp.Watt > MaxTdp.Watt)
             {
                 return false;
             }
@@ -47,8 +48,8 @@ public class Cooler : IClone<CoolingSystemBuilder>
     public CoolingSystemBuilder Clone()
     {
         var coolingSystemBuilder = new CoolingSystemBuilder();
-        coolingSystemBuilder.WithMaxTdp(_maxTdp);
-        coolingSystemBuilder.WithDimensions(_dimensions);
+        coolingSystemBuilder.WithMaxTdp(MaxTdp);
+        coolingSystemBuilder.WithDimensions(Dimensions);
         coolingSystemBuilder.WithSupportiveSockets(_supportiveSockets);
         return coolingSystemBuilder;
     }
@@ -57,7 +58,7 @@ public class Cooler : IClone<CoolingSystemBuilder>
     {
         if (builder != null)
         {
-            builder.WithDimensions(_dimensions).WithMaxTdp(_maxTdp).WithSupportiveSockets(_supportiveSockets).Build();
+            builder.WithDimensions(Dimensions).WithMaxTdp(MaxTdp).WithSupportiveSockets(_supportiveSockets).Build();
             return builder;
         }
         else

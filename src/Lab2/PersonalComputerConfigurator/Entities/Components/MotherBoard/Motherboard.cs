@@ -10,13 +10,9 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 
 public class Motherboard : ICloneable
 {
-    private Socket _cpuSocket;
     private Amount _pciLinesAmount;
     private Amount _sataPortsAmount;
-    private DdrVersion _supportiveDdrVersion;
     private Amount _ramSlotsAmount;
-    private BiosType _biosType;
-    private BiosVersion _biosVersion;
 
     public Motherboard(
         Socket cpuSocket,
@@ -30,17 +26,22 @@ public class Motherboard : ICloneable
         BiosVersion biosVersion,
         bool hasWifiModule)
     {
-        _cpuSocket = cpuSocket;
+        CpuSocket = cpuSocket;
         _pciLinesAmount = pciLinesAmount;
         _sataPortsAmount = sataPortsAmount;
         Chipset = chipset;
-        _supportiveDdrVersion = supportiveDdrVersion;
+        SupportiveDdrVersion = supportiveDdrVersion;
         _ramSlotsAmount = ramSlotsAmount;
         Formfactor = formFactor;
-        _biosType = biosType;
-        _biosVersion = biosVersion;
+        BiosType = biosType;
+        BiosVersion = biosVersion;
         HasWifiModule = hasWifiModule;
     }
+
+    public DdrVersion SupportiveDdrVersion { get; }
+    public Socket CpuSocket { get; }
+    public BiosType BiosType { get; }
+    public BiosVersion BiosVersion { get; }
 
     public FormFactor Formfactor { get; }
 
@@ -51,13 +52,13 @@ public class Motherboard : ICloneable
     public object Clone()
     {
         var motherboardBuilder = new MotherboardBuilder();
-        motherboardBuilder.WithSocket(_cpuSocket);
+        motherboardBuilder.WithSocket(CpuSocket);
         motherboardBuilder.WithChipset(Chipset);
         motherboardBuilder.WithFormFactor(Formfactor);
-        motherboardBuilder.WithDdrVersion(_supportiveDdrVersion);
+        motherboardBuilder.WithDdrVersion(SupportiveDdrVersion);
         motherboardBuilder.WithSlotsAmount(_ramSlotsAmount);
-        motherboardBuilder.WithBiosType(_biosType);
-        motherboardBuilder.WithBiosVersion(_biosVersion);
+        motherboardBuilder.WithBiosType(BiosType);
+        motherboardBuilder.WithBiosVersion(BiosVersion);
         motherboardBuilder.WithPciLinesAmount(_pciLinesAmount);
         motherboardBuilder.WithSataPortsAmount(_sataPortsAmount);
         return motherboardBuilder;
@@ -65,20 +66,20 @@ public class Motherboard : ICloneable
 
     public bool IsCompatible(Cpu cpu)
     {
-        return cpu != null && _cpuSocket.IsCompatible(cpu.Socket);
+        return cpu != null && CpuSocket.IsCompatible(cpu.Socket);
     }
 
     public bool IsCompatible(Ram ram)
     {
-        return ram?.DdrVersion.Version == _supportiveDdrVersion.Version;
+        return ram?.DdrVersion.Version == SupportiveDdrVersion.Version;
     }
 
     public MotherboardBuilder Direct(MotherboardBuilder builder)
     {
         if (builder != null)
         {
-            builder.WithSocket(_cpuSocket).WithChipset(Chipset).WithDdrVersion(_supportiveDdrVersion)
-                .WithBiosVersion(_biosVersion).WithBiosType(_biosType).WithFormFactor(Formfactor)
+            builder.WithSocket(CpuSocket).WithChipset(Chipset).WithDdrVersion(SupportiveDdrVersion)
+                .WithBiosVersion(BiosVersion).WithBiosType(BiosType).WithFormFactor(Formfactor)
                 .WithSlotsAmount(_ramSlotsAmount).WithSataPortsAmount(_sataPortsAmount)
                 .WithPciLinesAmount(_pciLinesAmount).Build();
             return builder;

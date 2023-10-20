@@ -9,8 +9,6 @@ namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entit
 
 public class Ram : IClone<RamBuilder>
 {
-    private MemorySize _memorySize;
-    private RamFormFactor _ramFormFactor;
     private Xmp _profile;
     private IList<(Frequency Frequency, Voltage Voltage)> _supportiveFrequencyVoltagePairs;
 
@@ -22,13 +20,16 @@ public class Ram : IClone<RamBuilder>
         PowerConsumption powerConsumption,
         IList<(Frequency Frequency, Voltage Voltage)> supportiveFrequencyVoltagePairs)
     {
-        _memorySize = memorySize;
-        _ramFormFactor = ramFormFactor;
+        MemorySize = memorySize;
+        FormFactor = ramFormFactor;
         _profile = profile;
         DdrVersion = ddrVersion;
         PowerConsumption = powerConsumption;
         _supportiveFrequencyVoltagePairs = supportiveFrequencyVoltagePairs;
     }
+
+    public MemorySize MemorySize { get; }
+    public RamFormFactor FormFactor { get; }
 
     public PowerConsumption PowerConsumption { get; }
 
@@ -49,8 +50,8 @@ public class Ram : IClone<RamBuilder>
         builder.WithPowerConsumption(PowerConsumption);
         builder.WithXmp(_profile);
         builder.WithDdrVersion(DdrVersion);
-        builder.WithFormFactor(_ramFormFactor);
-        builder.WithMemorySize(_memorySize);
+        builder.WithFormFactor(FormFactor);
+        builder.WithMemorySize(MemorySize);
         builder.WithSupportiveFrequencyVoltagePairs(_supportiveFrequencyVoltagePairs);
         return builder;
     }
@@ -60,7 +61,7 @@ public class Ram : IClone<RamBuilder>
         if (builder != null)
         {
             builder.WithDdrVersion(DdrVersion).WithXmp(_profile).WithPowerConsumption(PowerConsumption)
-                .WithFormFactor(_ramFormFactor).WithMemorySize(_memorySize)
+                .WithFormFactor(FormFactor).WithMemorySize(MemorySize)
                 .WithSupportiveFrequencyVoltagePairs(_supportiveFrequencyVoltagePairs).Build();
             return builder;
         }

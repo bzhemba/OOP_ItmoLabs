@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.BIOS;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CoolingSystem;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.Criteria;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.HDD;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.MotherBoard;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.PU;
@@ -13,7 +15,6 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.XmpProfile;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Computer;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Repository;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.ComponentsExceptions;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.BiosCharacteristics;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models.MotherboardCharacteristics;
@@ -227,34 +228,178 @@ public class PersonalComputerConfiguratorTest
         .Build();
     private static WifiAdapter _wifiAdapter1 = new WifiAdapterBuilder()
         .WithStandartVersion(new VersionNumber(4))
-        .WithBluetoothModule(true)
         .WithPciVersion(new VersionNumber(3))
         .WithPowerConsumption(new PowerConsumption(5))
         .Build();
     private static WifiAdapter _wifiAdapter2 = new WifiAdapterBuilder()
         .WithStandartVersion(new VersionNumber(6))
-        .WithBluetoothModule(false)
         .WithPciVersion(new VersionNumber(4))
         .WithPowerConsumption(new PowerConsumption(8))
         .Build();
 
-    private static PersonalComputer _personalComputerDexp = new PersonalComputer(_intelPentiumCpu, _bios1, _coolerMasterCooler, null, _motherboard3, _powerUnit1, _ram1, _ssd1, _systemUnit2, _videoCard1, null, _xmp1);
-    private static PersonalComputer _personalComputerGigabyte = new PersonalComputer(_intelCorei7Cpu, _bios1, _noctuaCooler, null, _motherboard2, _powerUnit1, _ram3, _ssd3, _systemUnit3, _videoCard1, _wifiAdapter1, _xmp1);
-    private static PersonalComputer _personalComputerAsus = new PersonalComputer(_amdPhenomCpu, _bios2, _coolerMasterCooler, _hdd2, _motherboard1, _powerUnit2, _ram1, null, _systemUnit2, _videoCard2, null, null);
+    private static PersonalComputer _personalComputerDexp = new PersonalComputer(
+        _intelPentiumCpu,
+        _bios1,
+        _coolerMasterCooler,
+        null,
+        _motherboard3,
+        _powerUnit1,
+        _ram1,
+        _ssd1,
+        _systemUnit2,
+        _videoCard1,
+        null,
+        _xmp1);
+    private static PersonalComputer _personalComputerGigabyte = new PersonalComputer(
+        _intelCorei7Cpu,
+        _bios1,
+        _noctuaCooler,
+        null,
+        _motherboard2,
+        _powerUnit1,
+        _ram3,
+        _ssd3,
+        _systemUnit3,
+        _videoCard1,
+        _wifiAdapter1,
+        _xmp1);
+    private static PersonalComputer _personalComputerAsus = new PersonalComputer(
+        _amdPhenomCpu,
+        _bios2,
+        _coolerMasterCooler,
+        _hdd2,
+        _motherboard1,
+        _powerUnit2,
+        _ram1,
+        null,
+        _systemUnit2,
+        _videoCard2,
+        null,
+        null);
     private static Repository _repository = new Repository();
-    private IList<Cpu> _cpuStorage = _repository.СpuList;
-    private IList<Bios> _biosStorage = _repository.BiosList;
-    private IList<Cooler> _coolingSystemStorage = _repository.CoolingSystems;
-    private IList<Hdd> _hddStorage = _repository.Hdds;
-    private IList<Motherboard> _motherboardStorage = _repository.Motherboards;
-    private IList<PowerUnit> _powerUnitStorage = _repository.PowerUnits;
-    private IList<Ram> _ramStorage = _repository.Rams;
-    private IList<Ssd> _ssdStorage = _repository.SsdList;
-    private IList<SystemUnit> _systemCaseStorage = _repository.SystemCases;
-    private IList<VideoCard> _videoCardStorage = _repository.VideoCards;
-    private IList<WifiAdapter> _wifiAdapterStorage = _repository.WifiAdapters;
-    private IList<Xmp> _xmpStorage = _repository.Xmps;
-    private IList<PersonalComputer> _computerStorage = _repository.Computers;
+    [Fact]
+    public void ConfigurateCompatiblePC()
+    {
+        FillRepository(_repository);
+        IComputerBuilder computerBuilder = new ComputerBuilder();
+        var cpuCriteria = new CpuCriteria(null, null, null, new Socket(new SocketName("Lga1200")));
+        var motherboardCriteria = new MotherboardCriteria(new DdrVersion(4), new Socket(new SocketName("Lga1200")), BiosType.Ami, null);
+        var biosCriteria = new BiosCriteria(BiosType.Ami, null);
+        var coolerCriteria = new CoolerCriteria(new Dimensions(120, 120, 25), new Tdp(150));
+        var powerUnitCriteria = new PowerUnitCriteria(new PeakLoad(1000));
+        var ramCriteria = new RamCriteria(null, RamFormFactor.Dimm, new PowerConsumption(10), new DdrVersion(4));
+        var ssdCriteria = new SsdCriteria(Connection.Sata, new Capacity(500), new Speed(550), new PowerConsumption(2));
+        var systemUnitCriteria =
+            new SystemUnitCriteria(new VideoCardDimensions(320, 140), new Dimensions(400, 200, 350));
+        var videocardCriteria = new VideocardCriteria(null, null, new VideoCardDimensions(280, 128));
+        var xmpCriteria = new XmpCriteria(new Voltage(1.35), new Frequency(3200));
+        Cpu compatibleCpu = _repository.GetCpuWith(cpuCriteria).First();
+        Motherboard motherboard = _repository.GetMotherboardWith(motherboardCriteria).First();
+        Bios bios = _repository.GetBiosWith(biosCriteria).First();
+        Cooler cooler = _repository.GetCoolerWith(coolerCriteria).First();
+        PowerUnit powerUnit = _repository.GetPowerUnitWith(powerUnitCriteria).First();
+        Ram ram = _repository.GetRamWith(ramCriteria).First();
+        Ssd ssd = _repository.GetSsdWith(ssdCriteria).First();
+        SystemUnit systemUnit = _repository.GetSystemUnitWith(systemUnitCriteria).First();
+        VideoCard videoCard = _repository.GetVideocardWith(videocardCriteria).First();
+        Xmp xmp = _repository.GetXmpWith(xmpCriteria).First();
+        Notification newComputer = computerBuilder.WithMotherBoard(motherboard).WithCpu(compatibleCpu).WithBios(bios).WithCoolingSystem(cooler)
+            .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(ssd).WithHdd(null).WithSystemCase(systemUnit)
+            .WithPowerUnit(powerUnit).WithWifiAdapter(null).Build();
+        bool result = newComputer is Success;
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void ConfiguratePCWithPeakLoadWarning()
+    {
+        FillRepository(_repository);
+        var motherboardCriteria = new MotherboardCriteria(new DdrVersion(4), new Socket(new SocketName("SocketAm4")), BiosType.Uefi, null);
+        var biosCriteria = new BiosCriteria(BiosType.Ami, null);
+        var computerCriteria = new ComputerCriteria(null, biosCriteria, null, motherboardCriteria, null, null, null);
+        PersonalComputer personalComputer = _repository.GetComputerWith(computerCriteria).First();
+        var newComputer = new ComputerDirector();
+        newComputer = personalComputer.Direct(newComputer);
+        PowerUnit newPowerUnit = new PowerUnitBuilder().WithPeakload(new PeakLoad(300)).Build();
+        Notification modifiedComputer = newComputer.WithPowerUnit(newPowerUnit).Build();
+        var succesfulBuilding = (Success)modifiedComputer;
+        NonComplianceOfRecommendedPeakLoad? recomendation = succesfulBuilding.NonComplianceOfRecommendedPeakLoad;
+        Assert.NotNull(recomendation);
+    }
+
+    [Fact]
+    public void ConfiguratePCWithTDPWarning()
+    {
+        FillRepository(_repository);
+        IComputerBuilder computerBuilder = new ComputerBuilder();
+        var cpuCriteria = new CpuCriteria(null, null, null, new Socket(new SocketName("Lga1200")));
+        var motherboardCriteria = new MotherboardCriteria(new DdrVersion(4), new Socket(new SocketName("Lga1200")), BiosType.Ami, null);
+        var biosCriteria = new BiosCriteria(BiosType.Ami, null);
+        var coolerCriteria = new CoolerCriteria(new Dimensions(120, 120, 25), new Tdp(150));
+        var powerUnitCriteria = new PowerUnitCriteria(new PeakLoad(1000));
+        var ramCriteria = new RamCriteria(null, RamFormFactor.Dimm, new PowerConsumption(10), new DdrVersion(4));
+        var ssdCriteria = new SsdCriteria(Connection.Sata, new Capacity(500), new Speed(550), new PowerConsumption(2));
+        var systemUnitCriteria =
+            new SystemUnitCriteria(new VideoCardDimensions(320, 140), new Dimensions(400, 200, 350));
+        var videocardCriteria = new VideocardCriteria(null, null, new VideoCardDimensions(280, 128));
+        var xmpCriteria = new XmpCriteria(new Voltage(1.35), new Frequency(3200));
+        Cpu compatibleCpu = _repository.GetCpuWith(cpuCriteria).First();
+        CpuBuilder cpuWithModifiedTdp = compatibleCpu.Clone();
+        cpuWithModifiedTdp.WithTDP(new Tdp(200));
+        Motherboard motherboard = _repository.GetMotherboardWith(motherboardCriteria).First();
+        Bios bios = _repository.GetBiosWith(biosCriteria).First();
+        Cooler cooler = _repository.GetCoolerWith(coolerCriteria).First();
+        PowerUnit powerUnit = _repository.GetPowerUnitWith(powerUnitCriteria).First();
+        Ram ram = _repository.GetRamWith(ramCriteria).First();
+        Ssd ssd = _repository.GetSsdWith(ssdCriteria).First();
+        SystemUnit systemUnit = _repository.GetSystemUnitWith(systemUnitCriteria).First();
+        VideoCard videoCard = _repository.GetVideocardWith(videocardCriteria).First();
+        Xmp xmp = _repository.GetXmpWith(xmpCriteria).First();
+        Notification newComputer = computerBuilder.WithMotherBoard(motherboard).WithCpu(compatibleCpu).WithBios(bios).WithCoolingSystem(cooler)
+            .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(ssd).WithHdd(null).WithSystemCase(systemUnit)
+            .WithPowerUnit(powerUnit).WithWifiAdapter(null).Build();
+        var succesfulBuilding = (Success)newComputer;
+        DisclaimerOfWarrantyObligations? disclaimer = succesfulBuilding.Disclaimer;
+        Assert.NotNull(disclaimer);
+    }
+
+    [Fact]
+    public void ConfiguratePCWithIncompatibileSocketsThrowExceptionTest()
+    {
+        FillRepository(_repository);
+        IComputerBuilder computerBuilder = new ComputerBuilder();
+        var cpuCriteria = new CpuCriteria(new Frequency(3000), null, null, new Socket(new SocketName("SocketAm4")));
+        var biosCriteria = new BiosCriteria(BiosType.Ami, null);
+        var coolerCriteria = new CoolerCriteria(new Dimensions(120, 120, 25), new Tdp(150));
+        var powerUnitCriteria = new PowerUnitCriteria(new PeakLoad(1000));
+        var ramCriteria = new RamCriteria(null, RamFormFactor.Dimm, new PowerConsumption(10), new DdrVersion(4));
+        var ssdCriteria = new SsdCriteria(Connection.Sata, new Capacity(500), new Speed(550), new PowerConsumption(2));
+        var systemUnitCriteria =
+            new SystemUnitCriteria(new VideoCardDimensions(320, 140), new Dimensions(400, 200, 350));
+        var videocardCriteria = new VideocardCriteria(null, null, new VideoCardDimensions(280, 128));
+        var xmpCriteria = new XmpCriteria(new Voltage(1.35), new Frequency(3200));
+        Cpu compatibleCpu = _repository.GetCpuWith(cpuCriteria).First();
+        CpuBuilder cpuWithModifiedTdp = compatibleCpu.Clone();
+        cpuWithModifiedTdp.WithTDP(new Tdp(200));
+        Motherboard motherboard = new MotherboardBuilder().WithSocket(new Socket(new SocketName("SocketG2")))
+            .WithChipset(new Chipset(ChipsetType.W480)).WithFormFactor(FormFactor.MiniItx)
+            .WithDdrVersion(new DdrVersion(2)).WithBiosType(BiosType.Phoenix).WithBiosVersion(new BiosVersion("1.00.24"))
+            .WithSlotsAmount(new Amount(4)).WithWifiModule(true).WithPciLinesAmount(new Amount(23))
+            .WithPciLinesAmount(new Amount(21)).WithSataPortsAmount(new Amount(12)).Build();
+        Bios bios = _repository.GetBiosWith(biosCriteria).First();
+        Cooler cooler = _repository.GetCoolerWith(coolerCriteria).First();
+        PowerUnit powerUnit = _repository.GetPowerUnitWith(powerUnitCriteria).First();
+        Ram ram = _repository.GetRamWith(ramCriteria).First();
+        Ssd ssd = _repository.GetSsdWith(ssdCriteria).First();
+        SystemUnit systemUnit = _repository.GetSystemUnitWith(systemUnitCriteria).First();
+        VideoCard videoCard = _repository.GetVideocardWith(videocardCriteria).First();
+        Xmp xmp = _repository.GetXmpWith(xmpCriteria).First();
+        Notification newComputer = computerBuilder.WithMotherBoard(motherboard).WithCpu(compatibleCpu).WithBios(bios).WithCoolingSystem(cooler)
+            .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(ssd).WithHdd(null).WithSystemCase(systemUnit)
+            .WithPowerUnit(powerUnit).WithWifiAdapter(null).Build();
+        bool result = newComputer is IncompatibilityProblem;
+        Assert.True(result);
+    }
 
     private static void FillRepository(Repository repository)
     {
@@ -306,86 +451,5 @@ public class PersonalComputerConfiguratorTest
             repository.AddComputer(_personalComputerDexp);
             repository.AddComputer(_personalComputerGigabyte);
         }
-    }
-
-    [Fact]
-    public void ConfigurateCompatiblePC()
-    {
-        IComputerBuilder computerBuilder = new ComputerBuilder();
-        CpuWithoutVideoCore cpuWithoutVideoCore = _cpuStorage[0];
-        Motherboard motherboard = _motherboardStorage[2];
-        Bios bios = _biosStorage[0];
-        Cooler cooler = _coolingSystemStorage[0];
-        PowerUnit powerUnit = _powerUnitStorage[0];
-        Ram ram = _ramStorage[0];
-        Ssd ssd = _ssdStorage[0];
-        SystemUnit systemUnit = _systemCaseStorage[1];
-        VideoCard videoCard = _videoCardStorage[0];
-        Xmp xmp = _xmpStorage[0];
-        (Notification notification,  _) = computerBuilder.WithMotherBoard(motherboard).WithCpu(cpuWithoutVideoCore).WithBios(bios).WithCoolingSystem(cooler)
-            .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(ssd).WithHdd(null).WithSystemCase(systemUnit)
-            .WithPowerUnit(powerUnit).WithWifiAdapter(null).Build();
-        Assert.Equal(new Success(), notification);
-    }
-
-    [Fact]
-    public void ConfiguratePCWithPeakLoadWarning()
-    {
-        PersonalComputer personalComputer = _computerStorage[2];
-        var newComputer = new ComputerDirector();
-        newComputer = personalComputer.Direct(newComputer);
-        PowerUnit newPowerUnit = new PowerUnitBuilder().WithPeakload(new PeakLoad(300)).Build();
-        (Notification? notification, _) = newComputer.WithPowerUnit(newPowerUnit).Build();
-        Assert.Equal(new Success(), notification);
-    }
-
-    [Fact]
-    public void ConfiguratePCWithTDPWarning()
-    {
-        IComputerBuilder computerBuilder = new ComputerBuilder();
-        CpuWithoutVideoCore cpuWithoutVideoCore = _cpuStorage[0];
-        CpuBuilder cpuWithModifiedTdp = cpuWithoutVideoCore.Clone();
-        cpuWithModifiedTdp.WithTDP(new Tdp(200));
-        Motherboard motherboard = _motherboardStorage[2];
-        Bios bios = _biosStorage[0];
-        Cooler cooler = _coolingSystemStorage[0];
-        PowerUnit powerUnit = _powerUnitStorage[0];
-        Ram ram = _ramStorage[0];
-        Hdd hdd = _hddStorage[0];
-        SystemUnit systemUnit = _systemCaseStorage[1];
-        VideoCard videoCard = _videoCardStorage[0];
-        Xmp xmp = _xmpStorage[0];
-        WifiAdapter wifiAdapter = _wifiAdapterStorage[1];
-        (Notification? notification, _) = computerBuilder.WithMotherBoard(motherboard).WithCpu(cpuWithoutVideoCore).WithBios(bios).WithCoolingSystem(cooler)
-            .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(null).WithHdd(hdd).WithSystemCase(systemUnit)
-            .WithPowerUnit(powerUnit).WithWifiAdapter(wifiAdapter).Build();
-        Assert.Equal(new Success(), notification);
-    }
-
-    [Fact]
-    public void ConfiguratePCWithIncompatibileSocketsThrowExceptionTest()
-    {
-        IComputerBuilder computerBuilder = new ComputerBuilder();
-        CpuWithoutVideoCore cpuWithoutVideoCore = _cpuStorage[3];
-        CpuBuilder cpuWithModifiedTdp = cpuWithoutVideoCore.Clone();
-        cpuWithModifiedTdp.WithTDP(new Tdp(200));
-        Motherboard motherboard = new MotherboardBuilder().WithSocket(Socket.SocketG2)
-            .WithChipset(new Chipset(ChipsetType.W480, true)).WithFormFactor(FormFactor.MiniItx)
-            .WithDdrVersion(new DdrVersion(2)).BiosTypeVersion(new BiosTypeVersion(BiosType.Phoenix, new BiosVersion("1.00.24")))
-            .WithSlotsAmount(new SlotsAmount(4)).WithWifiModule(true).WithPciLinesAmount(new PciLinesAmount(23))
-            .WithPciLinesAmount(new PciLinesAmount(21)).WithSataPortsAmount(new SataPortsAmount(12)).Build();
-        Bios bios = _biosStorage[0];
-        Cooler cooler = _coolingSystemStorage[1];
-        PowerUnit powerUnit = _powerUnitStorage[1];
-        Ram ram = _ramStorage[1];
-        Hdd hdd = _hddStorage[1];
-        SystemUnit systemUnit = _systemCaseStorage[1];
-        VideoCard videoCard = _videoCardStorage[0];
-        Xmp xmp = _xmpStorage[0];
-        WifiAdapter wifiAdapter = _wifiAdapterStorage[1];
-        Assert.Throws<IncompatibilityProblemException>(() => computerBuilder.WithMotherBoard(motherboard).WithCpu(cpuWithoutVideoCore)
-            .WithBios(bios).WithCoolingSystem(cooler)
-            .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(null).WithHdd(hdd).WithSystemCase(systemUnit)
-            .WithPowerUnit(powerUnit).WithWifiAdapter(wifiAdapter).Build());
     }
 }

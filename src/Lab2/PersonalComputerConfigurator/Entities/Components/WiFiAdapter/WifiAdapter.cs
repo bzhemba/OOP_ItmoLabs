@@ -3,29 +3,27 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.WiFiAdapter;
 
-public class WifiAdapter : ICloneable
+public class WifiAdapter : ICloneable, IWifiAdapter
 {
-    private VersionNumber _standartVersion;
-    private bool _hasBluetoothModule;
     private VersionNumber _versionNumber;
 
-    public WifiAdapter(VersionNumber standartVersion, bool hasBluetoothModule, VersionNumber versionNumber, PowerConsumption powerConsumption)
+    public WifiAdapter(VersionNumber standartVersion, VersionNumber versionNumber, PowerConsumption powerConsumption)
     {
-        _standartVersion = standartVersion;
-        _hasBluetoothModule = hasBluetoothModule;
+        StandartVersion = standartVersion;
         _versionNumber = versionNumber;
         PowerConsumption = powerConsumption;
     }
 
+    public VersionNumber StandartVersion { get; }
     public PowerConsumption PowerConsumption { get; }
+    public bool HasBluetoothModule { get; }
 
     public object Clone()
     {
         var builder = new WifiAdapterBuilder();
-        builder.WithBluetoothModule(_hasBluetoothModule);
         builder.WithPciVersion(_versionNumber);
         builder.WithPowerConsumption(PowerConsumption);
-        builder.WithStandartVersion(_standartVersion);
+        builder.WithStandartVersion(StandartVersion);
         return builder;
     }
 
@@ -33,8 +31,8 @@ public class WifiAdapter : ICloneable
     {
         if (builder != null)
         {
-            builder.WithBluetoothModule(_hasBluetoothModule).WithPciVersion(_versionNumber)
-                .WithStandartVersion(_standartVersion).WithPowerConsumption(PowerConsumption).Build();
+            builder
+                .WithStandartVersion(StandartVersion).WithPowerConsumption(PowerConsumption).Build();
             return builder;
         }
         else
