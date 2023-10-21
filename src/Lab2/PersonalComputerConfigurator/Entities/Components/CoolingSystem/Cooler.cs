@@ -39,14 +39,7 @@ public class Cooler : IClone<CoolingSystemBuilder>
 
     public bool CheckWarrantyObligations(Cpu cpu)
     {
-            if (cpu != null && cpu.Tdp.Watt > MaxTdp.Watt)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+        return cpu == null || cpu.Tdp.Watt <= MaxTdp.Watt;
     }
 
     public CoolingSystemBuilder Clone()
