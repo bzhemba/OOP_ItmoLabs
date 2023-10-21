@@ -33,7 +33,7 @@ public class CheckXmpCompatibility : Validator
             hdd,
             systemUnit,
             powerUnit,
-            wifiAdapter ?? throw new ArgumentNullException(nameof(wifiAdapter)),
+            wifiAdapter,
             xmpProfile);
         }
     }

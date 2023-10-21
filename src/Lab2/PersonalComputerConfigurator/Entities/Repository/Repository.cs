@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.BIOS;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CoolingSystem;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
@@ -14,6 +13,7 @@ using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.WiFiAdapter;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.XmpProfile;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Computer;
+using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.NullObjectExceptions;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Repository;
 
@@ -98,124 +98,255 @@ public class Repository
         Computers.Add(personalComputer);
     }
 
-    public IList<Cpu> GetCpuWith(CpuCriteria criteria)
+    public Cpu GetCpuWith(CpuCriteria criteria)
     {
-        return СpuList.Where(cpu => criteria != null
-                                    && (cpu.MemoryFrequency == criteria.MemoryFrequency || criteria.MemoryFrequency == null)
-                                    && (cpu.CoresFrequency == criteria.CoresFrequency || criteria.CoresFrequency == null)
-                                    && (cpu.PowerConsumption == criteria.PowerConsumption || criteria.PowerConsumption == null)).ToList();
+        foreach (Cpu cpu in СpuList)
+        {
+            if (criteria != null
+                && (criteria.MemoryFrequency == null || cpu.MemoryFrequency.Mhz == criteria.MemoryFrequency.Mhz)
+                && (criteria.CoresFrequency == null || cpu.CoresFrequency.Mhz == criteria.CoresFrequency.Mhz)
+                && (criteria.PowerConsumption == null || cpu.PowerConsumption.Watt == criteria.PowerConsumption.Watt))
+            {
+                return cpu;
+            }
+        }
+
+        throw new NullObjectException();
     }
 
-    public IList<Motherboard> GetMotherboardWith(MotherboardCriteria criteria)
+    public Motherboard GetMotherboardWith(MotherboardCriteria criteria)
     {
-        return Motherboards.Where(motherboard => criteria != null
-                                    && (motherboard.SupportiveDdrVersion == criteria.SupportiveDdrVersion || criteria.SupportiveDdrVersion == null)
-                                    && (motherboard.CpuSocket == criteria.CpuSocket || criteria.CpuSocket == null)
-                                    && (motherboard.BiosVersion == criteria.BiosVersion || criteria.BiosVersion == null)
-                                    && (motherboard.BiosType == criteria.BiosType || criteria.BiosType == null)).ToList();
+        foreach (Motherboard motherboard in Motherboards)
+        {
+            if (criteria != null
+                && (criteria.SupportiveDdrVersion == null ||
+                    motherboard.SupportiveDdrVersion.Version == criteria.SupportiveDdrVersion.Version)
+                && (criteria.CpuSocket == null || motherboard.CpuSocket.Name == criteria.CpuSocket.Name)
+                && (criteria.BiosVersion == null || motherboard.BiosVersion.V == criteria.BiosVersion.V)
+                && (criteria.BiosType == null || motherboard.BiosType == criteria.BiosType))
+            {
+                return motherboard;
+            }
+        }
+
+        throw new NullObjectException();
     }
 
-    public IList<Bios> GetBiosWith(BiosCriteria criteria)
+    public Bios GetBiosWith(BiosCriteria criteria)
     {
-        return BiosList.Where(bios => criteria != null
-                                                 && (bios.BiosVersion == criteria.BiosVersion || criteria.BiosVersion == null)
-                                                 && (bios.BiosType == criteria.BiosType || criteria.BiosType == null)).ToList();
+        foreach (Bios bios in BiosList)
+        {
+            if (criteria != null
+                && (criteria.BiosVersion == null || bios.BiosVersion.V == criteria.BiosVersion.V)
+                && (criteria.BiosType == null || bios.BiosType == criteria.BiosType))
+            {
+                return bios;
+            }
+        }
+
+        throw new NullObjectException();
     }
 
-    public IList<Ram> GetRamWith(RamCriteria criteria)
+    public Ram GetRamWith(RamCriteria criteria)
     {
-        return Rams.Where(ram => criteria != null
-                                      && (ram.DdrVersion == criteria.DdrVersion || criteria.DdrVersion == null)
-                                      && (ram.PowerConsumption == criteria.PowerConsumption || criteria.PowerConsumption == null)
-                                      && (ram.FormFactor == criteria.FormFactor || criteria.FormFactor == null)
-                                      && (ram.MemorySize == criteria.MemorySize || criteria.MemorySize == null)).ToList();
+        foreach (Ram ram in Rams)
+        {
+            if (criteria != null
+                && (criteria.DdrVersion == null || ram.DdrVersion == criteria.DdrVersion)
+                && (criteria.PowerConsumption == null || ram.PowerConsumption.Watt == criteria.PowerConsumption.Watt)
+                && (criteria.FormFactor == null || ram.FormFactor == criteria.FormFactor)
+                && (criteria.MemorySize == null || ram.MemorySize.Gb == criteria.MemorySize.Gb))
+            {
+                return ram;
+            }
+        }
+
+        throw new NullObjectException();
     }
 
-    public IList<SystemUnit> GetSystemUnitWith(SystemUnitCriteria criteria)
+    public SystemUnit GetSystemUnitWith(SystemUnitCriteria criteria)
     {
-        return SystemCases.Where(systemUnit => criteria != null
-                                 && (systemUnit.Dimensions == criteria.Dimensions || criteria.Dimensions == null)
-                                 && (systemUnit.CardDimensions == criteria.CardDimensions || criteria.CardDimensions == null)).ToList();
+        foreach (SystemUnit systemUnit in SystemCases)
+        {
+            if (criteria != null
+                && (criteria.Dimensions == null || (systemUnit.Dimensions.Length == criteria.Dimensions.Length
+                                                    && systemUnit.Dimensions.Width == criteria.Dimensions.Width &&
+                                                    systemUnit.Dimensions.Height == criteria.Dimensions.Height))
+                && (criteria.CardDimensions == null ||
+                    (systemUnit.CardDimensions.Length == criteria.CardDimensions.Length &&
+                     systemUnit.CardDimensions.Width == criteria.CardDimensions.Width)))
+            {
+                return systemUnit;
+            }
+        }
+
+        throw new NullObjectException();
     }
 
-    public IList<Xmp> GetXmpWith(XmpCriteria criteria)
+    public Xmp GetXmpWith(XmpCriteria criteria)
     {
-        return Xmps.Where(xmp => criteria != null
-                                               && (xmp.Frequency == criteria.Frequency || criteria.Frequency == null)
-                                               && (xmp.Voltage == criteria.Voltage || criteria.Voltage == null)).ToList();
+        foreach (Xmp xmp in Xmps)
+        {
+            if (criteria != null
+                && (criteria.Frequency == null || xmp.Frequency.Mhz == criteria.Frequency.Mhz)
+                && (criteria.Voltage == null || xmp.Voltage.V == criteria.Voltage.V))
+            {
+                return xmp;
+            }
+        }
+
+        throw new NullObjectException();
     }
 
-    public IList<Ssd> GetSsdWith(SsdCriteria criteria)
+    public Ssd GetSsdWith(SsdCriteria criteria)
     {
-        return SsdList.Where(ssd => criteria != null
-                                        && (ssd.PowerConsumption == criteria.PowerConsumption || criteria.PowerConsumption == null)
-                                        && (ssd.Connection == criteria.Connection || criteria.Connection == null)
-                                        && (ssd.Capacity == criteria.Capacity || criteria.Capacity == null)
-                                        && (ssd.Speed == criteria.Speed || criteria.Speed == null)).ToList();
+        foreach (Ssd ssd in SsdList)
+        {
+            if (criteria != null
+                && (criteria.PowerConsumption == null || ssd.PowerConsumption.Watt == criteria.PowerConsumption.Watt)
+                && (criteria.Connection == null || ssd.Connection == criteria.Connection)
+                && (criteria.Capacity == null || ssd.Capacity.Gb == criteria.Capacity.Gb)
+                && (criteria.Speed == null || ssd.Speed.MbS == criteria.Speed.MbS))
+            {
+                return ssd;
+            }
+        }
+
+        throw new NullObjectException();
     }
 
-    public IList<Hdd> GetHddWith(HddCriteria criteria)
+    public Hdd GetHddWith(HddCriteria criteria)
     {
-        return Hdds.Where(hdd => criteria != null
-                                    && (hdd.PowerConsumption == criteria.PowerConsumption || criteria.PowerConsumption == null)
-                                    && (hdd.Capacity == criteria.Capacity || criteria.Capacity == null)
-                                    && (hdd.SpindleSpeed == criteria.SpindleSpeed || criteria.SpindleSpeed == null)).ToList();
+        foreach (Hdd hdd in Hdds)
+        {
+            if (criteria != null
+                && (criteria.PowerConsumption == null || hdd.PowerConsumption.Watt == criteria.PowerConsumption.Watt)
+                && (criteria.Capacity == null || hdd.Capacity.Gb == criteria.Capacity.Gb)
+                && (criteria.SpindleSpeed == null || hdd.SpindleSpeed.MbS == criteria.SpindleSpeed.MbS))
+            {
+                return hdd;
+            }
+        }
+
+        throw new NullObjectException();
     }
 
-    public IList<Cooler> GetCoolerWith(CoolerCriteria criteria)
+    public Cooler GetCoolerWith(CoolerCriteria criteria)
     {
-        return CoolingSystems.Where(cooler => criteria != null
-                                 && (cooler.Dimensions == criteria.Dimensions || criteria.Dimensions == null)
-                                 && (cooler.MaxTdp == criteria.MaxTdp || criteria.MaxTdp == null)).ToList();
+        foreach (Cooler cooler in CoolingSystems)
+        {
+            if (criteria != null
+                && (criteria.Dimensions == null || (cooler.Dimensions.Length == criteria.Dimensions.Length
+                                                    && cooler.Dimensions.Width == criteria.Dimensions.Width
+                                                    && cooler.Dimensions.Height == criteria.Dimensions.Height))
+                && (criteria.MaxTdp == null || cooler.MaxTdp.Watt == criteria.MaxTdp.Watt))
+            {
+                return cooler;
+            }
+        }
+
+        throw new NullObjectException();
     }
 
-    public IList<PowerUnit> GetPowerUnitWith(PowerUnitCriteria criteria)
+    public PowerUnit GetPowerUnitWith(PowerUnitCriteria criteria)
     {
-        return PowerUnits.Where(poweUnit => criteria != null
-                                              && (poweUnit.PeakLoad == criteria.PeakLoad || criteria.PeakLoad == null)).ToList();
+        foreach (PowerUnit powerUnit in PowerUnits)
+        {
+            if (criteria != null
+                && (criteria.PeakLoad == null || powerUnit.PeakLoad.Watt == criteria.PeakLoad.Watt))
+            {
+                return powerUnit;
+            }
+        }
+
+        throw new NullObjectException();
     }
 
-    public IList<VideoCard> GetVideocardWith(VideocardCriteria criteria)
+    public VideoCard GetVideocardWith(VideocardCriteria criteria)
     {
-        return VideoCards.Where(videocard => criteria != null
-                                            && (videocard.PowerConsumption == criteria.PowerConsumption || criteria.PowerConsumption == null)
-                                            && (videocard.Dimensions == criteria.Dimensions || criteria.Dimensions == null)
-                                            && (videocard.VideoMemoryAmount == criteria.VideoMemoryAmount || criteria.VideoMemoryAmount == null)).ToList();
+        foreach (VideoCard videocard in VideoCards)
+        {
+            if (criteria != null
+                && (criteria.PowerConsumption == null ||
+                    videocard.PowerConsumption.Watt == criteria.PowerConsumption.Watt)
+                && (criteria.Dimensions == null || (videocard.Dimensions.Width == criteria.Dimensions.Width &&
+                                                    videocard.Dimensions.Length == criteria.Dimensions.Length))
+                && (criteria.VideoMemoryAmount == null ||
+                    videocard.VideoMemoryAmount.Gb == criteria.VideoMemoryAmount.Gb))
+            {
+                return videocard;
+            }
+        }
+
+        throw new NullObjectException();
     }
 
-    public IList<WifiAdapter> GetWifiAdapterdWith(WifiAdapterCriteria criteria)
+    public WifiAdapter GetWifiAdapterdWith(WifiAdapterCriteria criteria)
     {
-        return WifiAdapters.Where(wifiAdapter => criteria != null
-                                             && (wifiAdapter.PowerConsumption == criteria.PowerConsumption || criteria.PowerConsumption == null)
-                                             && (wifiAdapter.StandartVersion == criteria.StandartVersion || criteria.StandartVersion == null)).ToList();
+        foreach (WifiAdapter wifiAdapter in WifiAdapters)
+        {
+            if (criteria != null
+                && (criteria.PowerConsumption == null ||
+                    wifiAdapter.PowerConsumption.Watt == criteria.PowerConsumption.Watt)
+                && (criteria.StandartVersion == null ||
+                    wifiAdapter.StandartVersion.Version == criteria.StandartVersion.Version))
+            {
+                return wifiAdapter;
+            }
+        }
+
+        throw new NullObjectException();
     }
 
-    public IList<PersonalComputer> GetComputerWith(ComputerCriteria criteria)
+    public PersonalComputer GetComputerWith(ComputerCriteria criteria)
     {
-        return Computers.Where(computer => criteria != null
-                                           && ((criteria.Cpu == null || ((computer.Cpu.MemoryFrequency == criteria.Cpu.MemoryFrequency || criteria.Cpu.MemoryFrequency == null)
-                                                && (computer.Cpu.CoresFrequency == criteria.Cpu.CoresFrequency || criteria.Cpu.CoresFrequency == null)
-                                                && (computer.Cpu.PowerConsumption == criteria.Cpu.PowerConsumption || criteria.Cpu.PowerConsumption == null)))
+        foreach (PersonalComputer computer in Computers)
+        {
+            if (criteria != null
+                && ((criteria.Cpu == null || ((criteria.Cpu.MemoryFrequency == null ||
+                                               computer.Cpu.MemoryFrequency.Mhz == criteria.Cpu.MemoryFrequency.Mhz)
+                                              && (criteria.Cpu.CoresFrequency == null ||
+                                                  computer.Cpu.CoresFrequency.Mhz == criteria.Cpu.CoresFrequency.Mhz)
+                                              && (criteria.Cpu.PowerConsumption == null ||
+                                                  computer.Cpu.PowerConsumption.Watt ==
+                                                  criteria.Cpu.PowerConsumption.Watt)))
 
-                                           && (criteria.Motherboard == null || ((computer.Motherboard.SupportiveDdrVersion == criteria.Motherboard.SupportiveDdrVersion || criteria.Motherboard.SupportiveDdrVersion == null)
-                                           && (computer.Motherboard.CpuSocket == criteria.Motherboard.CpuSocket || criteria.Motherboard.CpuSocket == null)
-                                           && (computer.Motherboard.BiosVersion == criteria.Motherboard.BiosVersion || criteria.Motherboard.BiosVersion == null)
-                                           && (computer.Motherboard.BiosType == criteria.Motherboard.BiosType || criteria.Motherboard.BiosType == null)))
+                    && (criteria.Motherboard == null || ((criteria.Motherboard.SupportiveDdrVersion == null ||
+                                                          computer.Motherboard.SupportiveDdrVersion.Version ==
+                                                          criteria.Motherboard.SupportiveDdrVersion.Version)
+                                                         && (criteria.Motherboard.CpuSocket == null ||
+                                                             computer.Motherboard.CpuSocket.Name ==
+                                                             criteria.Motherboard.CpuSocket.Name)
+                                                         && (criteria.Motherboard.BiosVersion == null ||
+                                                             computer.Motherboard.BiosVersion.V ==
+                                                             criteria.Motherboard.BiosVersion.V)
+                                                         && (criteria.Motherboard.BiosType == null ||
+                                                             computer.Motherboard.BiosType ==
+                                                             criteria.Motherboard.BiosType)))
 
-                                           && (criteria.Bios == null || ((computer.Bios.BiosVersion == criteria.Bios.BiosVersion || criteria.Bios.BiosVersion == null)
-                                           && (computer.Bios.BiosType == criteria.Bios.BiosType || criteria.Bios.BiosType == null)))
+                    && (criteria.Bios == null || ((criteria.Bios.BiosVersion == null ||
+                                                   computer.Bios.BiosVersion.V == criteria.Bios.BiosVersion.V)
+                                                  && (criteria.Bios.BiosType == null ||
+                                                      computer.Bios.BiosType == criteria.Bios.BiosType)))
 
-                                           && (criteria.Ram == null || ((computer.Ram.DdrVersion == criteria.Ram.DdrVersion || criteria.Ram.DdrVersion == null)
-                                           && (computer.Ram.PowerConsumption == criteria.Ram.PowerConsumption || criteria.Ram.PowerConsumption == null)
-                                           && (computer.Ram.FormFactor == criteria.Ram.FormFactor || criteria.Ram.FormFactor == null)
-                                           && (computer.Ram.MemorySize == criteria.Ram.MemorySize || criteria.Ram.MemorySize == null)))
+                    && (criteria.Ram == null || ((criteria.Ram.DdrVersion == null ||
+                                                  computer.Ram.DdrVersion.Version == criteria.Ram.DdrVersion.Version)
+                                                 && (criteria.Ram.PowerConsumption == null ||
+                                                     computer.Ram.PowerConsumption.Watt ==
+                                                     criteria.Ram.PowerConsumption.Watt)
+                                                 && (criteria.Ram.FormFactor == null ||
+                                                     computer.Ram.FormFactor == criteria.Ram.FormFactor)
+                                                 && (criteria.Ram.MemorySize == null || computer.Ram.MemorySize.Gb ==
+                                                     criteria.Ram.MemorySize.Gb)))
 
-                                           && (criteria.SystemUnit == null || ((computer.SystemUnit.Dimensions == criteria.SystemUnit.Dimensions || criteria.SystemUnit.Dimensions == null)
-                                           && (computer.SystemUnit.CardDimensions == criteria.SystemUnit.CardDimensions || criteria.SystemUnit.CardDimensions == null)))
+                    && (criteria.PowerUnit == null || (criteria.PowerUnit.PeakLoad == null ||
+                                                       computer.PowerUnit.PeakLoad.Watt ==
+                                                       criteria.PowerUnit.PeakLoad.Watt))))
+            {
+                return computer;
+            }
+        }
 
-                                           && (criteria.Cooler == null || ((computer.Cooler.Dimensions == criteria.Cooler.Dimensions || criteria.Cooler.Dimensions == null)
-                                           && (computer.Cooler.MaxTdp == criteria.Cooler.MaxTdp || criteria.Cooler.MaxTdp == null)))
-
-                                           && (criteria.PowerUnit == null || (computer.PowerUnit.PeakLoad == criteria.PowerUnit.PeakLoad || criteria.PowerUnit.PeakLoad == null)))).ToList();
+        throw new NullObjectException();
     }
 }

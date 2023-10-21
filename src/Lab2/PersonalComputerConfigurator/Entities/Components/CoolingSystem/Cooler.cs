@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
-using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Exceptions.NullObjectExceptions;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Models;
 
 namespace Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CoolingSystem;
@@ -25,12 +24,17 @@ public class Cooler : IClone<CoolingSystemBuilder>
     {
         if (cpu != null)
         {
-            return _supportiveSockets.Any(supportiveSocket => cpu.Socket.Equals(supportiveSocket));
+            if (_supportiveSockets.Any(socket => socket.Name == cpu.Socket.Name))
+            {
+                return true;
+            }
+
+            {
+                return false;
+            }
         }
-        else
-        {
-            throw new NullObjectException();
-        }
+
+        return false;
     }
 
     public bool CheckWarrantyObligations(Cpu cpu)

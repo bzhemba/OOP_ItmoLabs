@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.BIOS;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CoolingSystem;
 using Itmo.ObjectOrientedProgramming.Lab2.PersonalComputerConfigurator.Entities.Components.CPU;
@@ -81,7 +80,7 @@ public class PersonalComputerConfiguratorTest
     private static Bios _bios2 = new BiosBuilder().WithType(BiosType.Ami).WithVersion(new BiosVersion("3.02.22")).WithSupportiveCpus(_supportiveCpus2).Build();
 
     private static Cooler _coolerMasterCooler = new CoolingSystemBuilder()
-        .WithDimensions(new Dimensions(120, 120, 25)).WithSupportiveSockets(new List<Socket> { new Socket(new SocketName("SocketAm4")), new Socket(new SocketName("Lga1200")) })
+        .WithDimensions(new Dimensions(120, 120, 25)).WithSupportiveSockets(new List<Socket> { new(new SocketName("SocketAm4")), new(new SocketName("Lga1200")) })
         .WithMaxTdp(new Tdp(150)).Build();
 
     private static Cooler _noctuaCooler = new CoolingSystemBuilder()
@@ -276,35 +275,33 @@ public class PersonalComputerConfiguratorTest
         _videoCard2,
         null,
         null);
-    private static Repository _repository = new Repository();
+    private Repository _repository = new Repository();
     [Fact]
     public void ConfigurateCompatiblePC()
     {
         FillRepository(_repository);
         IComputerBuilder computerBuilder = new ComputerBuilder();
-        var cpuCriteria = new CpuCriteria(null, null, null, new Socket(new SocketName("Lga1200")));
+        var cpuCriteria = new CpuCriteria(null, null, new Frequency(3200), new Socket(new SocketName("Lga1200")));
         var motherboardCriteria = new MotherboardCriteria(new DdrVersion(4), new Socket(new SocketName("Lga1200")), BiosType.Ami, null);
-        var biosCriteria = new BiosCriteria(BiosType.Ami, null);
-        var coolerCriteria = new CoolerCriteria(new Dimensions(120, 120, 25), new Tdp(150));
+        var biosCriteria = new BiosCriteria(BiosType.Intel, null);
+        var coolerCriteria = new CoolerCriteria(new Dimensions(120, 120, 25), null);
         var powerUnitCriteria = new PowerUnitCriteria(new PeakLoad(1000));
         var ramCriteria = new RamCriteria(null, RamFormFactor.Dimm, new PowerConsumption(10), new DdrVersion(4));
         var ssdCriteria = new SsdCriteria(Connection.Sata, new Capacity(500), new Speed(550), new PowerConsumption(2));
         var systemUnitCriteria =
-            new SystemUnitCriteria(new VideoCardDimensions(320, 140), new Dimensions(400, 200, 350));
+            new SystemUnitCriteria(new VideoCardDimensions(280, 128), new Dimensions(400, 200, 350));
         var videocardCriteria = new VideocardCriteria(null, null, new VideoCardDimensions(280, 128));
-        var xmpCriteria = new XmpCriteria(new Voltage(1.35), new Frequency(3200));
-        Cpu compatibleCpu = _repository.GetCpuWith(cpuCriteria).First();
-        Motherboard motherboard = _repository.GetMotherboardWith(motherboardCriteria).First();
-        Bios bios = _repository.GetBiosWith(biosCriteria).First();
-        Cooler cooler = _repository.GetCoolerWith(coolerCriteria).First();
-        PowerUnit powerUnit = _repository.GetPowerUnitWith(powerUnitCriteria).First();
-        Ram ram = _repository.GetRamWith(ramCriteria).First();
-        Ssd ssd = _repository.GetSsdWith(ssdCriteria).First();
-        SystemUnit systemUnit = _repository.GetSystemUnitWith(systemUnitCriteria).First();
-        VideoCard videoCard = _repository.GetVideocardWith(videocardCriteria).First();
-        Xmp xmp = _repository.GetXmpWith(xmpCriteria).First();
+        Cpu compatibleCpu = _repository.GetCpuWith(cpuCriteria);
+        Motherboard motherboard = _repository.GetMotherboardWith(motherboardCriteria);
+        Bios bios = _repository.GetBiosWith(biosCriteria);
+        Cooler cooler = _repository.GetCoolerWith(coolerCriteria);
+        PowerUnit powerUnit = _repository.GetPowerUnitWith(powerUnitCriteria);
+        Ram ram = _repository.GetRamWith(ramCriteria);
+        Ssd ssd = _repository.GetSsdWith(ssdCriteria);
+        SystemUnit systemUnit = _repository.GetSystemUnitWith(systemUnitCriteria);
+        VideoCard videoCard = _repository.GetVideocardWith(videocardCriteria);
         Notification newComputer = computerBuilder.WithMotherBoard(motherboard).WithCpu(compatibleCpu).WithBios(bios).WithCoolingSystem(cooler)
-            .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(ssd).WithHdd(null).WithSystemCase(systemUnit)
+            .WithRam(ram).WithXmp(null).WithVideoCard(videoCard).WithSsd(ssd).WithHdd(null).WithSystemCase(systemUnit)
             .WithPowerUnit(powerUnit).WithWifiAdapter(null).Build();
         bool result = newComputer is Success;
         Assert.True(result);
@@ -316,15 +313,14 @@ public class PersonalComputerConfiguratorTest
         FillRepository(_repository);
         var motherboardCriteria = new MotherboardCriteria(new DdrVersion(4), new Socket(new SocketName("SocketAm4")), BiosType.Uefi, null);
         var biosCriteria = new BiosCriteria(BiosType.Ami, null);
-        var computerCriteria = new ComputerCriteria(null, biosCriteria, null, motherboardCriteria, null, null, null);
-        PersonalComputer personalComputer = _repository.GetComputerWith(computerCriteria).First();
+        var computerCriteria = new ComputerCriteria(null, biosCriteria, motherboardCriteria, null, null);
+        PersonalComputer personalComputer = _repository.GetComputerWith(computerCriteria);
         var newComputer = new ComputerDirector();
         newComputer = personalComputer.Direct(newComputer);
         PowerUnit newPowerUnit = new PowerUnitBuilder().WithPeakload(new PeakLoad(300)).Build();
         Notification modifiedComputer = newComputer.WithPowerUnit(newPowerUnit).Build();
-        var succesfulBuilding = (Success)modifiedComputer;
-        NonComplianceOfRecommendedPeakLoad? recomendation = succesfulBuilding.NonComplianceOfRecommendedPeakLoad;
-        Assert.NotNull(recomendation);
+        bool result = modifiedComputer is IncompatibilityProblem;
+        Assert.True(result);
     }
 
     [Fact]
@@ -340,31 +336,30 @@ public class PersonalComputerConfiguratorTest
         var ramCriteria = new RamCriteria(null, RamFormFactor.Dimm, new PowerConsumption(10), new DdrVersion(4));
         var ssdCriteria = new SsdCriteria(Connection.Sata, new Capacity(500), new Speed(550), new PowerConsumption(2));
         var systemUnitCriteria =
-            new SystemUnitCriteria(new VideoCardDimensions(320, 140), new Dimensions(400, 200, 350));
+            new SystemUnitCriteria(new VideoCardDimensions(280, 128), new Dimensions(400, 200, 350));
         var videocardCriteria = new VideocardCriteria(null, null, new VideoCardDimensions(280, 128));
         var xmpCriteria = new XmpCriteria(new Voltage(1.35), new Frequency(3200));
-        Cpu compatibleCpu = _repository.GetCpuWith(cpuCriteria).First();
+        Cpu compatibleCpu = _repository.GetCpuWith(cpuCriteria);
         CpuBuilder cpuWithModifiedTdp = compatibleCpu.Clone();
         cpuWithModifiedTdp.WithTDP(new Tdp(200));
-        Motherboard motherboard = _repository.GetMotherboardWith(motherboardCriteria).First();
-        Bios bios = _repository.GetBiosWith(biosCriteria).First();
-        Cooler cooler = _repository.GetCoolerWith(coolerCriteria).First();
-        PowerUnit powerUnit = _repository.GetPowerUnitWith(powerUnitCriteria).First();
-        Ram ram = _repository.GetRamWith(ramCriteria).First();
-        Ssd ssd = _repository.GetSsdWith(ssdCriteria).First();
-        SystemUnit systemUnit = _repository.GetSystemUnitWith(systemUnitCriteria).First();
-        VideoCard videoCard = _repository.GetVideocardWith(videocardCriteria).First();
-        Xmp xmp = _repository.GetXmpWith(xmpCriteria).First();
+        Motherboard motherboard = _repository.GetMotherboardWith(motherboardCriteria);
+        Bios bios = _repository.GetBiosWith(biosCriteria);
+        Cooler cooler = _repository.GetCoolerWith(coolerCriteria);
+        PowerUnit powerUnit = _repository.GetPowerUnitWith(powerUnitCriteria);
+        Ram ram = _repository.GetRamWith(ramCriteria);
+        Ssd ssd = _repository.GetSsdWith(ssdCriteria);
+        SystemUnit systemUnit = _repository.GetSystemUnitWith(systemUnitCriteria);
+        VideoCard videoCard = _repository.GetVideocardWith(videocardCriteria);
+        Xmp xmp = _repository.GetXmpWith(xmpCriteria);
         Notification newComputer = computerBuilder.WithMotherBoard(motherboard).WithCpu(compatibleCpu).WithBios(bios).WithCoolingSystem(cooler)
             .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(ssd).WithHdd(null).WithSystemCase(systemUnit)
             .WithPowerUnit(powerUnit).WithWifiAdapter(null).Build();
-        var succesfulBuilding = (Success)newComputer;
-        DisclaimerOfWarrantyObligations? disclaimer = succesfulBuilding.Disclaimer;
-        Assert.NotNull(disclaimer);
+        bool result = newComputer is IncompatibilityProblem;
+        Assert.True(result);
     }
 
     [Fact]
-    public void ConfiguratePCWithIncompatibileSocketsThrowExceptionTest()
+    public void ConfiguratePCWithIncompatibileSocketsTest()
     {
         FillRepository(_repository);
         IComputerBuilder computerBuilder = new ComputerBuilder();
@@ -375,10 +370,10 @@ public class PersonalComputerConfiguratorTest
         var ramCriteria = new RamCriteria(null, RamFormFactor.Dimm, new PowerConsumption(10), new DdrVersion(4));
         var ssdCriteria = new SsdCriteria(Connection.Sata, new Capacity(500), new Speed(550), new PowerConsumption(2));
         var systemUnitCriteria =
-            new SystemUnitCriteria(new VideoCardDimensions(320, 140), new Dimensions(400, 200, 350));
+            new SystemUnitCriteria(new VideoCardDimensions(280, 128), null);
         var videocardCriteria = new VideocardCriteria(null, null, new VideoCardDimensions(280, 128));
         var xmpCriteria = new XmpCriteria(new Voltage(1.35), new Frequency(3200));
-        Cpu compatibleCpu = _repository.GetCpuWith(cpuCriteria).First();
+        Cpu compatibleCpu = _repository.GetCpuWith(cpuCriteria);
         CpuBuilder cpuWithModifiedTdp = compatibleCpu.Clone();
         cpuWithModifiedTdp.WithTDP(new Tdp(200));
         Motherboard motherboard = new MotherboardBuilder().WithSocket(new Socket(new SocketName("SocketG2")))
@@ -386,14 +381,14 @@ public class PersonalComputerConfiguratorTest
             .WithDdrVersion(new DdrVersion(2)).WithBiosType(BiosType.Phoenix).WithBiosVersion(new BiosVersion("1.00.24"))
             .WithSlotsAmount(new Amount(4)).WithWifiModule(true).WithPciLinesAmount(new Amount(23))
             .WithPciLinesAmount(new Amount(21)).WithSataPortsAmount(new Amount(12)).Build();
-        Bios bios = _repository.GetBiosWith(biosCriteria).First();
-        Cooler cooler = _repository.GetCoolerWith(coolerCriteria).First();
-        PowerUnit powerUnit = _repository.GetPowerUnitWith(powerUnitCriteria).First();
-        Ram ram = _repository.GetRamWith(ramCriteria).First();
-        Ssd ssd = _repository.GetSsdWith(ssdCriteria).First();
-        SystemUnit systemUnit = _repository.GetSystemUnitWith(systemUnitCriteria).First();
-        VideoCard videoCard = _repository.GetVideocardWith(videocardCriteria).First();
-        Xmp xmp = _repository.GetXmpWith(xmpCriteria).First();
+        Bios bios = _repository.GetBiosWith(biosCriteria);
+        Cooler cooler = _repository.GetCoolerWith(coolerCriteria);
+        PowerUnit powerUnit = _repository.GetPowerUnitWith(powerUnitCriteria);
+        Ram ram = _repository.GetRamWith(ramCriteria);
+        Ssd ssd = _repository.GetSsdWith(ssdCriteria);
+        SystemUnit systemUnit = _repository.GetSystemUnitWith(systemUnitCriteria);
+        VideoCard videoCard = _repository.GetVideocardWith(videocardCriteria);
+        Xmp xmp = _repository.GetXmpWith(xmpCriteria);
         Notification newComputer = computerBuilder.WithMotherBoard(motherboard).WithCpu(compatibleCpu).WithBios(bios).WithCoolingSystem(cooler)
             .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(ssd).WithHdd(null).WithSystemCase(systemUnit)
             .WithPowerUnit(powerUnit).WithWifiAdapter(null).Build();

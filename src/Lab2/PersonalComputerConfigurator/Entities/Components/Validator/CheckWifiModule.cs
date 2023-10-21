@@ -33,7 +33,7 @@ public class CheckWifiModule : Validator
             hdd,
             systemUnit,
             powerUnit,
-            wifiAdapter ?? throw new ArgumentNullException(nameof(wifiAdapter)),
+            wifiAdapter,
             xmpProfile);
     }
     }
