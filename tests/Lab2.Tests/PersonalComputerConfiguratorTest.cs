@@ -392,7 +392,9 @@ public class PersonalComputerConfiguratorTest
         Notification newComputer = computerBuilder.WithMotherBoard(motherboard).WithCpu(compatibleCpu).WithBios(bios).WithCoolingSystem(cooler)
             .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(ssd).WithHdd(null).WithSystemCase(systemUnit)
             .WithPowerUnit(powerUnit).WithWifiAdapter(null).Build();
-        bool result = newComputer is IncompatibilityProblem;
+        var resultOfBuilding = (IncompatibilityProblem)newComputer;
+        var problem = new IncompatibilityProblem("CPU and the motherboard incompatibility");
+        bool result = resultOfBuilding.Problem == problem.Problem;
         Assert.True(result);
     }
 
