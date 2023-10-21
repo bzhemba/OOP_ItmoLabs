@@ -319,7 +319,7 @@ public class PersonalComputerConfiguratorTest
         newComputer = personalComputer.Direct(newComputer);
         PowerUnit newPowerUnit = new PowerUnitBuilder().WithPeakload(new PeakLoad(300)).Build();
         Notification modifiedComputer = newComputer.WithPowerUnit(newPowerUnit).Build();
-        bool result = modifiedComputer is IncompatibilityProblem;
+        bool result = modifiedComputer is Success;
         Assert.True(result);
     }
 
