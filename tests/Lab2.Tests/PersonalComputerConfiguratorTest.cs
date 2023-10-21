@@ -330,7 +330,7 @@ public class PersonalComputerConfiguratorTest
         IComputerBuilder computerBuilder = new ComputerBuilder();
         var cpuCriteria = new CpuCriteria(null, null, null, new Socket(new SocketName("Lga1200")));
         var motherboardCriteria = new MotherboardCriteria(new DdrVersion(4), new Socket(new SocketName("Lga1200")), BiosType.Ami, null);
-        var biosCriteria = new BiosCriteria(BiosType.Ami, null);
+        var biosCriteria = new BiosCriteria(BiosType.Intel, null);
         var coolerCriteria = new CoolerCriteria(new Dimensions(120, 120, 25), new Tdp(150));
         var powerUnitCriteria = new PowerUnitCriteria(new PeakLoad(1000));
         var ramCriteria = new RamCriteria(null, RamFormFactor.Dimm, new PowerConsumption(10), new DdrVersion(4));
@@ -338,24 +338,22 @@ public class PersonalComputerConfiguratorTest
         var systemUnitCriteria =
             new SystemUnitCriteria(new VideoCardDimensions(280, 128), new Dimensions(400, 200, 350));
         var videocardCriteria = new VideocardCriteria(null, null, new VideoCardDimensions(280, 128));
-        var xmpCriteria = new XmpCriteria(new Voltage(1.35), new Frequency(3200));
         Cpu compatibleCpu = _repository.GetCpuWith(cpuCriteria);
-        CpuBuilder cpuWithModifiedTdp = compatibleCpu.Clone();
-        cpuWithModifiedTdp.WithTDP(new Tdp(200));
+        Cpu cpu = compatibleCpu.Clone().WithTDP(new Tdp(200)).Build();
         Motherboard motherboard = _repository.GetMotherboardWith(motherboardCriteria);
         Bios bios = _repository.GetBiosWith(biosCriteria);
+        bios.AddSupportiveCpu(cpu);
         Cooler cooler = _repository.GetCoolerWith(coolerCriteria);
         PowerUnit powerUnit = _repository.GetPowerUnitWith(powerUnitCriteria);
         Ram ram = _repository.GetRamWith(ramCriteria);
         Ssd ssd = _repository.GetSsdWith(ssdCriteria);
         SystemUnit systemUnit = _repository.GetSystemUnitWith(systemUnitCriteria);
         VideoCard videoCard = _repository.GetVideocardWith(videocardCriteria);
-        Xmp xmp = _repository.GetXmpWith(xmpCriteria);
-        Notification newComputer = computerBuilder.WithMotherBoard(motherboard).WithCpu(compatibleCpu).WithBios(bios).WithCoolingSystem(cooler)
-            .WithRam(ram).WithXmp(xmp).WithVideoCard(videoCard).WithSsd(ssd).WithHdd(null).WithSystemCase(systemUnit)
+        Notification newComputer = computerBuilder.WithMotherBoard(motherboard).WithCpu(cpu).WithBios(bios).WithCoolingSystem(cooler)
+            .WithRam(ram).WithXmp(null).WithVideoCard(videoCard).WithSsd(ssd).WithHdd(null).WithSystemCase(systemUnit)
             .WithPowerUnit(powerUnit).WithWifiAdapter(null).Build();
-        bool result = newComputer is IncompatibilityProblem;
-        Assert.True(result);
+        bool resultOfBuilding = newComputer is Success;
+        Assert.True(resultOfBuilding);
     }
 
     [Fact]
