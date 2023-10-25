@@ -4,4 +4,11 @@
         <RootNamespace>Itmo.ObjectOrientedProgramming.Lab3</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="CorporateMessageDistributionSystem\Entities\" />
+      <Folder Include="CorporateMessageDistributionSystem\Exceptions\" />
+      <Folder Include="CorporateMessageDistributionSystem\Models\" />
+      <Folder Include="CorporateMessageDistributionSystem\Services\" />
+    </ItemGroup>
+
 </Project>
