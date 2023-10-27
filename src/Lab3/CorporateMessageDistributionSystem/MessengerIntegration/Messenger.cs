@@ -12,6 +12,7 @@ public class Messenger
     public void PrintMessage(string text)
     {
         text = $"(Messenger) {text}";
-        _consoleWriter.MessageOutput(text);
+        _consoleWriter.SetText(text);
+        _consoleWriter.MessageOutput();
     }
 }

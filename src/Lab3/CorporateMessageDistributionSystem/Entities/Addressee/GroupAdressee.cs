@@ -5,11 +5,16 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem
 
 public class GroupAdressee : IAdressee
 {
-    private readonly IReadOnlyCollection<IAdressee> _group;
+    private readonly List<IAdressee> _group = new();
 
-    public GroupAdressee(IReadOnlyCollection<IAdressee> group)
+    public void AddAdressee(IAdressee adressee)
     {
-        _group = group;
+        _group.Add(adressee);
+    }
+
+    public void RemoveAdressee(IAdressee adressee)
+    {
+        _group.Remove(adressee);
     }
 
     public void GetMessage(Message message)

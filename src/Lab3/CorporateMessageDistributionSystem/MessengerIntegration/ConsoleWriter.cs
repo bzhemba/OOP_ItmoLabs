@@ -4,8 +4,15 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem
 
 public class ConsoleWriter
 {
-    public void MessageOutput(string text)
+    private string? _text;
+
+    public void SetText(string text)
     {
-        Console.WriteLine(text);
+        _text = text;
+    }
+
+    public void MessageOutput()
+    {
+        Console.WriteLine(_text);
     }
 }

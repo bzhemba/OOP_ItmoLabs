@@ -5,12 +5,7 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem
 
 public class Display
 {
-    private DisplayDriver _displayDriver;
-
-    public Display()
-    {
-        _displayDriver = new DisplayDriver();
-    }
+    private DisplayDriver _displayDriver = new();
 
     public void ShowText(Color color)
     {
