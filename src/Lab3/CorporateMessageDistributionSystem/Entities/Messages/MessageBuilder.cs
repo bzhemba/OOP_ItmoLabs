@@ -8,6 +8,7 @@ public class MessageBuilder
     private string? _header;
     private string? _body;
     private Priority _priority;
+    private int? _id;
 
     public MessageBuilder WithHeader(string header)
     {
@@ -27,11 +28,18 @@ public class MessageBuilder
         return this;
     }
 
+    public MessageBuilder WithId(int id)
+    {
+        _id = id;
+        return this;
+    }
+
     public Message Build()
     {
         return new Message(
             _header ?? throw new ArgumentNullException(nameof(_header)),
             _body ?? throw new ArgumentNullException(nameof(_body)),
-            _priority);
+            _priority,
+            _id ?? throw new ArgumentNullException(nameof(_id)));
     }
 }

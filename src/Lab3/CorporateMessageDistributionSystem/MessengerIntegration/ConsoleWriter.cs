@@ -2,7 +2,7 @@ using System;
 
 namespace Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem.MessengerIntegration;
 
-public class ConsoleWriter
+public class ConsoleWriter : IConsoleWriter
 {
     private string? _text;
 

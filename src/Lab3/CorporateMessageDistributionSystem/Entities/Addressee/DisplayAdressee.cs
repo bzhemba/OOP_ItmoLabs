@@ -5,7 +5,12 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem
 
 public class DisplayAdressee : IAdressee
 {
-    private readonly Display _display = new();
+    private readonly Display _display;
+
+    public DisplayAdressee(Display display)
+    {
+        _display = display;
+    }
 
     public void GetMessage(Message message)
     {

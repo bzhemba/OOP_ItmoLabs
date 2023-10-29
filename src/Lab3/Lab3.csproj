@@ -5,9 +5,6 @@
     </PropertyGroup>
 
 
-    <ItemGroup>
-      <Folder Include="CorporateMessageDistributionSystem\Services\" />
-    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Crayon" />

@@ -5,7 +5,12 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem
 
 public class MessengerAdressee : IAdressee
 {
-    private readonly Messenger _messenger = new();
+    private readonly Messenger _messenger;
+
+    public MessengerAdressee(Messenger messenger)
+    {
+        _messenger = messenger;
+    }
 
     public void GetMessage(Message message)
     {

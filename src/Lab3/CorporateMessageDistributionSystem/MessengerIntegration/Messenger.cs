@@ -1,12 +1,12 @@
 namespace Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem.MessengerIntegration;
 
-public class Messenger
+public class Messenger : IMessenger
 {
-    private ConsoleWriter _consoleWriter;
+    private IConsoleWriter _consoleWriter;
 
-    public Messenger()
+    public Messenger(IConsoleWriter consoleWriter)
     {
-        _consoleWriter = new ConsoleWriter();
+        _consoleWriter = consoleWriter;
     }
 
     public void PrintMessage(string text)
