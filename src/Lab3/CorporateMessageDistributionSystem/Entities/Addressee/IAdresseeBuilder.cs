@@ -7,4 +7,5 @@ public interface IAdresseeBuilder
     public IAdresseeBuilder WithLogger(ILogger logger);
 
     public IAdresseeBuilder WithPriority(Priority levelPriority);
+    public IAdressee Build();
 }

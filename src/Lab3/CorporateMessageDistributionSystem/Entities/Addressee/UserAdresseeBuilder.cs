@@ -3,13 +3,13 @@ using Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem.Mod
 
 namespace Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem.Entities.Addressee;
 
-public class UserAdresseeBuilder : IAdresseeBuilder
+public class UserAdresseeBuilder : IAdresseeBuilder, IAdresseeProxyBuilder
 {
     private IAdressee? _adressee;
 
-    public IAdresseeBuilder WithAdressee(UserAdressee adressee)
+    public IAdresseeProxyBuilder WithUser(User user)
     {
-        _adressee = adressee;
+        _adressee = new UserAdressee(user);
         return this;
     }
 

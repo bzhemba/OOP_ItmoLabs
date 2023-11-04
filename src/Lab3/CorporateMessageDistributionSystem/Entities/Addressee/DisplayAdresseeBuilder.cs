@@ -1,14 +1,15 @@
 using System;
+using Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem.DisplayIntegration;
 using Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem.Models;
 
 namespace Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem.Entities.Addressee;
 
-public class DisplayAdresseeBuilder : IAdresseeBuilder
+public class DisplayAdresseeBuilder : IAdresseeBuilder, IAdresseeProxyBuilder
 {
     private IAdressee? _adressee;
-    public IAdresseeBuilder WithAdressee(DisplayAdressee adressee)
+    public IAdresseeProxyBuilder WithDisplay(Display display)
     {
-        _adressee = adressee;
+        _adressee = new DisplayAdressee(display);
         return this;
     }
 

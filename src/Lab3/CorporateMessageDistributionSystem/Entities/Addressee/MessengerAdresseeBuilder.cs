@@ -1,14 +1,15 @@
 using System;
+using Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem.MessengerIntegration;
 using Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem.Models;
 
 namespace Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem.Entities.Addressee;
 
-public class MessengerAdresseeBuilder : IAdresseeBuilder
+public class MessengerAdresseeBuilder : IAdresseeBuilder, IAdresseeProxyBuilder
 {
     private IAdressee? _adressee;
-    public IAdresseeBuilder WithAdressee(MessengerAdressee adressee)
+    public IAdresseeProxyBuilder WithMessenger(Messenger messenger)
     {
-        _adressee = adressee;
+        _adressee = new MessengerAdressee(messenger);
         return this;
     }
 

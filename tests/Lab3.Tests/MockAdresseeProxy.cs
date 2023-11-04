@@ -8,12 +8,10 @@ public class MockAdresseeProxy : IAdressee
 {
     private readonly IAdressee _adressee;
     private Priority _minPriority;
-    private Logger _logger;
     public MockAdresseeProxy(IAdressee adressee, Priority minPriority)
     {
         _adressee = adressee;
         _minPriority = minPriority;
-        _logger = new Logger();
     }
 
     public Priority MessagePriority { get; }

@@ -17,5 +17,6 @@ public class AdresseeLogger : IAdressee
     public void ReceiveMessage(Message message)
     {
         _logger.LogMessage(message);
+        _adressee.ReceiveMessage(message);
     }
 }

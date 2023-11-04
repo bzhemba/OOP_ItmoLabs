@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem.Entities.Addressee;
 using Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem.Entities.Messages;
 using Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem.Entities.Topic;
@@ -10,11 +11,13 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.Tests;
 
 public class CorporateMessageDistributionSystemTest
 {
-    private static UserAdressee _user1 = new();
+    private static User _user1 = new User(new List<ReadStatusMessageDecorator>());
+    private static IAdressee _user1Adressee = new UserAdresseeBuilder().WithUser(_user1).WithPriority(Priority.Medium)
+        .WithLogger(new MockAdresseeLogger()).Build();
     private Message _message1 = new("test", "testing test", Priority.Medium, 1);
     private Message _message2 = new("test", "testing test2", Priority.High, 2);
     private Message _message3 = new("test", "testing test3", Priority.Low, 3);
-    private TopicFacade _topic = new TopicFacade(_user1, "topic for user", Priority.Medium);
+    private TopicFacade _topic = new TopicFacade(_user1Adressee, "topic for user");
 
     [Fact]
     public void MessageStatusUnreadTest()
@@ -46,7 +49,7 @@ public class CorporateMessageDistributionSystemTest
     [Fact]
     public void AdresseeFilteringTest()
     {
-        var proxyAdresse = new MockAdresseeProxy(_user1, Priority.High);
+        var proxyAdresse = new MockAdresseeProxy(_user1Adressee, Priority.High);
         proxyAdresse.ReceiveMessage(_message3);
         Assert.False(proxyAdresse.Result);
     }
@@ -54,9 +57,9 @@ public class CorporateMessageDistributionSystemTest
     [Fact]
     public void AdresseeLoggingTest()
     {
-        var topic = new MockTopic(_user1, "mock topic", Priority.Low);
-        topic.SendMessage(_message2);
-        string result = topic.AdresseeLogger.Messages[0].Body;
+        var logger = new MockAdresseeLogger();
+        logger.LogMessage(_message2);
+        string result = logger.Messages[0].Body;
         Assert.Equal(_message2.Body, result);
     }
 

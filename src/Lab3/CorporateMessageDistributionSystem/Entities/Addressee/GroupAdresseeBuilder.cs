@@ -3,12 +3,12 @@ using Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem.Mod
 
 namespace Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem.Entities.Addressee;
 
-public class GroupAdresseeBuilder : IAdresseeBuilder
+public class GroupAdresseeBuilder : IAdresseeBuilder, IAdresseeProxyBuilder
 {
     private IAdressee? _adressee;
-    public IAdresseeBuilder WithAdressee(GroupAdressee adressee)
+    public IAdresseeProxyBuilder WithGroup(Group group)
     {
-        _adressee = adressee;
+        _adressee = new GroupAdressee(group);
         return this;
     }
 
