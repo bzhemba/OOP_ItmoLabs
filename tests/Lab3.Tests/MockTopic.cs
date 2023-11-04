@@ -19,6 +19,6 @@ public class MockTopic : ITopic
 
     public void SendMessage(Message message)
     {
-        _proxy.GetMessage(message);
+        _proxy.ReceiveMessage(message);
     }
 }

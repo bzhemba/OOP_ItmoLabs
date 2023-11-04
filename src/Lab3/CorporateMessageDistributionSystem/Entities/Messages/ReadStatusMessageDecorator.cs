@@ -22,6 +22,9 @@ public class ReadStatusMessageDecorator : IMessage
     public Priority Priority { get; }
     public void ChangeStatus()
     {
-        IsRead = true;
+        if (!IsRead)
+        {
+            IsRead = true;
+        }
     }
 }

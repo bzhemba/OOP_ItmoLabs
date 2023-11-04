@@ -10,7 +10,7 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.Tests;
 
 public class CorporateMessageDistributionSystemTest
 {
-    private static User _user1 = new();
+    private static UserAdressee _user1 = new();
     private Message _message1 = new("test", "testing test", Priority.Medium, 1);
     private Message _message2 = new("test", "testing test2", Priority.High, 2);
     private Message _message3 = new("test", "testing test3", Priority.Low, 3);
@@ -47,7 +47,7 @@ public class CorporateMessageDistributionSystemTest
     public void AdresseeFilteringTest()
     {
         var proxyAdresse = new MockAdresseeProxy(_user1, Priority.High);
-        proxyAdresse.GetMessage(_message3);
+        proxyAdresse.ReceiveMessage(_message3);
         Assert.False(proxyAdresse.Result);
     }
 

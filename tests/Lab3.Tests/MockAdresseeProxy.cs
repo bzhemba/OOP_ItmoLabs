@@ -19,7 +19,7 @@ public class MockAdresseeProxy : IAdressee
     public Priority MessagePriority { get; }
     public bool Result { get; private set; }
 
-    public void GetMessage(Message message)
+    public void ReceiveMessage(Message message)
     {
         if (message == null) return;
         if (!this.CheckAccess(message))

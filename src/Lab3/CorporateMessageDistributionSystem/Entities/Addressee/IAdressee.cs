@@ -4,5 +4,5 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem
 
 public interface IAdressee
 {
-    void GetMessage(Message message);
+    void ReceiveMessage(Message message);
 }

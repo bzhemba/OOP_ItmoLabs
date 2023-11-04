@@ -1,11 +1,21 @@
 using System.Collections.Generic;
 using Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem.Entities.Messages;
+using Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem.Models;
 
 namespace Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem.Entities.Addressee;
 
 public class GroupAdressee : IAdressee
 {
-    private readonly List<IAdressee> _group = new();
+    private readonly ICollection<IAdressee> _group;
+    private Priority _priority;
+    private ILogger _logger;
+
+    public GroupAdressee(ICollection<IAdressee> group, Priority priority, ILogger logger)
+    {
+        _priority = priority;
+        _logger = logger;
+        _group = group;
+    }
 
     public void AddAdressee(IAdressee adressee)
     {
@@ -17,11 +27,11 @@ public class GroupAdressee : IAdressee
         _group.Remove(adressee);
     }
 
-    public void GetMessage(Message message)
+    public void ReceiveMessage(Message message)
     {
         foreach (IAdressee adressee in _group)
         {
-            adressee.GetMessage(message);
+            adressee.ReceiveMessage(message);
         }
     }
 }

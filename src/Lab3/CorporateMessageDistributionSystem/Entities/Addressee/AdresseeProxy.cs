@@ -7,23 +7,22 @@ public class AdresseeProxy : IAdressee
 {
     private readonly IAdressee _adressee;
     private Priority _minPriority;
-    private ILogger _logger;
 
-    public AdresseeProxy(IAdressee adressee, Priority minPriority, ILogger logger)
+    public AdresseeProxy(IAdressee adressee, Priority minPriority)
     {
         _adressee = adressee;
         _minPriority = minPriority;
-        _logger = logger;
     }
 
     public Priority MessagePriority { get; }
 
-    public void GetMessage(Message message)
+    public void ReceiveMessage(Message message)
     {
         if (message == null) return;
+
         if (!this.CheckAccess(message)) return;
-        _logger.LogMessage(message);
-        _adressee.GetMessage(message);
+
+        _adressee.ReceiveMessage(message);
     }
 
     private bool CheckAccess(Message message)

@@ -5,15 +5,19 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.CorporateMessageDistributionSystem
 
 public class Display
 {
-    private DisplayDriver _displayDriver = new();
+    private DisplayDriver _displayDriver;
+
+    public Display(DisplayDriver displayDriver)
+    {
+        _displayDriver = displayDriver;
+    }
 
     public void ShowText(Color color)
     {
         if (_displayDriver.Message == null) return;
-        string text = _displayDriver.Message;
-        _displayDriver.CleanDisplay();
-        text = _displayDriver.GetColoredText(text, color);
-        Console.WriteLine($"(Display){text}");
+        Console.Clear();
+        _displayDriver.SetColor(color);
+        Console.WriteLine($"(Display){_displayDriver.Message}");
     }
 
     public void GetText(string text)
