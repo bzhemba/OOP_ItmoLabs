@@ -12,8 +12,11 @@ namespace Itmo.ObjectOrientedProgramming.Lab3.Tests;
 public class CorporateMessageDistributionSystemTest
 {
     private static User _user1 = new User(new List<ReadStatusMessageDecorator>());
-    private static IAdressee _user1Adressee = new UserAdresseeBuilder().WithUser(_user1).WithPriority(Priority.Medium)
-        .WithLogger(new MockAdresseeLogger()).Build();
+    private static IAdressee _user1Adressee = new UserAdresseeBuilder()
+        .WithUser(_user1)
+        .WithPriority(Priority.Medium)
+        .WithLogger(new MockAdresseeLogger())
+        .Build();
     private Message _message1 = new("test", "testing test", Priority.Medium, 1);
     private Message _message2 = new("test", "testing test2", Priority.High, 2);
     private Message _message3 = new("test", "testing test3", Priority.Low, 3);
