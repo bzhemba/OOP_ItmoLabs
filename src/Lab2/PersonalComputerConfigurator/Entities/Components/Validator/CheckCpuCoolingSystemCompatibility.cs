@@ -17,7 +17,7 @@ public class CheckCpuCoolingSystemCompatibility : Validator
 {
     public override Notification Check(Cpu cpu, Bios bios, Motherboard motherboard, CoolingSystem.Cooler cooler, Ram ram, VideoCard? videoCard, Ssd? ssd, Hdd? hdd, SystemCases.SystemUnit systemUnit, PowerUnit powerUnit, WifiAdapter? wifiAdapter, Xmp? xmpProfile)
     {
-        if (cooler != null && cooler.IsCompatible(cpu))
+        if (cooler != null && cooler.CheckWarrantyObligations(cpu))
         {
             return CheckNext(
                 cpu,
@@ -34,7 +34,7 @@ public class CheckCpuCoolingSystemCompatibility : Validator
                 xmpProfile);
         }
 
-        Disclaimer = new DisclaimerOfWarrantyObligations(null);
+        this.Disclaimer = new DisclaimerOfWarrantyObligations("Disclaimer");
         return CheckNext(
             cpu,
             bios,
