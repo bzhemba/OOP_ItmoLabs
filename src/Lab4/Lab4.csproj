@@ -4,4 +4,11 @@
         <RootNamespace>Itmo.ObjectOrientedProgramming.Lab4</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="FileSystemManager\Entities\" />
+      <Folder Include="FileSystemManager\Exceptions\" />
+      <Folder Include="FileSystemManager\Models\" />
+      <Folder Include="FileSystemManager\Services\" />
+    </ItemGroup>
+
 </Project>
