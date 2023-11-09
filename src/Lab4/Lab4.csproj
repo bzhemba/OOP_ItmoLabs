@@ -5,10 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="FileSystemManager\Entities\" />
+      <Folder Include="FileSystemManager\Entities\FileSystem\" />
       <Folder Include="FileSystemManager\Exceptions\" />
-      <Folder Include="FileSystemManager\Models\" />
-      <Folder Include="FileSystemManager\Services\" />
     </ItemGroup>
 
 </Project>
