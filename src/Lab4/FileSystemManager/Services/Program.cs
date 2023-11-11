@@ -12,7 +12,7 @@ internal class Program
         string? startDir = "/Users/mariabazenova/RiderProjects/bzhemba/src/Lab1/";
         var symbols = new Symbol();
         var consoleWriter = new ConsoleWriter(symbols);
-        new FileTree(symbols, consoleWriter, startDir, 3)
+        new FileTreeVisualizer(symbols, consoleWriter, startDir, 3)
         {
         }.Print();
     }
