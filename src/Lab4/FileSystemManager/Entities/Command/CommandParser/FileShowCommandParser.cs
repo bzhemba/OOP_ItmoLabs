@@ -5,11 +5,12 @@ namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command
 
 public class FileShowCommandParser : AbstractParser
 {
-    public override object? Parse(string command)
+    public override ICommand? Parse(string command)
     {
         if (command == null)
         {
-            return new CommandFormatNotification().Notification;
+            Console.WriteLine(new CommandFormatNotification().Notification);
+            return null;
         }
 
         if (!command.Contains("file show", StringComparison.Ordinal))
@@ -17,7 +18,8 @@ public class FileShowCommandParser : AbstractParser
         string[] parts = command.Split(' ');
         if (parts.Length < 5 || parts[0] != "file" || parts[1] != "show")
         {
-            return new CommandFormatNotification().Notification;
+            Console.WriteLine(new CommandFormatNotification().Notification);
+            return null;
         }
 
         string path = parts[2];

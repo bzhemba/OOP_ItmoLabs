@@ -5,11 +5,12 @@ namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command
 
 public class DisconnectCommandParser : AbstractParser
 {
-    public override object? Parse(string command)
+    public override ICommand? Parse(string command)
     {
         if (command == null)
         {
-            return new CommandFormatNotification().Notification;
+            Console.WriteLine(new CommandFormatNotification().Notification);
+            return null;
         }
 
         if (!command.Contains("disconnect", StringComparison.Ordinal))
@@ -17,7 +18,8 @@ public class DisconnectCommandParser : AbstractParser
         string[] parts = command.Split(' ');
         if (parts.Length > 1 || parts[0] != "disconnect")
         {
-            return new CommandFormatNotification().Notification;
+            Console.WriteLine(new CommandFormatNotification().Notification);
+            return null;
         }
 
         ICommand disconnectCommand = new DisconnectCommand();

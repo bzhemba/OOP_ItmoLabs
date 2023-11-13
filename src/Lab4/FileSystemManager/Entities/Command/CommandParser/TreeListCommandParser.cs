@@ -5,11 +5,12 @@ namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command
 
 public class TreeListCommandParser : AbstractParser
 {
-    public override object? Parse(string command)
+    public override ICommand? Parse(string command)
     {
         if (command == null)
         {
-            return new CommandFormatNotification().Notification;
+            Console.WriteLine(new CommandFormatNotification().Notification);
+            return null;
         }
 
         if (!command.Contains("tree list", StringComparison.Ordinal))
@@ -17,7 +18,8 @@ public class TreeListCommandParser : AbstractParser
         string[] parts = command.Split(' ');
         if (parts.Length < 2 || parts[0] != "tree" || parts[1] != "list")
         {
-            return new CommandFormatNotification().Notification;
+            Console.WriteLine(new CommandFormatNotification().Notification);
+            return null;
         }
 
         int depth = 0;

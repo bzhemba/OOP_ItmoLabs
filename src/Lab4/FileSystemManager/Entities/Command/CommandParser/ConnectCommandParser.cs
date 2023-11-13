@@ -5,22 +5,24 @@ namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command
 
 public class ConnectCommandParser : AbstractParser
 {
-    public override object? Parse(string command)
+    public override ICommand? Parse(string command)
     {
         if (command == null)
         {
-            return new CommandFormatNotification().Notification;
+            Console.WriteLine(new CommandFormatNotification().Notification);
+            return null;
         }
 
         if (!command.Contains("connect", StringComparison.Ordinal))
         {
-            return new ConnectionNotification().Notification;
+            Console.WriteLine(new ConnectionNotification().Notification);
+            return null;
         }
 
         string[] parts = command.Split(' ');
         if (parts.Length < 4 || parts[0] != "connect")
         {
-            return new CommandFormatNotification().Notification;
+            Console.WriteLine(new CommandFormatNotification().Notification);
         }
 
         string address = parts[1];

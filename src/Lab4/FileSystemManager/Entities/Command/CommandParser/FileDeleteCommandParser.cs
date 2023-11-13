@@ -5,11 +5,12 @@ namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command
 
 public class FileDeleteCommandParser : AbstractParser
 {
-    public override object? Parse(string command)
+    public override ICommand? Parse(string command)
     {
         if (command == null)
         {
-            return new CommandFormatNotification().Notification;
+            Console.WriteLine(new CommandFormatNotification().Notification);
+            return null;
         }
 
         if (!command.Contains("file delete", StringComparison.Ordinal))
@@ -17,7 +18,8 @@ public class FileDeleteCommandParser : AbstractParser
         string[] parts = command.Split(' ');
         if (parts.Length < 3 || parts[0] != "file" || parts[1] != "delete")
         {
-            return new CommandFormatNotification().Notification;
+            Console.WriteLine(new CommandFormatNotification().Notification);
+            return null;
         }
 
         string path = parts[2];

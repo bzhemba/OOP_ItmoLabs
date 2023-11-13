@@ -5,11 +5,12 @@ namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command
 
 public class TreeGoToCommandParser : AbstractParser
 {
-    public override object? Parse(string command)
+    public override ICommand? Parse(string command)
     {
         if (command == null)
         {
-            return new CommandFormatNotification().Notification;
+            Console.WriteLine(new CommandFormatNotification().Notification);
+            return null;
         }
 
         if (!command.Contains("tree goto", StringComparison.Ordinal))
@@ -17,7 +18,8 @@ public class TreeGoToCommandParser : AbstractParser
         string[] parts = command.Split(' ');
         if (parts.Length < 3 || parts[0] != "tree" || parts[1] != "goto")
         {
-            return new CommandFormatNotification().Notification;
+            Console.WriteLine(new CommandFormatNotification().Notification);
+            return null;
         }
 
         string path = parts[2];

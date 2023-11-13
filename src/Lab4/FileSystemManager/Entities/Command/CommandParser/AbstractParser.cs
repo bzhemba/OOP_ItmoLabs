@@ -9,7 +9,7 @@ public class AbstractParser : ICommandParser
         return nextHandler;
     }
 
-    public virtual object? Parse(string command)
+    public virtual ICommand? Parse(string command)
     {
         return this._nextParser?.Parse(command);
     }
