@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Services;
+namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Services.ChainOfResponsibilitiesTreePrinter;
 
 public class SymbolicLinkHandler : Handler
 {

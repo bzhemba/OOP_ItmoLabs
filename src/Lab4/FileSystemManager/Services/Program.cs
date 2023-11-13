@@ -11,7 +11,7 @@ internal class Program
         // printer.PrintDirectoryTree("/Users/mariabazenova/RiderProjects/bzhemba/src/Lab1/SpaceTravel/Entities/Environments/");
         string? startDir = "/Users/mariabazenova/RiderProjects/bzhemba/src/Lab1/";
         var symbols = new Symbol();
-        var consoleWriter = new ConsoleWriter(symbols);
+        var consoleWriter = new ConsoleWriter();
         new FileTreeVisualizer(symbols, consoleWriter, startDir, 3)
         {
         }.Print();

@@ -1,4 +1,5 @@
 using System;
+using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Models.CommandNotifications;
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command.CommandParser;
 
@@ -8,7 +9,7 @@ public class FileCopyCommandParser : AbstractParser
     {
         if (command == null)
         {
-            throw new ArgumentException("Command can't be null");
+            return new CommandFormatNotification().Notification;
         }
 
         if (!command.Contains("file copy", StringComparison.Ordinal))

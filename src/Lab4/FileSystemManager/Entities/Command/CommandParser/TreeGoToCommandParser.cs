@@ -1,4 +1,5 @@
 using System;
+using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Models.CommandNotifications;
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command.CommandParser;
 
@@ -8,7 +9,7 @@ public class TreeGoToCommandParser : AbstractParser
     {
         if (command == null)
         {
-            throw new ArgumentException("Command can't be null");
+            return new CommandFormatNotification().Notification;
         }
 
         if (!command.Contains("tree goto", StringComparison.Ordinal))
@@ -16,7 +17,7 @@ public class TreeGoToCommandParser : AbstractParser
         string[] parts = command.Split(' ');
         if (parts.Length < 3 || parts[0] != "tree" || parts[1] != "goto")
         {
-            throw new ArgumentException("Invalid command format");
+            return new CommandFormatNotification().Notification;
         }
 
         string path = parts[2];

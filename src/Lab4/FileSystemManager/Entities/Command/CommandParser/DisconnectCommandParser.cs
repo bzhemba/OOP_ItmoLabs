@@ -1,4 +1,5 @@
 using System;
+using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Models.CommandNotifications;
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command.CommandParser;
 
@@ -8,7 +9,7 @@ public class DisconnectCommandParser : AbstractParser
     {
         if (command == null)
         {
-            throw new ArgumentException("Command can't be null");
+            return new CommandFormatNotification().Notification;
         }
 
         if (!command.Contains("disconnect", StringComparison.Ordinal))
@@ -16,7 +17,7 @@ public class DisconnectCommandParser : AbstractParser
         string[] parts = command.Split(' ');
         if (parts.Length > 1 || parts[0] != "disconnect")
         {
-            throw new ArgumentException("Invalid command format");
+            return new CommandFormatNotification().Notification;
         }
 
         ICommand disconnectCommand = new DisconnectCommand();

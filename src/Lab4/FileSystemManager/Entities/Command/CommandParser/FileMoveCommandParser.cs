@@ -1,4 +1,5 @@
 using System;
+using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Models.CommandNotifications;
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command.CommandParser;
 
@@ -8,7 +9,7 @@ public class FileMoveCommandParser : AbstractParser
     {
         if (command == null)
         {
-            throw new ArgumentException("Command can't be null");
+            return new CommandFormatNotification().Notification;
         }
 
         if (!command.Contains("file move", StringComparison.Ordinal))
@@ -16,7 +17,7 @@ public class FileMoveCommandParser : AbstractParser
         string[] parts = command.Split(' ');
         if (parts.Length < 4 || parts[0] != "file" || parts[1] != "move")
         {
-            throw new ArgumentException("Invalid command format");
+            return new CommandFormatNotification().Notification;
         }
 
         string sourcePath = parts[2];

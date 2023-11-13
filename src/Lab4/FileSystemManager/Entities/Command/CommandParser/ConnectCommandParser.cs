@@ -1,5 +1,5 @@
 using System;
-using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Exceptions.ConnectionExceptions;
+using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Models.CommandNotifications;
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command.CommandParser;
 
@@ -9,15 +9,18 @@ public class ConnectCommandParser : AbstractParser
     {
         if (command == null)
         {
-            throw new ArgumentException("Command can't be null");
+            return new CommandFormatNotification().Notification;
         }
 
         if (!command.Contains("connect", StringComparison.Ordinal))
-            throw new ConnectionException("You are not connected to any file system");
+        {
+            return new ConnectionNotification().Notification;
+        }
+
         string[] parts = command.Split(' ');
         if (parts.Length < 4 || parts[0] != "connect")
         {
-            throw new ArgumentException("Invalid command format");
+            return new CommandFormatNotification().Notification;
         }
 
         string address = parts[1];

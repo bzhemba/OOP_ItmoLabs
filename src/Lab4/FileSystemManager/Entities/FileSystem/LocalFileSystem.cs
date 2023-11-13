@@ -19,6 +19,12 @@ public class LocalFileSystem : IFileSystem
 
     public void Connect(string address)
     {
+        if (!_pathValidator.IsPathAbsolute(address))
+        {
+            Console.WriteLine("You can't connect using this path");
+            return;
+        }
+
         _absolutePath = address;
     }
 
@@ -50,14 +56,17 @@ public class LocalFileSystem : IFileSystem
 
     public void ShowContent(string path, string mode)
     {
-        _fileTextVisualizer.Print(path);
+        if (_absolutePath == null) return;
+        string fullPath = _pathValidator.CreateAbsolutePath(_absolutePath, path);
+        _fileTextVisualizer.Print(fullPath);
     }
 
     public void MoveFile(string sourcePath, string destinationPath)
     {
         if (!File.Exists(sourcePath))
         {
-            using FileStream fs = File.Create(sourcePath);
+            Console.WriteLine("File at the source path not found");
+            return;
         }
 
         if (File.Exists(destinationPath))
@@ -103,7 +112,8 @@ public class LocalFileSystem : IFileSystem
 
         if (File.Exists(newPath))
         {
-            File.Delete(newPath);
+            Console.WriteLine("File with this name already exists");
+            return;
         }
 
         File.Move(oldPath, newPath);
