@@ -3,7 +3,7 @@ using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Models.CommandNotifi
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command.CommandParser;
 
-public class ConnectCommandParser : AbstractParser
+public class ConnectLocalCommandParser : AbstractParser
 {
     public override ICommand? Parse(string command)
     {
@@ -20,20 +20,16 @@ public class ConnectCommandParser : AbstractParser
         }
 
         string[] parts = command.Split(' ');
-        if (parts.Length < 4 || parts[0] != "connect")
+        if (parts.Length < 4 || parts[0] != "connect" || parts[2] != "-m")
         {
             Console.WriteLine(new CommandFormatNotification().Notification);
         }
 
         string address = parts[1];
-        string mode = string.Empty;
-        for (int i = 2; i < parts.Length; i++)
-        {
-            if (parts[i] != "-m" || i + 1 >= parts.Length) continue;
-            mode = parts[i];
-        }
+        string? mode = parts[3];
 
-        ICommand connectCommand = new ConnectCommand(address, mode);
+        if (mode != "local") return base.Parse(command);
+        var connectCommand = new ConnectToLocalSystemCommand(address);
         return connectCommand;
     }
 }

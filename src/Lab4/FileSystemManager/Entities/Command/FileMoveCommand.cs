@@ -1,5 +1,3 @@
-using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.FileSystem;
-
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command;
 
 public class FileMoveCommand : ICommand
@@ -13,8 +11,8 @@ public class FileMoveCommand : ICommand
         _destinationPath = destinationPath;
     }
 
-    public void Execute(IFileSystem fileSystem)
+    public void Execute(OperatingSystemContext operatingSystemContext)
     {
-        fileSystem?.MoveFile(_sourcePath, _destinationPath);
+        operatingSystemContext?.MoveFile(_sourcePath, _destinationPath);
     }
 }

@@ -1,25 +1,21 @@
 using System;
 using System.IO;
-using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Models;
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.FileSystem;
 
 public class LocalFileSystem : IFileSystem
 {
+    private OperatingSystemContext? _operatingSystem;
     private string? _absolutePath;
-    private IPathValidator _pathValidator;
-    private FileTextVisualizer _fileTextVisualizer;
-    private FileTreeVisualizer _fileTreeVisualizer;
-    public LocalFileSystem(IPathValidator pathValidator, FileTextVisualizer fileTextVisualizer, FileTreeVisualizer fileTreeVisualizer)
+
+    public void SetOperatingSystemContext(OperatingSystemContext context)
     {
-        _pathValidator = pathValidator;
-        _fileTextVisualizer = fileTextVisualizer;
-        _fileTreeVisualizer = fileTreeVisualizer;
+        this._operatingSystem = context;
     }
 
     public void Connect(string address)
     {
-        if (!_pathValidator.IsPathAbsolute(address))
+        if (_operatingSystem != null && !_operatingSystem.PathValidator.IsPathAbsolute(address))
         {
             Console.WriteLine("You can't connect using this path");
             return;
@@ -36,29 +32,31 @@ public class LocalFileSystem : IFileSystem
     public void TreeGoTo(string path)
     {
         if (!Path.Exists(path)) return;
-        if (_pathValidator.IsPathAbsolute(path))
+        if (_operatingSystem == null) return;
+        if (_operatingSystem.PathValidator.IsPathAbsolute(path))
         {
-            _fileTreeVisualizer.SetStartDirectory(path);
+            _operatingSystem.TreeVisualizer.SetStartDirectory(path);
         }
         else
         {
             if (_absolutePath == null) return;
             string fullPath;
-            fullPath = _pathValidator.CreateAbsolutePath(_absolutePath, path);
-            _fileTreeVisualizer.SetStartDirectory(fullPath);
+            fullPath = _operatingSystem.PathValidator.CreateAbsolutePath(_absolutePath, path);
+            _operatingSystem.TreeVisualizer.SetStartDirectory(fullPath);
         }
     }
 
     public void ShowTreeList(int depth)
     {
-        _fileTreeVisualizer.Print(depth);
+        _operatingSystem?.TreeVisualizer.Print(depth);
     }
 
-    public void ShowContent(string path, string mode)
+    public void ShowContent(string path)
     {
         if (_absolutePath == null) return;
-        string fullPath = _pathValidator.CreateAbsolutePath(_absolutePath, path);
-        _fileTextVisualizer.Print(fullPath);
+        if (_operatingSystem == null) return;
+        string fullPath = _operatingSystem.PathValidator.CreateAbsolutePath(_absolutePath, path);
+        _operatingSystem.TextVisualizer?.Print(fullPath);
     }
 
     public void MoveFile(string sourcePath, string destinationPath)
@@ -80,8 +78,9 @@ public class LocalFileSystem : IFileSystem
     public void CopyFile(string sourcePath, string destinationPath)
     {
         if (_absolutePath == null || sourcePath == null) return;
-        string oldPath = _pathValidator.CreateAbsolutePath(_absolutePath, sourcePath);
-        string newPath = _pathValidator.CreateAbsolutePath(_absolutePath, destinationPath);
+        if (_operatingSystem == null) return;
+        string oldPath = _operatingSystem.PathValidator.CreateAbsolutePath(_absolutePath, sourcePath);
+        string newPath = _operatingSystem.PathValidator.CreateAbsolutePath(_absolutePath, destinationPath);
         try
         {
             File.Copy(oldPath, newPath);
@@ -95,15 +94,17 @@ public class LocalFileSystem : IFileSystem
     public void DeleteFile(string path)
     {
         if (_absolutePath == null || path == null) return;
-        string fullPath = _pathValidator.CreateAbsolutePath(_absolutePath, path);
+        if (_operatingSystem == null) return;
+        string fullPath = _operatingSystem.PathValidator.CreateAbsolutePath(_absolutePath, path);
         File.Delete(fullPath);
     }
 
     public void RenameFile(string path, string name)
     {
         if (_absolutePath == null || path == null) return;
-        string oldPath = _pathValidator.CreateAbsolutePath(_absolutePath, path);
-        string newPath = _pathValidator.CreateAbsolutePath(_absolutePath, name);
+        if (_operatingSystem == null) return;
+        string oldPath = _operatingSystem.PathValidator.CreateAbsolutePath(_absolutePath, path);
+        string newPath = _operatingSystem.PathValidator.CreateAbsolutePath(_absolutePath, name);
 
         if (!File.Exists(oldPath))
         {

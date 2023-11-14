@@ -9,7 +9,7 @@ public interface IFileSystem
 
     void ShowTreeList(int depth);
 
-    void ShowContent(string path, string mode);
+    void ShowContent(string path);
 
     void MoveFile(string sourcePath, string destinationPath);
     void CopyFile(string sourcePath, string destinationPath);
@@ -17,4 +17,5 @@ public interface IFileSystem
     void DeleteFile(string path);
 
     void RenameFile(string path, string name);
+    void SetOperatingSystemContext(OperatingSystemContext context);
 }

@@ -3,7 +3,7 @@ using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Models.CommandNotifi
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command.CommandParser;
 
-public class FileShowCommandParser : AbstractParser
+public class FileShowConsoleCommandParser : AbstractParser
 {
     public override ICommand? Parse(string command)
     {
@@ -14,7 +14,7 @@ public class FileShowCommandParser : AbstractParser
         }
 
         if (!command.Contains("file show", StringComparison.Ordinal))
-            return base.Parse(command ?? string.Empty);
+            return base.Parse(command);
         string[] parts = command.Split(' ');
         if (parts.Length < 5 || parts[0] != "file" || parts[1] != "show")
         {
@@ -30,7 +30,8 @@ public class FileShowCommandParser : AbstractParser
             mode = parts[i];
         }
 
-        ICommand fileShowCommand = new FileShowCommand(path, mode);
+        if (mode != "console") return base.Parse(command);
+        ICommand fileShowCommand = new FileShowConsoleCommand(path);
         return fileShowCommand;
     }
 }

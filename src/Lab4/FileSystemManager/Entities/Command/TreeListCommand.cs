@@ -1,5 +1,3 @@
-using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.FileSystem;
-
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command;
 
 public class TreeListCommand : ICommand
@@ -11,8 +9,8 @@ public class TreeListCommand : ICommand
         _depth = depth;
     }
 
-    public void Execute(IFileSystem fileSystem)
+    public void Execute(OperatingSystemContext operatingSystemContext)
     {
-        fileSystem?.ShowTreeList(_depth);
+        operatingSystemContext?.ShowTreeList(_depth);
     }
 }

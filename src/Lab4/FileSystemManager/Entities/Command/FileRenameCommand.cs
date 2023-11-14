@@ -1,5 +1,3 @@
-using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.FileSystem;
-
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command;
 
 public class FileRenameCommand : ICommand
@@ -13,8 +11,8 @@ public class FileRenameCommand : ICommand
         _name = name;
     }
 
-    public void Execute(IFileSystem fileSystem)
+    public void Execute(OperatingSystemContext operatingSystemContext)
     {
-        fileSystem?.RenameFile(_address, _name);
+        operatingSystemContext?.RenameFile(_address, _name);
     }
 }

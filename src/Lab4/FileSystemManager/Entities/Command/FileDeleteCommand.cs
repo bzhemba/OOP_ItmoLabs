@@ -1,5 +1,3 @@
-using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.FileSystem;
-
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command;
 
 public class FileDeleteCommand : ICommand
@@ -11,8 +9,8 @@ public class FileDeleteCommand : ICommand
         _path = path;
     }
 
-    public void Execute(IFileSystem fileSystem)
+    public void Execute(OperatingSystemContext operatingSystemContext)
     {
-        fileSystem?.DeleteFile(_path);
+        operatingSystemContext?.DeleteFile(_path);
     }
 }

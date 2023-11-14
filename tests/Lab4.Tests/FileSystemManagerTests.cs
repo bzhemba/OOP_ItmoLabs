@@ -1,23 +1,14 @@
-using System;
-using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities;
 using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command;
 using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command.CommandParser;
-using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Models;
+using Xunit;
 
-namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Services;
+namespace Itmo.ObjectOrientedProgramming.Lab4.Tests;
 
-public class App
+public class FileSystemManagerTests
 {
-    public string FileSymbol { get; } = "▪";
-    public string DirectorySymbol { get; } = "\ud83d\udcc2";
-    public string LastIndentSymbol { get; } = "└── ";
-    public string FileIndentSymbol { get; } = "├── ";
-    public string DirectoryIndentSymbol { get; } = "│   ";
-    public string IndentSymbol { get; } = "    ";
-
-    public static void LaunchApp()
+    [Fact]
+    public void ParseConsoleTest()
     {
-        var operatingSystem = new OperatingSystemContext(new PathValidator(), new FileTreeVisualizer(new ConsoleWriter()));
         var connectCommandParser = new ConnectLocalCommandParser();
         var disconnectCommandParser = new DisconnectCommandParser();
         var fileCopyCommandParser = new FileCopyCommandParser();
@@ -36,13 +27,9 @@ public class App
             ?.SetNext(fileShowCommandParser)
             ?.SetNext(treeGoToCommandParser)
             ?.SetNext(treeListCommandParser);
-        ICommand? request = null;
-        do
-        {
-            string? command = Console.ReadLine();
-            if (command != null) request = connectCommandParser.Parse(command);
-            request?.Execute(operatingSystem);
-        }
-        while (request is not DisconnectCommand);
+        string command = "connect /Users/ -m local";
+        ICommand? request = connectCommandParser.Parse(command);
+        bool result = request is ICommand;
+        Assert.True(result);
     }
 }

@@ -1,5 +1,3 @@
-using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.FileSystem;
-
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command;
 
 public class FileCopyCommand : ICommand
@@ -13,8 +11,8 @@ public class FileCopyCommand : ICommand
         _destinationPath = destinationPath;
     }
 
-    public void Execute(IFileSystem fileSystem)
+    public void Execute(OperatingSystemContext operatingSystemContext)
     {
-        fileSystem?.CopyFile(_sourcePath, _destinationPath);
+        operatingSystemContext?.CopyFile(_sourcePath, _destinationPath);
     }
 }
