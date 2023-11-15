@@ -31,7 +31,6 @@ public class LocalFileSystem : IFileSystem
 
     public void TreeGoTo(string path)
     {
-        if (!Path.Exists(path)) return;
         if (_operatingSystem == null) return;
         if (_operatingSystem.PathValidator.IsPathAbsolute(path))
         {
@@ -42,6 +41,7 @@ public class LocalFileSystem : IFileSystem
             if (_absolutePath == null) return;
             string fullPath;
             fullPath = _operatingSystem.PathValidator.CreateAbsolutePath(_absolutePath, path);
+            if (!Path.Exists(fullPath)) return;
             _operatingSystem.TreeVisualizer.SetStartDirectory(fullPath);
         }
     }

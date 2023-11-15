@@ -1,7 +1,7 @@
 using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.FileSystem;
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command;
 
-public class ConnectToLocalSystemCommand : ICommand
+public class ConnectToLocalSystemCommand : IConnectCommand
 {
     private string _address;
 
@@ -13,5 +13,6 @@ public class ConnectToLocalSystemCommand : ICommand
     public void Execute(OperatingSystemContext operatingSystemContext)
     {
         operatingSystemContext?.TransitionToFileSystem(new LocalFileSystem());
+        operatingSystemContext?.Connect(_address);
     }
 }

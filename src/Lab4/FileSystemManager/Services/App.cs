@@ -36,8 +36,7 @@ public class App
         var fileShowCommandParser = new FileShowConsoleCommandParser();
         var treeGoToCommandParser = new TreeGoToCommandParser();
         var treeListCommandParser = new TreeListCommandParser();
-        connectCommandParser.SetNext(disconnectCommandParser)
-            ?.SetNext(fileCopyCommandParser)
+        disconnectCommandParser.SetNext(fileCopyCommandParser)
             ?.SetNext(fileDeleteCommandParser)
             ?.SetNext(fileMoveCommandParser)
             ?.SetNext(fileCopyCommandParser)
@@ -50,6 +49,13 @@ public class App
         {
             string? command = Console.ReadLine();
             if (command != null) request = connectCommandParser.Parse(command);
+            request?.Execute(_operatingSystem);
+        }
+        while (request is not IConnectCommand);
+        do
+        {
+            string? command = Console.ReadLine();
+            if (command != null) request = disconnectCommandParser.Parse(command);
             request?.Execute(_operatingSystem);
         }
         while (request is not DisconnectCommand);

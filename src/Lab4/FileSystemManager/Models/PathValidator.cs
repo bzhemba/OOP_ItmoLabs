@@ -12,7 +12,6 @@ public class PathValidator : IPathValidator
     public string CreateAbsolutePath(string path1, string path2)
     {
         if (path2 == null || path1 == null) return "One part of path is missing";
-        string fName = path2.Substring(path1.Length + 1);
-        return Path.Combine(path1, fName);
+        return Path.GetFullPath(path2, path1);
     }
 }

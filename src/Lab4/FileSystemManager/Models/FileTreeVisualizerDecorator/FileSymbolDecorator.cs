@@ -13,6 +13,6 @@ public class FileSymbolDecorator : EditOfTreeBase
 
     public override FileTreeVisualizer? GetTreeWithParametrizedSymbols(FileTreeVisualizer? tree)
     {
-        return base.GetTreeWithParametrizedSymbols(tree)?.SetDirectoryIndentSymbol(_fileSymbol);
+        return base.GetTreeWithParametrizedSymbols(tree)?.SetFileSymbol(_fileSymbol);
     }
 }

@@ -13,6 +13,6 @@ public class LastIndentSymbolDecorator : EditOfTreeBase
 
     public override FileTreeVisualizer? GetTreeWithParametrizedSymbols(FileTreeVisualizer? tree)
     {
-        return base.GetTreeWithParametrizedSymbols(tree)?.SetDirectoryIndentSymbol(_lastIndentSymbol);
+        return base.GetTreeWithParametrizedSymbols(tree)?.SetLastIndentSymbol(_lastIndentSymbol);
     }
 }
