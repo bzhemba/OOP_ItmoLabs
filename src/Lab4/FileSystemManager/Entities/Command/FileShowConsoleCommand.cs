@@ -1,6 +1,6 @@
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command;
 
-public class FileShowConsoleCommand : ICommand
+public class FileShowConsoleCommand : IFileShowCommand
 {
     private string _path;
 
@@ -11,7 +11,7 @@ public class FileShowConsoleCommand : ICommand
 
     public void Execute(OperatingSystemContext operatingSystemContext)
     {
-        operatingSystemContext?.TransitionToTextVisualizer(new FileTextVisualizer(new ConsoleWriter()));
+        operatingSystemContext?.TransitionToTextVisualizer(new FileСontentVisualizer(new ConsoleWriter()));
         operatingSystemContext?.ShowContent(_path);
     }
 }

@@ -4,9 +4,9 @@ namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities;
 
 public class ConsoleWriter : IWriter
 {
-    public void WriteLine()
+    public void WriteNewLine()
     {
-        Write(" " + Environment.NewLine);
+        Write(Environment.NewLine);
     }
 
     public void Write(string text)

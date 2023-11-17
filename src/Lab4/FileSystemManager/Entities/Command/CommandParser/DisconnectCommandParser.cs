@@ -9,7 +9,7 @@ public class DisconnectCommandParser : AbstractParser
     {
         if (command == null)
         {
-            Console.WriteLine(new CommandFormatNotification().Notification);
+            Writer.Write(new CommandFormatNotification().Notification);
             return null;
         }
 
@@ -18,7 +18,7 @@ public class DisconnectCommandParser : AbstractParser
         string[] parts = command.Split(' ');
         if (parts.Length > 1 || parts[0] != "disconnect")
         {
-            Console.WriteLine(new CommandFormatNotification().Notification);
+            Writer.Write(new CommandFormatNotification().Notification);
             return null;
         }
 

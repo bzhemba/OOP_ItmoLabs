@@ -6,7 +6,10 @@ public class TreeListCommand : ICommand
 
     public TreeListCommand(int depth)
     {
-        _depth = depth;
+        if (depth > 0)
+        {
+            _depth = depth;
+        }
     }
 
     public void Execute(OperatingSystemContext operatingSystemContext)

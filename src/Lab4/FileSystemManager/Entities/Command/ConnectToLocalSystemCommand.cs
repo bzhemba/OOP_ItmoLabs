@@ -12,7 +12,7 @@ public class ConnectToLocalSystemCommand : IConnectCommand
 
     public void Execute(OperatingSystemContext operatingSystemContext)
     {
-        operatingSystemContext?.TransitionToFileSystem(new LocalFileSystem());
+        operatingSystemContext?.TransitionToFileSystem(new LocalFileSystem(operatingSystemContext));
         operatingSystemContext?.Connect(_address);
     }
 }

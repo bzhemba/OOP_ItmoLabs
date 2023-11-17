@@ -7,9 +7,10 @@ using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Models.FileTreeVisua
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Services;
 
-public class App
+public class App : IDisposable
 {
     private OperatingSystemContext? _operatingSystem;
+    private bool disposed;
     public void LaunchApp()
     {
         var fileTreeVisualizer = new FileTreeVisualizer(new ConsoleWriter());
@@ -61,8 +62,20 @@ public class App
         while (request is not DisconnectCommand);
     }
 
-    public void CloseApp()
+    public void Dispose()
     {
-        _operatingSystem?.Disconnect();
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposed) return;
+        if (disposing)
+        {
+            _operatingSystem?.Disconnect();
+        }
+
+        disposed = true;
     }
 }

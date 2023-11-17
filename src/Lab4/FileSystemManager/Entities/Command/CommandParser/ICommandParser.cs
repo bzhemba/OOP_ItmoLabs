@@ -2,6 +2,6 @@ namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command
 
 public interface ICommandParser
 {
-    ICommandParser? SetNext(ICommandParser? nextHandler);
+    ICommandParser? SetNext(ICommandParser nextHandler);
     ICommand? Parse(string command);
 }

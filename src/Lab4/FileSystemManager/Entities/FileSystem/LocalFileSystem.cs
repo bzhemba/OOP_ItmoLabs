@@ -8,9 +8,9 @@ public class LocalFileSystem : IFileSystem
     private OperatingSystemContext? _operatingSystem;
     private string? _absolutePath;
 
-    public void SetOperatingSystemContext(OperatingSystemContext context)
+    public LocalFileSystem(OperatingSystemContext? operatingSystem)
     {
-        this._operatingSystem = context;
+        _operatingSystem = operatingSystem;
     }
 
     public void Connect(string address)
@@ -40,7 +40,7 @@ public class LocalFileSystem : IFileSystem
         {
             if (_absolutePath == null) return;
             string fullPath;
-            fullPath = _operatingSystem.PathValidator.CreateAbsolutePath(_absolutePath, path);
+            fullPath = CreateAbsolutePath(_absolutePath, path);
             if (!Path.Exists(fullPath)) return;
             _operatingSystem.TreeVisualizer.SetStartDirectory(fullPath);
         }
@@ -55,7 +55,7 @@ public class LocalFileSystem : IFileSystem
     {
         if (_absolutePath == null) return;
         if (_operatingSystem == null) return;
-        string fullPath = _operatingSystem.PathValidator.CreateAbsolutePath(_absolutePath, path);
+        string fullPath = CreateAbsolutePath(_absolutePath, path);
         _operatingSystem.TextVisualizer?.Print(fullPath);
     }
 
@@ -79,8 +79,8 @@ public class LocalFileSystem : IFileSystem
     {
         if (_absolutePath == null || sourcePath == null) return;
         if (_operatingSystem == null) return;
-        string oldPath = _operatingSystem.PathValidator.CreateAbsolutePath(_absolutePath, sourcePath);
-        string newPath = _operatingSystem.PathValidator.CreateAbsolutePath(_absolutePath, destinationPath);
+        string oldPath = CreateAbsolutePath(_absolutePath, sourcePath);
+        string newPath = CreateAbsolutePath(_absolutePath, destinationPath);
         try
         {
             File.Copy(oldPath, newPath);
@@ -95,7 +95,7 @@ public class LocalFileSystem : IFileSystem
     {
         if (_absolutePath == null || path == null) return;
         if (_operatingSystem == null) return;
-        string fullPath = _operatingSystem.PathValidator.CreateAbsolutePath(_absolutePath, path);
+        string fullPath = CreateAbsolutePath(_absolutePath, path);
         File.Delete(fullPath);
     }
 
@@ -103,8 +103,8 @@ public class LocalFileSystem : IFileSystem
     {
         if (_absolutePath == null || path == null) return;
         if (_operatingSystem == null) return;
-        string oldPath = _operatingSystem.PathValidator.CreateAbsolutePath(_absolutePath, path);
-        string newPath = _operatingSystem.PathValidator.CreateAbsolutePath(_absolutePath, name);
+        string oldPath = CreateAbsolutePath(_absolutePath, path);
+        string newPath = CreateAbsolutePath(_absolutePath, name);
 
         if (!File.Exists(oldPath))
         {
@@ -118,5 +118,15 @@ public class LocalFileSystem : IFileSystem
         }
 
         File.Move(oldPath, newPath);
+    }
+
+    public string CreateAbsolutePath(string path1, string path2)
+    {
+        return Path.GetFullPath(path2, path1);
+    }
+
+    private static bool IsDirectory(string path)
+    {
+        return Directory.Exists(path);
     }
 }

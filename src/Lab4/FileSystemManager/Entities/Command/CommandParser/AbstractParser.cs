@@ -1,16 +1,23 @@
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command.CommandParser;
 
-public class AbstractParser : ICommandParser
+public abstract class AbstractParser : ICommandParser
 {
     private ICommandParser? _nextParser;
+    protected IWriter Writer { get; private set; } = new ConsoleWriter();
+
     public ICommandParser? SetNext(ICommandParser? nextHandler)
     {
-        this._nextParser = nextHandler;
+        _nextParser = nextHandler;
         return nextHandler;
     }
 
     public virtual ICommand? Parse(string command)
     {
-        return this._nextParser?.Parse(command);
+        return _nextParser?.Parse(command);
+    }
+
+    public void SetErrorWriter(IWriter writer)
+    {
+        Writer = writer;
     }
 }

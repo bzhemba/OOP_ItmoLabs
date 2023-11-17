@@ -17,5 +17,5 @@ public interface IFileSystem
     void DeleteFile(string path);
 
     void RenameFile(string path, string name);
-    void SetOperatingSystemContext(OperatingSystemContext context);
+    public string CreateAbsolutePath(string path1, string path2);
 }

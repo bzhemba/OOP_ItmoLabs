@@ -9,7 +9,7 @@ public class FileDeleteCommandParser : AbstractParser
     {
         if (command == null)
         {
-            Console.WriteLine(new CommandFormatNotification().Notification);
+            Writer.Write(new CommandFormatNotification().Notification);
             return null;
         }
 
@@ -18,7 +18,7 @@ public class FileDeleteCommandParser : AbstractParser
         string[] parts = command.Split(' ');
         if (parts.Length < 3 || parts[0] != "file" || parts[1] != "delete")
         {
-            Console.WriteLine(new CommandFormatNotification().Notification);
+            Writer.Write(new CommandFormatNotification().Notification);
             return null;
         }
 

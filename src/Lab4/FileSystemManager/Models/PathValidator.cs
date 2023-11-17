@@ -8,10 +8,4 @@ public class PathValidator : IPathValidator
     {
         return Path.IsPathRooted(path);
     }
-
-    public string CreateAbsolutePath(string path1, string path2)
-    {
-        if (path2 == null || path1 == null) return "One part of path is missing";
-        return Path.GetFullPath(path2, path1);
-    }
 }

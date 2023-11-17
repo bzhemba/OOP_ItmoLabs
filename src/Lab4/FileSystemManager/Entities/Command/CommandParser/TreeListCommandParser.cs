@@ -9,7 +9,7 @@ public class TreeListCommandParser : AbstractParser
     {
         if (command == null)
         {
-            Console.WriteLine(new CommandFormatNotification().Notification);
+            Writer.Write(new CommandFormatNotification().Notification);
             return null;
         }
 
@@ -18,11 +18,11 @@ public class TreeListCommandParser : AbstractParser
         string[] parts = command.Split(' ');
         if (parts.Length < 2 || parts[0] != "tree" || parts[1] != "list")
         {
-            Console.WriteLine(new CommandFormatNotification().Notification);
+            Writer.Write(new CommandFormatNotification().Notification);
             return null;
         }
 
-        int depth = 0;
+        int depth = 1;
         for (int i = 2; i < parts.Length; i++)
         {
             if (parts[i] != "-d" || i + 1 >= parts.Length) continue;

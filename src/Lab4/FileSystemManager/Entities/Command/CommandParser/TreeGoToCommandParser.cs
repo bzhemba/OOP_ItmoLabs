@@ -9,7 +9,7 @@ public class TreeGoToCommandParser : AbstractParser
     {
         if (command == null)
         {
-            Console.WriteLine(new CommandFormatNotification().Notification);
+            Writer.Write(new CommandFormatNotification().Notification);
             return null;
         }
 
@@ -18,7 +18,7 @@ public class TreeGoToCommandParser : AbstractParser
         string[] parts = command.Split(' ');
         if (parts.Length < 3 || parts[0] != "tree" || parts[1] != "goto")
         {
-            Console.WriteLine(new CommandFormatNotification().Notification);
+            Writer.Write(new CommandFormatNotification().Notification);
             return null;
         }
 

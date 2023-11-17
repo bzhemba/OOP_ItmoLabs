@@ -29,7 +29,7 @@ public class FileSystemManagerTests
             ?.SetNext(treeListCommandParser);
         string command = "connect /Users/ -m local";
         ICommand? request = connectCommandParser.Parse(command);
-        bool result = request is ICommand;
+        bool result = request is ConnectToLocalSystemCommand;
         Assert.True(result);
     }
 }

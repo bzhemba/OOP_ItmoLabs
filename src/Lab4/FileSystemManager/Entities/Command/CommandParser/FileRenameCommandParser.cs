@@ -9,7 +9,7 @@ public class FileRenameCommandParser : AbstractParser
     {
         if (command == null)
         {
-            Console.WriteLine(new CommandFormatNotification().Notification);
+            Writer.Write(new CommandFormatNotification().Notification);
             return null;
         }
 
@@ -18,7 +18,7 @@ public class FileRenameCommandParser : AbstractParser
         string[] parts = command.Split(' ');
         if (parts.Length < 4 || parts[0] != "file" || parts[1] != "rename")
         {
-            Console.WriteLine(new CommandFormatNotification().Notification);
+            Writer.Write(new CommandFormatNotification().Notification);
             return null;
         }
 

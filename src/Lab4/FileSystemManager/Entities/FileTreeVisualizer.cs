@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Services;
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities;
 
@@ -25,7 +25,7 @@ public class FileTreeVisualizer
     {
         if (_startPath == null) return;
         _writer.Write(_startPath);
-        _writer.WriteLine();
+        _writer.WriteNewLine();
         PrintTree(_startPath, maxDepth);
     }
 
@@ -70,6 +70,18 @@ public class FileTreeVisualizer
         return this;
     }
 
+    private static bool IsDirectory(string path)
+    {
+        return Directory.Exists(path);
+    }
+
+    private static List<FileSystemInfo> GetSortedFileInfos(DirectoryInfo di)
+    {
+        var fsItems = di.GetFileSystemInfos().ToList();
+        fsItems.Sort((f1, f2) => string.Compare(f1.Name, f2.Name, StringComparison.Ordinal));
+        return fsItems;
+    }
+
     private void PrintTree(string startDirectory, int maxDepth, string prefix = "", int depth = 0)
     {
         if (depth >= maxDepth)
@@ -78,16 +90,19 @@ public class FileTreeVisualizer
         }
 
         var di = new DirectoryInfo(startDirectory);
-        var fsItems = di.GetFileSystemInfos().ToList();
+        List<FileSystemInfo> fsItems = GetSortedFileInfos(di);
 
-        fsItems.Sort((f1, f2) => string.Compare(f1.Name, f2.Name, StringComparison.Ordinal));
+        PrintChildrenFiles(fsItems, prefix, maxDepth, depth);
+    }
 
+    private void PrintChildrenFiles(List<FileSystemInfo> fsItems, string prefix, int maxDepth, int depth)
+    {
         foreach (FileSystemInfo fsItem in fsItems.Take(fsItems.Count - 1))
         {
             _writer.Write(prefix + FileIndentSymbol);
-            _writer.Write(GetSymbol(fsItem) + fsItem.Name);
-            _writer.WriteLine();
-            if (fsItem.IsDirectory())
+            _writer.Write(GetSymbol(fsItem.FullName) + fsItem.Name);
+            _writer.WriteNewLine();
+            if (IsDirectory(fsItem.FullName))
             {
                 PrintTree(fsItem.FullName, maxDepth, prefix + DirectoryIndentSymbol, depth + 1);
             }
@@ -96,16 +111,16 @@ public class FileTreeVisualizer
         FileSystemInfo? lastFsItem = fsItems.LastOrDefault();
         if (lastFsItem == null) return;
         _writer.Write(prefix + LastIndentSymbol);
-        _writer.Write(GetSymbol(lastFsItem) + lastFsItem.Name);
-        _writer.WriteLine();
-        if (lastFsItem.IsDirectory())
+        _writer.Write(GetSymbol(lastFsItem.FullName) + lastFsItem.Name);
+        _writer.WriteNewLine();
+        if (IsDirectory(lastFsItem.FullName))
         {
             PrintTree(lastFsItem.FullName, maxDepth, prefix + IndentSymbol, depth + 1);
         }
     }
 
-    private string GetSymbol(FileSystemInfo file)
+    private string GetSymbol(string path)
     {
-        return file.IsDirectory() ? DirectorySymbol : FileSymbol;
+        return IsDirectory(path) ? DirectorySymbol : FileSymbol;
     }
 }

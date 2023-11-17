@@ -13,34 +13,33 @@ public class OperatingSystemContext
         TreeVisualizer = fileTreeVisualizer;
     }
 
-    public FileTextVisualizer? TextVisualizer { get; private set; }
+    public FileСontentVisualizer? TextVisualizer { get; private set; }
     public FileTreeVisualizer TreeVisualizer { get; }
 
     public IPathValidator PathValidator { get; }
     public void TransitionToFileSystem(IFileSystem? fileSystem)
     {
-        this._fileSystem = fileSystem;
-        this._fileSystem?.SetOperatingSystemContext(this);
+        _fileSystem = fileSystem;
     }
 
-    public void TransitionToTextVisualizer(FileTextVisualizer visualizer)
+    public void TransitionToTextVisualizer(FileСontentVisualizer visualizer)
     {
-        this.TextVisualizer = visualizer;
+        TextVisualizer = visualizer;
     }
 
     public void Connect(string address)
     {
-        this._fileSystem?.Connect(address);
+        _fileSystem?.Connect(address);
     }
 
     public void Disconnect()
     {
-        this._fileSystem?.Disconnect();
+        _fileSystem?.Disconnect();
     }
 
     public void TreeGoTo(string path)
     {
-        this._fileSystem?.TreeGoTo(path);
+        _fileSystem?.TreeGoTo(path);
     }
 
     public void ShowTreeList(int depth)

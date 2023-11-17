@@ -15,14 +15,14 @@ public class ConnectLocalCommandParser : AbstractParser
 
         if (!command.Contains("connect", StringComparison.Ordinal))
         {
-            Console.WriteLine(new ConnectionNotification().Notification);
+            Writer.Write(new ConnectionNotification().Notification);
             return null;
         }
 
         string[] parts = command.Split(' ');
         if (parts.Length < 4 || parts[0] != "connect" || parts[2] != "-m")
         {
-            Console.WriteLine(new CommandFormatNotification().Notification);
+            Writer.Write(new CommandFormatNotification().Notification);
         }
 
         string address = parts[1];
