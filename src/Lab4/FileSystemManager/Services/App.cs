@@ -3,7 +3,6 @@ using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities;
 using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command;
 using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Entities.Command.CommandParser;
 using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Models;
-using Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Models.FileTreeVisualizerDecorator;
 
 namespace Itmo.ObjectOrientedProgramming.Lab4.FileSystemManager.Services;
 
@@ -13,21 +12,9 @@ public class App : IDisposable
     private bool disposed;
     public void LaunchApp()
     {
-        var fileTreeVisualizer = new FileTreeVisualizer(new ConsoleWriter());
-        var parametrizedFileTreeVisualizer = new DirectorySymbolDecorator(
-            "\ud83d\udcc2",
-            new FileSymbolDecorator(
-                "+",
-                new IndentSymbolDecorator(
-                    "    ",
-                    new DirectoryIndentSymbolDecorator(
-                        "│   ",
-                        new FileIndentSymbolDecorator(
-                            "├── ",
-                            new LastIndentSymbolDecorator("└── "))))));
+        var fileTreeVisualizer = new FileTreeVisualizer(new ConsoleWriter(), new Symbols());
         _operatingSystem = new OperatingSystemContext(
-            new PathValidator(),
-            parametrizedFileTreeVisualizer.GetTreeWithParametrizedSymbols(fileTreeVisualizer) ?? throw new ArgumentException());
+            new PathValidator(), fileTreeVisualizer);
         var connectCommandParser = new ConnectLocalCommandParser();
         var disconnectCommandParser = new DisconnectCommandParser();
         var fileCopyCommandParser = new FileCopyCommandParser();
