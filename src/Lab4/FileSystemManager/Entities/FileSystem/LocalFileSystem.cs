@@ -21,6 +21,7 @@ public class LocalFileSystem : IFileSystem
             return;
         }
 
+        if (_absolutePath != null) Path.GetFullPath(address);
         _absolutePath = address;
     }
 
@@ -32,18 +33,11 @@ public class LocalFileSystem : IFileSystem
     public void TreeGoTo(string path)
     {
         if (_operatingSystem == null) return;
-        if (_operatingSystem.PathValidator.IsPathAbsolute(path))
-        {
-            _operatingSystem.TreeVisualizer.SetStartDirectory(path);
-        }
-        else
-        {
-            if (_absolutePath == null) return;
-            string fullPath;
-            fullPath = CreateAbsolutePath(_absolutePath, path);
-            if (!Path.Exists(fullPath)) return;
-            _operatingSystem.TreeVisualizer.SetStartDirectory(fullPath);
-        }
+        if (_absolutePath == null) return;
+        string fullPath;
+        fullPath = CreateAbsolutePath(_absolutePath, path);
+        if (!Path.Exists(fullPath)) return;
+        _operatingSystem.TreeVisualizer.SetStartDirectory(fullPath);
     }
 
     public void ShowTreeList(int depth)
@@ -122,7 +116,13 @@ public class LocalFileSystem : IFileSystem
 
     public string CreateAbsolutePath(string path1, string path2)
     {
-        return Path.GetFullPath(path2, path1);
+        string relativePath = " ";
+        if (path2 != null && path2[0] != '.')
+        {
+            relativePath = "." + path2;
+        }
+
+        return Path.GetFullPath(relativePath, path1);
     }
 
     private static bool IsDirectory(string path)
