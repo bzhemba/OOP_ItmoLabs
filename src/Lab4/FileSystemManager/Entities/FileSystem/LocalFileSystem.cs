@@ -49,8 +49,12 @@ public class LocalFileSystem : IFileSystem
     {
         if (_absolutePath == null) return;
         if (_operatingSystem == null) return;
-        string fullPath = CreateAbsolutePath(_absolutePath, path);
-        _operatingSystem.TextVisualizer?.Print(fullPath);
+        if (!_operatingSystem.PathValidator.IsPathAbsolute(path))
+        {
+            path = CreateAbsolutePath(_absolutePath, path);
+        }
+
+        _operatingSystem.TextVisualizer?.Print(path);
     }
 
     public void MoveFile(string sourcePath, string destinationPath)
@@ -66,7 +70,13 @@ public class LocalFileSystem : IFileSystem
             File.Delete(destinationPath);
         }
 
-        File.Move(sourcePath, destinationPath);
+        string fullPath = " ";
+        if (_absolutePath != null)
+        {
+            fullPath = CreateAbsolutePath(_absolutePath, destinationPath);
+        }
+
+        File.Move(sourcePath, fullPath);
     }
 
     public void CopyFile(string sourcePath, string destinationPath)
@@ -116,7 +126,7 @@ public class LocalFileSystem : IFileSystem
 
     public string CreateAbsolutePath(string path1, string path2)
     {
-        string relativePath = " ";
+        string relativePath = path2;
         if (path2 != null && path2[0] != '.')
         {
             relativePath = "." + path2;

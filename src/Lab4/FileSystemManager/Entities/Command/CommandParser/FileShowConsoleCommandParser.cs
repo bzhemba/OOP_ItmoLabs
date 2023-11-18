@@ -16,7 +16,7 @@ public class FileShowConsoleCommandParser : AbstractParser
         if (!command.Contains("file show", StringComparison.Ordinal))
             return base.Parse(command);
         string[] parts = command.Split(' ');
-        if (parts.Length < 5 || parts[0] != "file" || parts[1] != "show")
+        if (parts.Length < 3 || parts[0] != "file" || parts[1] != "show")
         {
             Writer.Write(new CommandFormatNotification().Notification);
             return null;
@@ -26,7 +26,7 @@ public class FileShowConsoleCommandParser : AbstractParser
         string mode = "console";
         for (int i = 3; i < parts.Length; i++)
         {
-            if (parts[i] != "-m")
+            if (parts[i] == "-m")
             {
                 mode = parts[i + 1];
             }
