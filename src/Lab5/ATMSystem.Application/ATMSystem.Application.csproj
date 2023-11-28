@@ -7,4 +7,13 @@
         <RootNamespace>ATMSystemApplication</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="BankAccounts\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AtmSystem.Application.Abstractions\AtmSystem.Application.Abstractions.csproj" />
+      <ProjectReference Include="..\ATMSystem.Application.Contracts\ATMSystem.Application.Contracts.csproj" />
+    </ItemGroup>
+
 </Project>
