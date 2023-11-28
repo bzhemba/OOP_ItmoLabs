@@ -8,4 +8,14 @@
 
 
 
+    <ItemGroup>
+      <PackageReference Include="Itmo.Dev.Platform.Postgres" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+      <PackageReference Include="Spectre.Console" />
+    </ItemGroup>
+
+
+
+
 </Project>
