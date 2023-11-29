@@ -227,4 +227,42 @@ public class BankAccountRepository : IBankAccountRepository
 
         return rowsAffected > 0;
     }
+
+    public bool CreateBankAccount(BankAccount account)
+    {
+        const string sql = """
+                           
+                                                  INSERT INTO accounts (account_id, account_owner, account_balance, account_pin)
+                                                  VALUES (:id, :owner, :balance, :pin)
+                                                  
+                           """;
+
+        if (_connectionProvider != null)
+        {
+            Task<NpgsqlConnection> connection = _connectionProvider.GetConnectionAsync(default).AsTask();
+            NpgsqlConnection result = connection.GetAwaiter().GetResult();
+            using var command = new NpgsqlCommand(sql, result);
+            try
+            {
+                if (account != null)
+                {
+                    command.AddParameter("id", account.Id);
+                    command.AddParameter("owner", account.OwnerId);
+                    command.AddParameter("balance", account.Balance);
+                    command.AddParameter("pin", account.PinCode);
+                }
+            }
+            catch
+            {
+                result.Dispose();
+                throw;
+            }
+
+            int rowsAffected = command.ExecuteNonQuery();
+
+            return rowsAffected > 0;
+        }
+
+        return false;
+    }
 }

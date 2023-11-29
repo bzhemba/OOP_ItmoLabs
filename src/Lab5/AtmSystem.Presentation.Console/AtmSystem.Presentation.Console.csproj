@@ -13,4 +13,13 @@
       <PackageReference Include="Spectre.Console" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Login\" />
+      <Folder Include="Scenarios\CheckBalance\" />
+      <Folder Include="Scenarios\CheckTransactionHistory\" />
+      <Folder Include="Scenarios\CreateBankAccount\" />
+      <Folder Include="Scenarios\DepositIntoAccount\" />
+      <Folder Include="Scenarios\WithdrawFromAccount\" />
+    </ItemGroup>
+
 </Project>
