@@ -1,13 +1,13 @@
 using AtmSystem.Application.Models.BankAccounts;
 
-namespace AtmSystem.Application.Abstractions.Repositories;
+namespace ATMSystem.Application.Contracts.BankAccounts;
 
-public interface IBankAccountRepository
+public interface IBankAccountService
 {
     bool IsAccountExists(long id);
     BankAccount? GetAccountByIdAndPin(long id, string pinCode);
-    long GetBalance(long id);
     bool CreateAccount(BankAccount account);
+    long GetBalance(long id);
     bool Withdraw(long id, decimal amount);
     bool Deposit(long id, decimal amount);
 }

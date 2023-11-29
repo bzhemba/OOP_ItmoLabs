@@ -1,9 +1,5 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using AtmSystem.Application.Abstractions.Repositories;
 using AtmSystem.Application.Models.BankAccounts;
-using AtmSystem.Application.Models.Transactions;
-using AtmSystem.Application.Models.Users;
 using Itmo.Dev.Platform.Postgres.Connection;
 using Itmo.Dev.Platform.Postgres.Extensions;
 using Npgsql;
@@ -23,7 +19,7 @@ public class BankAccountRepository : IBankAccountRepository
     {
         const string sql = """
                            select account_id, account_owner, account_balance, account_pin
-                           from users
+                           from accounts
                            where account_id = :id;
                            """;
 
@@ -54,7 +50,7 @@ public class BankAccountRepository : IBankAccountRepository
     {
         const string sql = """
                            select account_id, account_owner, account_balance, account_pin
-                           from users
+                           from accounts
                            where account_id = :id and account_pin = :pinCode;
                            """;
 
@@ -81,7 +77,7 @@ public class BankAccountRepository : IBankAccountRepository
 
             return new BankAccount(
                 Id: reader.GetInt64(0),
-                Owner: reader.GetFieldValue<User>(1),
+                OwnerId: reader.GetInt64(1),
                 Balance: reader.GetInt32(2),
                 PinCode: reader.GetInt32(ordinal: 3));
         }
@@ -89,17 +85,17 @@ public class BankAccountRepository : IBankAccountRepository
         return null;
     }
 
-    public decimal GetBalance(long id)
+    public long GetBalance(long id)
     {
         const string sql = """
                            
                                                   SELECT account_balance
-                                                  FROM users
+                                                  FROM accounts
                                                   WHERE account_id = :id;
                                                   
                            """;
 
-        decimal balance = 0;
+        long balance = 0;
 
         if (_connectionProvider == null) return balance;
         Task<NpgsqlConnection> connection = _connectionProvider.GetConnectionAsync(default).AsTask();
@@ -120,7 +116,7 @@ public class BankAccountRepository : IBankAccountRepository
 
         if (reader.Read())
         {
-            balance = reader.GetDecimal(0);
+            balance = reader.GetInt64(0);
         }
 
         return balance;
@@ -130,7 +126,7 @@ public class BankAccountRepository : IBankAccountRepository
     {
         const string sql = """
                            
-                                                  insert into users (account_id, account_owner, account_balance, account_pin)
+                                                  insert into accounts (account_id, account_owner, account_balance, account_pin)
                                                   values (:id, :owner, :balance, :pin);
                                                   
                            """;
@@ -145,7 +141,7 @@ public class BankAccountRepository : IBankAccountRepository
                 if (account != null)
                 {
                     command.AddParameter("id", account.Id);
-                    command.AddParameter("owner", account.Owner);
+                    command.AddParameter("owner", account.OwnerId);
                     command.AddParameter("balance", account.Balance);
                     command.AddParameter("pin", account.PinCode);
                 }
@@ -166,13 +162,15 @@ public class BankAccountRepository : IBankAccountRepository
 
     public bool Withdraw(long id, decimal amount)
     {
-        const string sql = @"
-                       UPDATE users
-                       SET account_balance = account_balance - :amount
-                       WHERE account_id = :id;
-                       INSERT INTO TransactionHistory (account_id, transaction_type, transaction_amount)
-                       VALUES (:id, 'Withdraw', :amount);
-                       ";
+        const string sql = """
+                           
+                                                  UPDATE accounts
+                                                  SET account_balance = account_balance - :amount
+                                                  WHERE account_id = :id;
+                                                  INSERT INTO TransactionHistory (account_id, transaction_type, transaction_amount)
+                                                  VALUES (:id, 'withdraw', :amount);
+                                                  
+                           """;
 
         if (_connectionProvider != null)
         {
@@ -200,83 +198,33 @@ public class BankAccountRepository : IBankAccountRepository
 
     public bool Deposit(long id, decimal amount)
     {
-        const string sql = @"
-                       UPDATE users
-                       SET account_balance = account_balance + :amount
-                       WHERE account_id = :id;
-                       INSERT INTO TransactionHistory (account_id, transaction_type, transaction_amount)
-                       VALUES (:id, 'Deposit', :amount);
-                       ";
-
-        if (_connectionProvider != null)
-        {
-            Task<NpgsqlConnection> connection = _connectionProvider.GetConnectionAsync(default).AsTask();
-            NpgsqlConnection result = connection.GetAwaiter().GetResult();
-            using var command = new NpgsqlCommand(sql, result);
-            try
-            {
-                command.AddParameter("amount", amount);
-                command.AddParameter("id", id);
-            }
-            catch
-            {
-                result.Dispose();
-                throw;
-            }
-
-            int rowsAffected = command.ExecuteNonQuery();
-
-            return rowsAffected > 0;
-        }
-
-        return false;
-    }
-
-    public List<Transaction> GetTransactionHistory(long id)
-    {
         const string sql = """
                            
-                                                  SELECT transaction_id, transaction_type, transaction_amount, transaction_date
-                                                  FROM TransactionHistory
-                                                  WHERE account_id = :id
-                                                  ORDER BY transaction_date DESC
+                                                  UPDATE accounts
+                                                  SET account_balance = account_balance + :amount
+                                                  WHERE account_id = :id;
+                                                  INSERT INTO TransactionHistory (account_id, transaction_type, transaction_amount)
+                                                  VALUES (:id, 'deposit', :amount);
                                                   
                            """;
 
-        var transactions = new List<Transaction>();
-
-        if (_connectionProvider != null)
+        if (_connectionProvider == null) return false;
+        Task<NpgsqlConnection> connection = _connectionProvider.GetConnectionAsync(default).AsTask();
+        NpgsqlConnection result = connection.GetAwaiter().GetResult();
+        using var command = new NpgsqlCommand(sql, result);
+        try
         {
-            Task<NpgsqlConnection> connection = _connectionProvider.GetConnectionAsync(default).AsTask();
-            NpgsqlConnection result = connection.GetAwaiter().GetResult();
-            using var command = new NpgsqlCommand(sql, result);
-            try
-            {
-                command.AddParameter("id", id);
-            }
-            catch
-            {
-                result.Dispose();
-                throw;
-            }
-
-            using NpgsqlDataReader reader = command.ExecuteReader();
-
-            while (reader.Read())
-            {
-                Transaction transaction = new Transaction
-                {
-                    TransactionId = reader.GetInt32(0),
-                    TransactionType = reader.GetString(1),
-                    TransactionAmount = reader.GetDecimal(2),
-                    TransactionDate = reader.GetDateTime(3)
-                };
-
-                transactions.Add(transaction);
-            }
+            command.AddParameter("amount", amount);
+            command.AddParameter("id", id);
+        }
+        catch
+        {
+            result.Dispose();
+            throw;
         }
 
-        return transactions;
-    }
+        int rowsAffected = command.ExecuteNonQuery();
 
+        return rowsAffected > 0;
+    }
 }

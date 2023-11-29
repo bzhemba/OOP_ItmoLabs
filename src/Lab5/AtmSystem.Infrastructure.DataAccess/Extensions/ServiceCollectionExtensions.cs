@@ -1,4 +1,3 @@
-using System;
 using AtmSystem.Application.Abstractions.Repositories;
 using AtmSystem.Infrastructure.DataAccess.Repositories;
 using Itmo.Dev.Platform.Postgres.Extensions;
