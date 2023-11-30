@@ -11,7 +11,7 @@ public class Initial : SqlMigration
     create type transaction_type as enum
     (
         'withdrawal',
-        'deposite',
+        'deposit',
     );
     
     create table users
@@ -33,7 +33,6 @@ public class Initial : SqlMigration
         transaction_id bigint primary key generated always as identity,
         account_id bigint not null references accounts(account_id),
         transaction_type transaction_type not null,
-        transaction_amount int not null,
         transaction_date datetime not null,
     );
     """;

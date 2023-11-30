@@ -1,5 +1,5 @@
+using ATMSystem.Application.Contracts.BankAccounts.LoginResults;
 using ATMSystem.Application.Contracts.Users;
-using ATMSystem.Application.Contracts.Users.LoginResults;
 
 namespace ATMSystemApplication.Users;
 
@@ -19,6 +19,6 @@ public class AdminService : IAdminService
             return new WrongSystemPassword();
         }
 
-        return new Success();
+        return new LoginSuccess();
     }
 }

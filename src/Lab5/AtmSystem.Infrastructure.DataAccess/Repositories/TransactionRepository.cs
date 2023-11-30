@@ -51,8 +51,7 @@ public class TransactionRepository : ITransactionRepository
                     TransactionId: reader.GetInt32(0),
                     AccountId: reader.GetInt64(1),
                     TransactionType: reader.GetFieldValue<TransactionType>(2),
-                    TransactionAmount: reader.GetInt32(3),
-                    TransactionTime: reader.GetDateTime(4));
+                    TransactionTime: reader.GetDateTime(3));
 
                 transactions.Add(transaction);
             }

@@ -1,9 +1,9 @@
-using ATMSystem.Application.Contracts.Users;
+using ATMSystem.Application.Contracts.BankAccounts;
 using AtmSystem.Application.Models.BankAccounts;
 
 namespace ATMSystemApplication.Users;
 
-internal class CurrentUserManager : ICurrentUserService
+internal class CurrentAccountManager : ICurrentAccountService
 {
     public BankAccount? Account { get; set; }
 }

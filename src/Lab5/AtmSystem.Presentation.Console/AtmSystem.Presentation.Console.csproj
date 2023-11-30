@@ -17,9 +17,12 @@
       <Folder Include="Login\" />
       <Folder Include="Scenarios\CheckBalance\" />
       <Folder Include="Scenarios\CheckTransactionHistory\" />
-      <Folder Include="Scenarios\CreateBankAccount\" />
       <Folder Include="Scenarios\DepositIntoAccount\" />
       <Folder Include="Scenarios\WithdrawFromAccount\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ATMSystem.Application.Contracts\ATMSystem.Application.Contracts.csproj" />
     </ItemGroup>
 
 </Project>

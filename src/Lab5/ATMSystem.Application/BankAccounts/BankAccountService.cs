@@ -1,16 +1,41 @@
 using AtmSystem.Application.Abstractions.Repositories;
 using ATMSystem.Application.Contracts.BankAccounts;
+using ATMSystem.Application.Contracts.BankAccounts.LoginResults;
+using ATMSystem.Application.Contracts.BankAccounts.WithdrawResults;
 using AtmSystem.Application.Models.BankAccounts;
+using AtmSystem.Application.Models.Transactions;
+using ATMSystemApplication.Users;
 
 namespace ATMSystemApplication.BankAccounts;
 
 internal class BankAccountService : IBankAccountService
 {
     private readonly IBankAccountRepository _repository;
+    private readonly CurrentAccountManager _currentAccountManager;
 
-    public BankAccountService(IBankAccountRepository repository)
+    public BankAccountService(IBankAccountRepository repository, CurrentAccountManager currentAccountManager)
     {
         _repository = repository;
+        _currentAccountManager = currentAccountManager;
+    }
+
+    public LoginResult Login(long id, string pinCode)
+    {
+        bool accountExisting = _repository.IsAccountExists(id);
+
+        if (!accountExisting)
+        {
+            return new NotFound();
+        }
+
+        BankAccount? account = _repository.GetAccountByIdAndPin(id, pinCode);
+        if (account is null)
+        {
+            return new WrongPinCode();
+        }
+
+        _currentAccountManager.Account = account;
+        return new LoginSuccess();
     }
 
     public bool IsAccountExists(long id)
@@ -28,18 +53,40 @@ internal class BankAccountService : IBankAccountService
         return _repository.CreateAccount(account);
     }
 
-    public long GetBalance(long id)
+    public long GetBalance()
     {
-        return _repository.GetBalance(id);
+        if (_currentAccountManager.Account != null) return _currentAccountManager.Account.Balance;
+        throw new ArgumentNullException($"You are not logged into account");
     }
 
-    public bool Withdraw(long id, decimal amount)
+    public WithdrawResult Withdraw(int amount)
     {
-        return _repository.Withdraw(id, amount);
+        if (_currentAccountManager.Account == null)
+            throw new ArgumentException($"You are not logged into account");
+        if (amount < 0)
+        {
+            return new IncorrectAmount();
+        }
+
+        if (_currentAccountManager.Account.Balance - amount < 0)
+        {
+            return new InsufficientFunds();
+        }
+
+        int newBalance = _currentAccountManager.Account.Balance - amount;
+
+        _currentAccountManager.Account.UpdateBalance(newBalance);
+        _repository.UpdateValue(_currentAccountManager.Account.Id, newBalance, TransactionType.Withdrawal);
+        return new WithdrawSuccess();
     }
 
-    public bool Deposit(long id, decimal amount)
+    public void Deposit(int amount)
     {
-        return _repository.Deposit(id, amount);
+        if (_currentAccountManager.Account == null || amount < 0) return;
+
+        int newBalance = _currentAccountManager.Account.Balance + amount;
+
+        _currentAccountManager.Account.UpdateBalance(newBalance);
+        _repository.UpdateValue(_currentAccountManager.Account.Id, newBalance, TransactionType.Deposit);
     }
 }

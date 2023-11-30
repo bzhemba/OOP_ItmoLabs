@@ -1,4 +1,4 @@
-using ATMSystem.Application.Contracts.Users.LoginResults;
+using ATMSystem.Application.Contracts.BankAccounts.LoginResults;
 
 namespace ATMSystem.Application.Contracts.Users;
 

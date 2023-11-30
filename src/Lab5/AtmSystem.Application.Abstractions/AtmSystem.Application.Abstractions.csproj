@@ -9,6 +9,7 @@
 
 
     <ItemGroup>
+      <ProjectReference Include="..\ATMSystem.Application.Contracts\ATMSystem.Application.Contracts.csproj" />
       <ProjectReference Include="..\AtmSystem.Application.Models\AtmSystem.Application.Models.csproj" />
     </ItemGroup>
 

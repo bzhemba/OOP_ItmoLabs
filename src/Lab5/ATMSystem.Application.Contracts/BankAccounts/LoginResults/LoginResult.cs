@@ -1,4 +1,4 @@
-namespace ATMSystem.Application.Contracts.Users.LoginResults;
+namespace ATMSystem.Application.Contracts.BankAccounts.LoginResults;
 
 public abstract record LoginResult
 {
