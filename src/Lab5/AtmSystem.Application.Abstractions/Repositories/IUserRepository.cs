@@ -4,5 +4,6 @@ namespace AtmSystem.Application.Abstractions.Repositories;
 
 public interface IUserRepository
 {
-    User? FindUserByUsername(string username);
+    User? FindUserById(long userId);
+    public void AddUser(long id, string name, string surname);
 }

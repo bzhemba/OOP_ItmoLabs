@@ -63,7 +63,7 @@ public class BankAccountRepository : IBankAccountRepository
             try
             {
                 command.AddParameter("id", id)
-                    .AddParameter("pin", pinCode);
+                    .AddParameter("pinCode", pinCode);
             }
             catch
             {
@@ -86,12 +86,12 @@ public class BankAccountRepository : IBankAccountRepository
         return null;
     }
 
-    public bool CreateAccount(BankAccount account)
+    public bool CreateAccount(long ownerId, int balance, int pin)
     {
         const string sql = """
                            
-                                                  insert into accounts (account_id, account_owner, account_balance, account_pin)
-                                                  values (:id, :owner, :balance, :pin);
+                                                  insert into accounts (account_owner, account_balance, account_pin)
+                                                  values (:ownerId, :balance, :pin);
                                                   
                            """;
 
@@ -102,13 +102,9 @@ public class BankAccountRepository : IBankAccountRepository
             using var command = new NpgsqlCommand(sql, result);
             try
             {
-                if (account != null)
-                {
-                    command.AddParameter("id", account.Id);
-                    command.AddParameter("owner", account.OwnerId);
-                    command.AddParameter("balance", account.Balance);
-                    command.AddParameter("pin", account.PinCode);
-                }
+                    command.AddParameter("owner", ownerId);
+                    command.AddParameter("balance", balance);
+                    command.AddParameter("pin", pin);
             }
             catch
             {
@@ -124,36 +120,35 @@ public class BankAccountRepository : IBankAccountRepository
         return false;
     }
 
-    public void UpdateValue(long id, int newBalance, TransactionType transactionType)
+    public void UpdateValue(long id, int newBalance, int amount, TransactionType transactionType)
     {
         const string sql = """
                            
                                                   UPDATE accounts
                                                   SET account_balance = newBalance
                                                   WHERE account_id = :id;
-                                                  INSERT INTO TransactionHistory (account_id, transaction_type, transaction_date)
-                                                  VALUES (:id, :transactionType, GETDATE());
+                                                  INSERT INTO TransactionHistory (account_id, transaction_type, transaction_amount, transaction_date)
+                                                  VALUES (:id, :transactionType, :amount, GETDATE());
                                                   
                            """;
 
-        if (_connectionProvider != null)
+        if (_connectionProvider == null) return;
+        Task<NpgsqlConnection> connection = _connectionProvider.GetConnectionAsync(default).AsTask();
+        NpgsqlConnection result = connection.GetAwaiter().GetResult();
+        using var command = new NpgsqlCommand(sql, result);
+        try
         {
-            Task<NpgsqlConnection> connection = _connectionProvider.GetConnectionAsync(default).AsTask();
-            NpgsqlConnection result = connection.GetAwaiter().GetResult();
-            using var command = new NpgsqlCommand(sql, result);
-            try
-            {
-                command.AddParameter("newBalance", newBalance);
-                command.AddParameter("transactionType", transactionType);
-                command.AddParameter("id", id);
-            }
-            catch
-            {
-                result.Dispose();
-                throw;
-            }
-
-            int rowsAffected = command.ExecuteNonQuery();
+            command.AddParameter("newBalance", newBalance);
+            command.AddParameter("transactionType", transactionType);
+            command.AddParameter("amount", amount);
+            command.AddParameter("id", id);
         }
+        catch
+        {
+            result.Dispose();
+            throw;
+        }
+
+        int rowsAffected = command.ExecuteNonQuery();
     }
 }

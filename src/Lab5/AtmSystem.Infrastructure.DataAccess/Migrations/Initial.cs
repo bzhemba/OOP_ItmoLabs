@@ -27,12 +27,20 @@ public class Initial : SqlMigration
         account_balance int not null,
         account_pin int not null,
     );
+    
+    create table users
+    (
+        user_id bigint primary key generated always as identity ,
+        user_name text not null ,
+        user_surname text not null ,
+    );
 
     create table TransactionHistory
     (
         transaction_id bigint primary key generated always as identity,
         account_id bigint not null references accounts(account_id),
         transaction_type transaction_type not null,
+        transaction_amount int not null,
         transaction_date datetime not null,
     );
     """;

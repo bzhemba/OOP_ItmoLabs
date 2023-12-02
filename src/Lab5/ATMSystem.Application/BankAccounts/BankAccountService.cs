@@ -11,11 +11,16 @@ namespace ATMSystemApplication.BankAccounts;
 internal class BankAccountService : IBankAccountService
 {
     private readonly IBankAccountRepository _repository;
+    private readonly ITransactionRepository _transactionRepository;
     private readonly CurrentAccountManager _currentAccountManager;
 
-    public BankAccountService(IBankAccountRepository repository, CurrentAccountManager currentAccountManager)
+    public BankAccountService(
+    IBankAccountRepository repository,
+    ITransactionRepository transactionRepository,
+    CurrentAccountManager currentAccountManager)
     {
         _repository = repository;
+        _transactionRepository = transactionRepository;
         _currentAccountManager = currentAccountManager;
     }
 
@@ -48,9 +53,9 @@ internal class BankAccountService : IBankAccountService
         return _repository.GetAccountByIdAndPin(id, pinCode);
     }
 
-    public bool CreateAccount(BankAccount account)
+    public bool CreateAccount(long ownerId, int balance, int pin)
     {
-        return _repository.CreateAccount(account);
+        return _repository.CreateAccount(ownerId, balance, pin);
     }
 
     public long GetBalance()
@@ -76,7 +81,7 @@ internal class BankAccountService : IBankAccountService
         int newBalance = _currentAccountManager.Account.Balance - amount;
 
         _currentAccountManager.Account.UpdateBalance(newBalance);
-        _repository.UpdateValue(_currentAccountManager.Account.Id, newBalance, TransactionType.Withdrawal);
+        _repository.UpdateValue(_currentAccountManager.Account.Id, newBalance, amount, TransactionType.Withdrawal);
         return new WithdrawSuccess();
     }
 
@@ -87,6 +92,11 @@ internal class BankAccountService : IBankAccountService
         int newBalance = _currentAccountManager.Account.Balance + amount;
 
         _currentAccountManager.Account.UpdateBalance(newBalance);
-        _repository.UpdateValue(_currentAccountManager.Account.Id, newBalance, TransactionType.Deposit);
+        _repository.UpdateValue(_currentAccountManager.Account.Id, newBalance, amount, TransactionType.Deposit);
+    }
+
+    public IEnumerable<Transaction>? GetTransactionHistory()
+    {
+        return _currentAccountManager.Account == null ? null : _transactionRepository.GetTransactionHistory(_currentAccountManager.Account.Id);
     }
 }

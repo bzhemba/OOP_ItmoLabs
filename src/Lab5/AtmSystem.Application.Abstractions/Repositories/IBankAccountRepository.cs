@@ -7,6 +7,6 @@ public interface IBankAccountRepository
 {
     bool IsAccountExists(long id);
     BankAccount? GetAccountByIdAndPin(long id, string pinCode);
-    bool CreateAccount(BankAccount account);
-    void UpdateValue(long id, int newBalance, TransactionType transactionType);
+    public bool CreateAccount(long ownerId, int balance, int pin);
+    void UpdateValue(long id, int newBalance, int amount, TransactionType transactionType);
 }
