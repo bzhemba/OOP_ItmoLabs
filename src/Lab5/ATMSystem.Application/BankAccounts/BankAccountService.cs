@@ -24,7 +24,7 @@ internal class BankAccountService : IBankAccountService
         _currentAccountManager = currentAccountManager;
     }
 
-    public LoginResult Login(long id, string pinCode)
+    public LoginResult Login(long id, int pinCode)
     {
         bool accountExisting = _repository.IsAccountExists(id);
 
@@ -48,7 +48,7 @@ internal class BankAccountService : IBankAccountService
         return _repository.IsAccountExists(id);
     }
 
-    public BankAccount? GetAccountByIdAndPin(long id, string pinCode)
+    public BankAccount? GetAccountByIdAndPin(long id, int pinCode)
     {
         return _repository.GetAccountByIdAndPin(id, pinCode);
     }

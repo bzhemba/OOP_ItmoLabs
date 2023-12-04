@@ -47,7 +47,7 @@ public class BankAccountRepository : IBankAccountRepository
         return false;
     }
 
-    public BankAccount? GetAccountByIdAndPin(long id, string pinCode)
+    public BankAccount? GetAccountByIdAndPin(long id, int pinCode)
     {
         const string sql = """
                            select account_id, account_owner, account_balance, account_pin

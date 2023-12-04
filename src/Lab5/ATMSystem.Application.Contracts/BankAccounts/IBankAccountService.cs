@@ -8,11 +8,11 @@ namespace ATMSystem.Application.Contracts.BankAccounts;
 public interface IBankAccountService
 {
     bool IsAccountExists(long id);
-    BankAccount? GetAccountByIdAndPin(long id, string pinCode);
+    BankAccount? GetAccountByIdAndPin(long id, int pinCode);
     public bool CreateAccount(long ownerId, int balance, int pin);
     long GetBalance();
     WithdrawResult Withdraw(int amount);
     void Deposit(int amount);
-    LoginResult Login(long id, string pinCode);
+    LoginResult Login(long id, int pinCode);
     public IEnumerable<Transaction>? GetTransactionHistory();
 }

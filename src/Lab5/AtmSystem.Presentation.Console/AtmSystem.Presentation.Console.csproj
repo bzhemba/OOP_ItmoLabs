@@ -14,10 +14,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Login\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\ATMSystem.Application.Contracts\ATMSystem.Application.Contracts.csproj" />
     </ItemGroup>
 
