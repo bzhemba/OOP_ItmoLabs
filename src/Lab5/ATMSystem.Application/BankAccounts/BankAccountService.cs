@@ -8,7 +8,7 @@ using ATMSystemApplication.Users;
 
 namespace ATMSystemApplication.BankAccounts;
 
-internal class BankAccountService : IBankAccountService
+public class BankAccountService : IBankAccountService
 {
     private readonly IBankAccountRepository _repository;
     private readonly ITransactionRepository _transactionRepository;
@@ -58,7 +58,7 @@ internal class BankAccountService : IBankAccountService
         return _repository.CreateAccount(ownerId, balance, pin);
     }
 
-    public long GetBalance()
+    public int GetBalance()
     {
         if (_currentAccountManager.Account != null) return _currentAccountManager.Account.Balance;
         throw new ArgumentNullException($"You are not logged into account");

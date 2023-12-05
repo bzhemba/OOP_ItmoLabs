@@ -10,7 +10,14 @@
       <PackageReference Include="Itmo.Dev.Platform.Postgres" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+      <PackageReference Include="NSubstitute" />
       <PackageReference Include="Spectre.Console" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ATMSystem.Application\ATMSystem.Application.csproj" />
+      <ProjectReference Include="..\AtmSystem.Infrastructure.DataAccess\AtmSystem.Infrastructure.DataAccess.csproj" />
+      <ProjectReference Include="..\AtmSystem.Presentation.Console\AtmSystem.Presentation.Console.csproj" />
     </ItemGroup>
 
 </Project>

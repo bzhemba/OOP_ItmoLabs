@@ -3,7 +3,7 @@ using AtmSystem.Application.Models.BankAccounts;
 
 namespace ATMSystemApplication.Users;
 
-internal class CurrentAccountManager : ICurrentAccountService
+public class CurrentAccountManager : ICurrentAccountService
 {
     public BankAccount? Account { get; set; }
 }
