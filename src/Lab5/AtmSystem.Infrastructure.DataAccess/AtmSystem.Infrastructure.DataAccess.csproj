@@ -18,4 +18,6 @@
       <ProjectReference Include="..\AtmSystem.Application.Abstractions\AtmSystem.Application.Abstractions.csproj" />
     </ItemGroup>
 
+
+
 </Project>

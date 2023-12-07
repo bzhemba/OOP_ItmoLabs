@@ -20,8 +20,8 @@ internal class UserService : IUserService
         return user;
     }
 
-    public void CreateUser(long id, string name, string surname)
+    public void CreateUser(long id, string name)
     {
-        _repository.AddUser(id, name, surname);
+        _repository.AddUser(id, name);
     }
 }

@@ -102,7 +102,7 @@ public class BankAccountRepository : IBankAccountRepository
             using var command = new NpgsqlCommand(sql, result);
             try
             {
-                    command.AddParameter("owner", ownerId);
+                    command.AddParameter("ownerId", ownerId);
                     command.AddParameter("balance", balance);
                     command.AddParameter("pin", pin);
             }
@@ -125,10 +125,10 @@ public class BankAccountRepository : IBankAccountRepository
         const string sql = """
                            
                                                   UPDATE accounts
-                                                  SET account_balance = newBalance
+                                                  SET account_balance = :newBalance
                                                   WHERE account_id = :id;
                                                   INSERT INTO TransactionHistory (account_id, transaction_type, transaction_amount, transaction_date)
-                                                  VALUES (:id, :transactionType, :amount, GETDATE());
+                                                  VALUES (:id, :transactionType, :amount, NOW());
                                                   
                            """;
 

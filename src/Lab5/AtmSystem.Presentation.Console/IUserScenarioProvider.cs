@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace AtmSystem.Presentation.Console;
 
-public interface IScenarioProvider
+public interface IUserScenarioProvider
 {
     bool TryGetScenario([NotNullWhen(true)] out IScenario? scenario);
 }

@@ -1,5 +1,6 @@
 using ATMSystem.Application.Contracts.BankAccounts;
 using ATMSystem.Application.Contracts.Transactions;
+using ATMSystem.Application.Contracts.Users;
 using ATMSystemApplication.BankAccounts;
 using ATMSystemApplication.Users;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,8 @@ public static class ServiceCollectionExtensions
     {
         collection.AddScoped<ITransactionService, TransactionService.TransactionService>();
         collection.AddScoped<IBankAccountService, BankAccountService>();
+        collection.AddScoped<IAdminService, AdminService>();
+        collection.AddScoped<IUserService, UserService>();
 
         collection.AddScoped<CurrentAccountManager>();
         collection.AddScoped<ICurrentAccountService>(
