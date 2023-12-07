@@ -5,14 +5,13 @@ using AtmSystem.Application.Models.Users;
 
 namespace ATMSystemApplication.Users;
 
-public class AdminService : IUserService
+public class AdminService : IAdminService
 {
-    private readonly string _systemPassword;
     private readonly IUserRepository _repository;
+    private string? _systemPassword;
 
-    public AdminService(string systemPassword, IUserRepository repository)
+    public AdminService(IUserRepository repository)
     {
-        _systemPassword = systemPassword;
         _repository = repository;
     }
 
@@ -31,6 +30,17 @@ public class AdminService : IUserService
         User? user = _repository.FindUserById(userId);
 
         return user;
+    }
+
+    public void SetPassword(string password)
+    {
+        if (!IsPasswordSet())
+            _systemPassword ??= password;
+    }
+
+    public bool IsPasswordSet()
+    {
+        return _systemPassword != null;
     }
 
     public void CreateUser(long id, string name, string surname)

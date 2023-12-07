@@ -4,10 +4,10 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <OutputType>Exe</OutputType>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Itmo.Dev.Platform.Postgres" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
       <PackageReference Include="NSubstitute" />
@@ -19,5 +19,6 @@
       <ProjectReference Include="..\AtmSystem.Infrastructure.DataAccess\AtmSystem.Infrastructure.DataAccess.csproj" />
       <ProjectReference Include="..\AtmSystem.Presentation.Console\AtmSystem.Presentation.Console.csproj" />
     </ItemGroup>
+
 
 </Project>

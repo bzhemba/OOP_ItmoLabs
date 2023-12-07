@@ -1,22 +1,18 @@
 using System.Diagnostics.CodeAnalysis;
 using ATMSystem.Application.Contracts.BankAccounts;
-using ATMSystem.Application.Contracts.Users;
 
 namespace AtmSystem.Presentation.Console.Login;
 
-public class LoginScenarioProvider : IScenarioProvider
+public class LoginUserScenarioProvider : IUserScenarioProvider
 {
     private readonly IBankAccountService _accountService;
-    private readonly IAdminService _adminService;
     private readonly ICurrentAccountService _currentAccountService;
 
-    public LoginScenarioProvider(
+    public LoginUserScenarioProvider(
         ICurrentAccountService currentAccountService,
-        IAdminService adminService,
         IBankAccountService accountService)
     {
         _currentAccountService = currentAccountService;
-        _adminService = adminService;
         _accountService = accountService;
     }
 
@@ -29,7 +25,7 @@ public class LoginScenarioProvider : IScenarioProvider
             return false;
         }
 
-        scenario = new LoginScenario(_accountService, _adminService);
+        scenario = new LoginUserScenario(_accountService);
         return true;
     }
 }

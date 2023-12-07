@@ -4,7 +4,7 @@ using AtmSystem.Application.Models.Transactions;
 
 namespace ATMSystemApplication.TransactionService;
 
-internal class TransactionService : ITransactionService
+public class TransactionService : ITransactionService
 {
     private readonly ITransactionRepository _repository;
 

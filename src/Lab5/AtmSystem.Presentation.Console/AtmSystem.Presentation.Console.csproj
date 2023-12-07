@@ -18,4 +18,6 @@
       <ProjectReference Include="..\ATMSystem.Application.Contracts\ATMSystem.Application.Contracts.csproj" />
     </ItemGroup>
 
+
+
 </Project>

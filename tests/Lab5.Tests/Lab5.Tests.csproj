@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Itmo.Dev.Platform.Postgres" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
         <PackageReference Include="Microsoft.NET.Test.Sdk"/>
@@ -29,5 +28,6 @@
       <ProjectReference Include="..\..\src\Lab5\ATMSystem.Application\ATMSystem.Application.csproj" />
       <ProjectReference Include="..\..\src\Lab5\ATMSystem\ATMSystem.csproj" />
     </ItemGroup>
+
 
 </Project>

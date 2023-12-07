@@ -18,7 +18,7 @@ internal class Program
             .AddInfrastructureDataAccess(configuration =>
             {
                 configuration.Host = "localhost";
-                configuration.Port = 6432;
+                configuration.Port = 5434;
                 configuration.Username = "postgres";
                 configuration.Password = "123";
                 configuration.Database = "postgres";
