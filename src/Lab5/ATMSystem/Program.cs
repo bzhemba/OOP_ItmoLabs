@@ -34,10 +34,18 @@ internal class Program
         ScenarioRunner scenarioRunner = scope.ServiceProvider
             .GetRequiredService<ScenarioRunner>();
 
+        IScenario? systemPasswordScenario = scenarioRunner.GetSystemPasswordScenario();
+        systemPasswordScenario?.Run();
+        AnsiConsole.Clear();
+        string[] choices = { "Admin", "User" };
+        SelectionPrompt<string> selector = new SelectionPrompt<string>()
+            .Title("Select mode")
+            .PageSize(10)
+            .AddChoices(choices);
+        string choice = AnsiConsole.Prompt(selector);
         while (true)
         {
-            scenarioRunner.Run();
-            AnsiConsole.Clear();
+            scenarioRunner.Run(choice);
         }
     }
 }

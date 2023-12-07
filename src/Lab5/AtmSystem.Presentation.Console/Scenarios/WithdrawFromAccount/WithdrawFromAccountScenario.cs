@@ -1,4 +1,5 @@
 using ATMSystem.Application.Contracts.BankAccounts;
+using ATMSystem.Application.Contracts.BankAccounts.WithdrawResults;
 using Spectre.Console;
 
 namespace AtmSystem.Presentation.Console.Scenarios.WithdrawFromAccount;
@@ -16,7 +17,18 @@ public class WithdrawFromAccountScenario : IScenario
 
     public void Run()
     {
-        int amount = AnsiConsole.Ask<int>("Enter the withdraw amount");
-        _accountService.Withdraw(amount);
+        AnsiConsole.Prompt(
+            new TextPrompt<int>("Enter the withdraw amount")
+                .ValidationErrorMessage("[red]Incorrect amount[/]")
+                .Validate(amount =>
+                {
+                    WithdrawResult withdrawResult = _accountService.Withdraw(amount);
+                    return withdrawResult switch
+                    {
+                        InsufficientFunds => ValidationResult.Error("[red]Insufficient funds[/]"),
+                        IncorrectAmount => ValidationResult.Error("[red]Incorrect value entered[/]"),
+                        _ => ValidationResult.Success(),
+                    };
+                }));
     }
 }

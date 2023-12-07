@@ -34,8 +34,7 @@ public class AdminService : IAdminService
 
     public void SetPassword(string password)
     {
-        if (!IsPasswordSet())
-            _systemPassword ??= password;
+            _systemPassword = password;
     }
 
     public bool IsPasswordSet()
@@ -43,8 +42,8 @@ public class AdminService : IAdminService
         return _systemPassword != null;
     }
 
-    public void CreateUser(long id, string name, string surname)
+    public void CreateUser(long id, string name)
     {
-        _repository.AddUser(id, name, surname);
+        _repository.AddUser(id, name);
     }
 }

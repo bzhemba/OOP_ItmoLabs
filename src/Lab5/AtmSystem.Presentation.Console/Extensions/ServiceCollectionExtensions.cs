@@ -4,6 +4,8 @@ using AtmSystem.Presentation.Console.Scenarios.CheckTransactionHistory;
 using AtmSystem.Presentation.Console.Scenarios.CreateBankAccount;
 using AtmSystem.Presentation.Console.Scenarios.DepositIntoAccount;
 using AtmSystem.Presentation.Console.Scenarios.SetSystemPassword;
+using AtmSystem.Presentation.Console.Scenarios.SwitchAdminMode;
+using AtmSystem.Presentation.Console.Scenarios.SwitchUserMode;
 using AtmSystem.Presentation.Console.Scenarios.WithdrawFromAccount;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,6 +26,8 @@ public static class ServiceCollectionExtensions
         collection.AddScoped<IUserScenarioProvider, DepositIntoAccountScenarioProvider>();
         collection.AddScoped<IAdminScenarioProvider, SetSystemPasswordScenarioProvider>();
         collection.AddScoped<IUserScenarioProvider, WithdrawFromAccountScenarioProvider>();
+        collection.AddScoped<IAdminScenarioProvider, SwitchUserModeScenarioProvider>();
+        collection.AddScoped<IUserScenarioProvider, SwitchAdminModeScenarioProvider>();
 
         return collection;
     }

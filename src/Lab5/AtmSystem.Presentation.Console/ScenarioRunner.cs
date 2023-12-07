@@ -23,17 +23,8 @@ public class ScenarioRunner
         _loginUserProviders = loginUserProviders;
     }
 
-    public void Run()
+    public void Run(string choice)
     {
-        IScenario? systemPasswordScenario = GetSystemPasswordScenario();
-        systemPasswordScenario?.Run();
-        AnsiConsole.Clear();
-        string[] choices = { "Admin", "User" };
-        SelectionPrompt<string> selector = new SelectionPrompt<string>()
-            .Title("Select mode")
-            .PageSize(10)
-            .AddChoices(choices);
-        string choice = AnsiConsole.Prompt(selector);
         switch (choice)
         {
             case "User":
@@ -75,9 +66,24 @@ public class ScenarioRunner
 
                 IScenario scenario = AnsiConsole.Prompt(userSelector);
                 scenario.Run();
+                AnsiConsole.Clear();
                 break;
             }
         }
+    }
+
+    public IScenario? GetSystemPasswordScenario()
+    {
+        foreach (IAdminScenarioProvider provider in _adminProviders)
+        {
+            if (provider is SetSystemPasswordScenarioProvider)
+            {
+                if (provider.TryGetScenario(out IScenario? scenario))
+                    return scenario;
+            }
+        }
+
+        return null;
     }
 
     private IEnumerable<IScenario> GetUserScenarios()
@@ -96,20 +102,6 @@ public class ScenarioRunner
             if (provider.TryGetScenario(out IScenario? scenario))
                 yield return scenario;
         }
-    }
-
-    private IScenario? GetSystemPasswordScenario()
-    {
-        foreach (IAdminScenarioProvider provider in _adminProviders)
-        {
-            if (provider is SetSystemPasswordScenarioProvider)
-            {
-                if (provider.TryGetScenario(out IScenario? scenario))
-                    return scenario;
-            }
-        }
-
-        return null;
     }
 
     private IScenario? GetLoginUserScenarios()

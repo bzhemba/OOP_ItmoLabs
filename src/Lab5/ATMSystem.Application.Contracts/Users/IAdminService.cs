@@ -7,7 +7,7 @@ public interface IAdminService
 {
     LoginResult Login(string systemPassword);
     public void SetPassword(string password);
-    public void CreateUser(long id, string name, string surname);
+    public void CreateUser(long id, string name);
     public User? GetUserById(long userId);
     public bool IsPasswordSet();
 }

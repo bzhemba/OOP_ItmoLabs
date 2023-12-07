@@ -17,7 +17,6 @@ public class SetSystemPasswordScenario : IScenario
 
     public void Run()
     {
-        string password = AnsiConsole.Ask<string>("Input new system password");
         if (_adminService.IsPasswordSet())
         {
             string oldPassword = AnsiConsole.Ask<string>("Input old system password");
@@ -26,9 +25,34 @@ public class SetSystemPasswordScenario : IScenario
                 return;
             }
 
+            string password = AnsiConsole.Prompt(
+                new TextPrompt<string>("Enter new system password")
+                    .ValidationErrorMessage("[red]Incorrect password[/]")
+                    .Validate(password =>
+                    {
+                        return password.Length switch
+                        {
+                             < 4 => ValidationResult.Error("[red]Password must contain at least 4 symbols[/]"),
+                            _ => ValidationResult.Success(),
+                        };
+                    }));
             _adminService.SetPassword(password);
         }
-
-        _adminService.SetPassword(password);
+        else
+        {
+            string password = AnsiConsole.Prompt(
+                new TextPrompt<string>("Enter new system password")
+                    .ValidationErrorMessage("[red]Incorrect password[/]")
+                    .Validate(password =>
+                    {
+                        return password.Length switch
+                        {
+                            < 4 => ValidationResult.Error("[red]Password must contain at least 4 symbols[/]"),
+                            > 10 => ValidationResult.Error("[red]Password must contain no more than 10 symbols[/]"),
+                            _ => ValidationResult.Success(),
+                        };
+                    }));
+            _adminService.SetPassword(password);
+        }
     }
 }

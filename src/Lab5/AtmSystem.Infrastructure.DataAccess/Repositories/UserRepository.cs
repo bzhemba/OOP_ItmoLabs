@@ -18,9 +18,9 @@ public class UserRepository : IUserRepository
     public User? FindUserById(long userId)
     {
         const string sql = """
-                           select user_id, user_name, user_surname
-                           from users
-                           where user_id = :userId;
+                           select account_id, account_name
+                           from bankUsers
+                           where bankUsers.account_id = :userId;
                            """;
 
         if (_connectionProvider != null)
@@ -30,7 +30,7 @@ public class UserRepository : IUserRepository
             using var command = new NpgsqlCommand(sql, result);
             try
             {
-                command.AddParameter("id", userId);
+                command.AddParameter("userId", userId);
             }
             catch
             {
@@ -45,19 +45,18 @@ public class UserRepository : IUserRepository
 
             return new User(
                 Id: reader.GetInt64(0),
-                Name: reader.GetString(1),
-                Surname: reader.GetString(2));
+                Name: reader.GetString(1));
         }
 
         return null;
     }
 
-    public void AddUser(long id, string name, string surname)
+    public void AddUser(long id, string name)
     {
         const string sql = """
                            
-                            insert into accounts (user_id, user_name, user_surname)
-                            values (:id,:name, :surname);
+                            insert into bankUsers (account_name)
+                            values (:name);
                                                   
                            """;
 
@@ -69,7 +68,6 @@ public class UserRepository : IUserRepository
             try
             {
                 command.AddParameter("name", name);
-                command.AddParameter("surname", surname);
             }
             catch
             {
