@@ -7,8 +7,5 @@
 
 
 
-    <ItemGroup>
-        <Folder Include="FileSystemManager\Models\FileTreeVisualizerDecorator\" />
-    </ItemGroup>
 
 </Project>

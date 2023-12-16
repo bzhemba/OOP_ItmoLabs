@@ -73,10 +73,8 @@ public class BankAccountRepository : IBankAccountRepository
     public bool CreateAccount(long ownerId, int balance, int pin)
     {
         const string sql = """
-                           
-                                                  insert into accounts (account_owner, account_balance, account_pin)
-                                                  values (:ownerId, :balance, :pin);
-                                                  
+                           insert into accounts (account_owner, account_balance, account_pin)
+                           values (:ownerId, :balance, :pin);
                            """;
 
         if (_connectionProvider != null)
@@ -99,12 +97,11 @@ public class BankAccountRepository : IBankAccountRepository
     public void UpdateValue(long id, int newBalance, int amount, TransactionType transactionType)
     {
         const string sql1 = """
-                                                  UPDATE accounts
-                                                  SET account_balance = :newBalance
-                                                  WHERE account_id = :id;
+                            UPDATE accounts
+                            SET account_balance = :newBalance
+                            WHERE account_id = :id;
                            """;
         const string sql2 = """
-                             
                             INSERT INTO TransactionHistory (account_id, transaction_type, transaction_amount, transaction_date)
                             VALUES (:id, :transactionType, :amount, NOW());
                             """;
