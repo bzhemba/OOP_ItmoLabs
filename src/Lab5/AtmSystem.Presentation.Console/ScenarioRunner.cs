@@ -74,7 +74,6 @@ public class ScenarioRunner
                 }
                 else
                 {
-                    AnsiConsole.Write("[red]Wrong system password[/]");
                     AnsiConsole.Clear();
                     string[] choices = { "Admin", "User" };
                     SelectionPrompt<string> selector = new SelectionPrompt<string>()

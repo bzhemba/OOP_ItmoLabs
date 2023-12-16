@@ -98,23 +98,29 @@ public class BankAccountRepository : IBankAccountRepository
 
     public void UpdateValue(long id, int newBalance, int amount, TransactionType transactionType)
     {
-        const string sql = """
+        const string sql1 = """
                                                   UPDATE accounts
                                                   SET account_balance = :newBalance
                                                   WHERE account_id = :id;
-                                                  INSERT INTO TransactionHistory (account_id, transaction_type, transaction_amount, transaction_date)
-                                                  VALUES (:id, :transactionType, :amount, NOW());
                            """;
+        const string sql2 = """
+                             
+                            INSERT INTO TransactionHistory (account_id, transaction_type, transaction_amount, transaction_date)
+                            VALUES (:id, :transactionType, :amount, NOW());
+                            """;
 
         if (_connectionProvider == null) return;
         Task<NpgsqlConnection> connection = _connectionProvider.GetConnectionAsync(default).AsTask();
         NpgsqlConnection result = connection.GetAwaiter().GetResult();
-        using var command = new NpgsqlCommand(sql, result);
-        command.AddParameter("newBalance", newBalance);
-        command.AddParameter("transactionType", transactionType);
-        command.AddParameter("amount", amount);
-        command.AddParameter("id", id);
+        using var command1 = new NpgsqlCommand(sql1, result);
+        using var command2 = new NpgsqlCommand(sql2, result);
+        command1.AddParameter("newBalance", newBalance);
+        command1.AddParameter("id", id);
+        command2.AddParameter("transactionType", transactionType);
+        command2.AddParameter("amount", amount);
+        command2.AddParameter("id", id);
 
-        int rowsAffected = command.ExecuteNonQuery();
+        command1.ExecuteNonQuery();
+        command2.ExecuteNonQuery();
     }
 }
