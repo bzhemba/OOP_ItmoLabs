@@ -47,27 +47,44 @@ public class ScenarioRunner
             case "Admin":
             {
                 IScenario? loginScenario = GetLoginAdminScenarios();
+                bool validation = true;
                 try
                 {
                     loginScenario?.Run();
                 }
                 catch (ArgumentException)
                 {
-                    AnsiConsole.Write("Wrong system password");
-                    break;
+                    AnsiConsole.WriteLine("[red]Wrong system password[/]");
+                    validation = false;
                 }
 
-                IEnumerable<IScenario> scenarios = GetAdminScenarios();
+                if (validation)
+                {
+                    IEnumerable<IScenario> scenarios = GetAdminScenarios();
 
-                SelectionPrompt<IScenario> userSelector = new SelectionPrompt<IScenario>()
-                    .Title("Select action")
-                    .AddChoices(scenarios)
-                    .UseConverter(x => x.Name);
+                    SelectionPrompt<IScenario> userSelector = new SelectionPrompt<IScenario>()
+                        .Title("Select action")
+                        .AddChoices(scenarios)
+                        .UseConverter(x => x.Name);
 
-                IScenario scenario = AnsiConsole.Prompt(userSelector);
-                scenario.Run();
-                AnsiConsole.Clear();
-                break;
+                    IScenario scenario = AnsiConsole.Prompt(userSelector);
+                    scenario.Run();
+                    AnsiConsole.Clear();
+                    break;
+                }
+                else
+                {
+                    AnsiConsole.Write("[red]Wrong system password[/]");
+                    AnsiConsole.Clear();
+                    string[] choices = { "Admin", "User" };
+                    SelectionPrompt<string> selector = new SelectionPrompt<string>()
+                        .Title("Select mode")
+                        .PageSize(10)
+                        .AddChoices(choices);
+                    string choice2 = AnsiConsole.Prompt(selector);
+                    Run(choice2);
+                    break;
+                }
             }
         }
     }

@@ -55,8 +55,8 @@ public class UserRepository : IUserRepository
     {
         const string sql = """
                            
-                            insert into bankUsers (account_name)
-                            values (:name);
+                            insert into bankUsers (account_id, account_name)
+                            values (:id, :name);
                                                   
                            """;
 
@@ -65,15 +65,8 @@ public class UserRepository : IUserRepository
             Task<NpgsqlConnection> connection = _connectionProvider.GetConnectionAsync(default).AsTask();
             NpgsqlConnection result = connection.GetAwaiter().GetResult();
             using var command = new NpgsqlCommand(sql, result);
-            try
-            {
-                command.AddParameter("name", name);
-            }
-            catch
-            {
-                result.Dispose();
-                throw;
-            }
+            command.AddParameter("id", id);
+            command.AddParameter("name", name);
 
             command.ExecuteNonQuery();
         }

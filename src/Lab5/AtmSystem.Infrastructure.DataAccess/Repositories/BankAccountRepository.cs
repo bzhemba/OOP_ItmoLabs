@@ -29,15 +29,7 @@ public class BankAccountRepository : IBankAccountRepository
             Task<NpgsqlConnection> connection = _connectionProvider.GetConnectionAsync(default).AsTask();
             NpgsqlConnection result = connection.GetAwaiter().GetResult();
             using var command = new NpgsqlCommand(sql, result);
-            try
-            {
-                command.AddParameter("id", id);
-            }
-            catch
-            {
-                result.Dispose();
-                throw;
-            }
+            command.AddParameter("id", id);
 
             using NpgsqlDataReader reader = command.ExecuteReader();
 
@@ -60,16 +52,8 @@ public class BankAccountRepository : IBankAccountRepository
             Task<NpgsqlConnection> connection = _connectionProvider.GetConnectionAsync(default).AsTask();
             NpgsqlConnection result = connection.GetAwaiter().GetResult();
             using var command = new NpgsqlCommand(sql, result);
-            try
-            {
-                command.AddParameter("id", id)
+            command.AddParameter("id", id)
                     .AddParameter("pinCode", pinCode);
-            }
-            catch
-            {
-                result.Dispose();
-                throw;
-            }
 
             using NpgsqlDataReader reader = command.ExecuteReader();
 
@@ -100,17 +84,9 @@ public class BankAccountRepository : IBankAccountRepository
             Task<NpgsqlConnection> connection = _connectionProvider.GetConnectionAsync(default).AsTask();
             NpgsqlConnection result = connection.GetAwaiter().GetResult();
             using var command = new NpgsqlCommand(sql, result);
-            try
-            {
-                    command.AddParameter("ownerId", ownerId);
-                    command.AddParameter("balance", balance);
-                    command.AddParameter("pin", pin);
-            }
-            catch
-            {
-                result.Dispose();
-                throw;
-            }
+            command.AddParameter("ownerId", ownerId);
+            command.AddParameter("balance", balance);
+            command.AddParameter("pin", pin);
 
             int rowsAffected = command.ExecuteNonQuery();
 
@@ -123,31 +99,21 @@ public class BankAccountRepository : IBankAccountRepository
     public void UpdateValue(long id, int newBalance, int amount, TransactionType transactionType)
     {
         const string sql = """
-                           
                                                   UPDATE accounts
                                                   SET account_balance = :newBalance
                                                   WHERE account_id = :id;
                                                   INSERT INTO TransactionHistory (account_id, transaction_type, transaction_amount, transaction_date)
                                                   VALUES (:id, :transactionType, :amount, NOW());
-                                                  
                            """;
 
         if (_connectionProvider == null) return;
         Task<NpgsqlConnection> connection = _connectionProvider.GetConnectionAsync(default).AsTask();
         NpgsqlConnection result = connection.GetAwaiter().GetResult();
         using var command = new NpgsqlCommand(sql, result);
-        try
-        {
-            command.AddParameter("newBalance", newBalance);
-            command.AddParameter("transactionType", transactionType);
-            command.AddParameter("amount", amount);
-            command.AddParameter("id", id);
-        }
-        catch
-        {
-            result.Dispose();
-            throw;
-        }
+        command.AddParameter("newBalance", newBalance);
+        command.AddParameter("transactionType", transactionType);
+        command.AddParameter("amount", amount);
+        command.AddParameter("id", id);
 
         int rowsAffected = command.ExecuteNonQuery();
     }

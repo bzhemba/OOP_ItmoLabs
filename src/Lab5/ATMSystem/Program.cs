@@ -25,7 +25,6 @@ internal class Program
                 configuration.SslMode = "Prefer";
             })
             .AddPresentationConsole();
-
         ServiceProvider provider = collection.BuildServiceProvider();
         using IServiceScope scope = provider.CreateScope();
 

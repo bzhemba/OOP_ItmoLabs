@@ -18,7 +18,6 @@ public class TransactionRepository : ITransactionRepository
     public IEnumerable<Transaction> GetTransactionHistory(long id)
     {
         const string sql = """
-                           
                                                   SELECT transaction_id, account_id, transaction_type, transaction_amount, transaction_date
                                                   FROM TransactionHistory
                                                   WHERE account_id = :id
@@ -33,15 +32,7 @@ public class TransactionRepository : ITransactionRepository
             Task<NpgsqlConnection> connection = _connectionProvider.GetConnectionAsync(default).AsTask();
             NpgsqlConnection result = connection.GetAwaiter().GetResult();
             using var command = new NpgsqlCommand(sql, result);
-            try
-            {
-                command.AddParameter("id", id);
-            }
-            catch
-            {
-                result.Dispose();
-                throw;
-            }
+            command.AddParameter("id", id);
 
             using NpgsqlDataReader reader = command.ExecuteReader();
 

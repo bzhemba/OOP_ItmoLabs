@@ -24,7 +24,17 @@ public class CreateBankAccountScenario : IScenario
     {
         string name;
         User? user;
-        long id = AnsiConsole.Ask<long>("Enter user's id");
+        long id = AnsiConsole.Prompt(
+            new TextPrompt<int>("Enter user's id")
+                .ValidationErrorMessage("[red]Incorrect id[/]")
+                .Validate(id =>
+                {
+                    return id switch
+                    {
+                        <0 => ValidationResult.Error("[red]Id must be a positive number[/]"),
+                        _ => ValidationResult.Success(),
+                    };
+                }));
         user = _userService.GetUserById(id);
         if (user is null)
         {
