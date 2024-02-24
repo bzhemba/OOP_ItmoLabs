@@ -53,6 +53,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtmSystem.Presentation.Cons
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Entities", "Entities", "{AE087E83-81D5-4F99-BC9C-3283C42EB3AD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TechnicalAssignments", "TechnicalAssignments", "{4CA0D79A-A8BA-40B7-8BA9-F3C3B86CD51A}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Downloads\TechicalAssignments\lab1_oop.pdf = ..\..\Downloads\TechicalAssignments\lab1_oop.pdf
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
